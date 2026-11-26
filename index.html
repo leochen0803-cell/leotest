@@ -2,40 +2,38 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>渡臺求生記：黑水溝不相信眼淚</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>渡臺求生記：黑水溝不相信眼淚｜動漫風格歷史生存RPG</title>
   <style>
     /* ============================================================
-       基礎變數與復古像素 + 現代手遊質感設計系統
+       動漫視覺小說 × 日系RPG 設計系統
        ============================================================ */
     :root {
-      --bg-deep: #0b1120;
-      --bg-sea: #13203a;
-      --panel-bg: #1e293b;
-      --panel-light: #273549;
-      --border-pixel: #090d16;
-      --border-highlight: #475569;
+      --bg-night: #0b1026;
+      --bg-indigo: #171f42;
+      --panel-bg: rgba(19, 27, 56, 0.94);
+      --panel-soft: #1e2a54;
+      --ink-black: #090d1a;
+      --anime-cyan: #38bdf8;
+      --anime-pink: #f43f5e;
+      --anime-gold: #fbbf24;
+      --anime-violet: #a855f7;
+      --anime-mint: #10b981;
+
       --text-main: #f8fafc;
       --text-muted: #cbd5e1;
       --text-dim: #94a3b8;
 
-      /* 數值顏色 */
-      --hp-color: #ef4444;
-      --money-color: #f59e0b;
-      --san-color: #a855f7;
-      --rep-color: #10b981;
+      --ssr-grad: linear-gradient(135deg, #fef08a 0%, #f59e0b 35%, #f472b6 70%, #38bdf8 100%);
+      --sr-grad: linear-gradient(135deg, #d8b4fe 0%, #7e22ce 100%);
+      --r-grad: linear-gradient(135deg, #7dd3fc 0%, #2563eb 100%);
+      --n-grad: linear-gradient(135deg, #cbd5e1 0%, #475569 100%);
+      --cursed-grad: linear-gradient(135deg, #fb7185 0%, #881337 100%);
 
-      /* 稀有度顏色 */
-      --ssr-grad: linear-gradient(135deg, #fde047 0%, #f59e0b 45%, #fef08a 70%, #d97706 100%);
-      --sr-grad: linear-gradient(135deg, #c084fc 0%, #7e22ce 100%);
-      --r-grad: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
-      --n-grad: linear-gradient(135deg, #94a3b8 0%, #475569 100%);
-      --cursed-grad: linear-gradient(135deg, #f43f5e 0%, #881337 100%);
-
-      --radius-sm: 8px;
-      --radius-md: 12px;
-      --radius-lg: 16px;
-      --pixel-shadow: 0 4px 0 #090d16, 0 8px 20px rgba(0, 0, 0, 0.45);
+      --radius-sm: 10px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --comic-shadow: 4px 5px 0 var(--ink-black), 0 12px 28px rgba(0, 0, 0, 0.55);
     }
 
     * {
@@ -48,27 +46,40 @@
       padding: 0;
       width: 100%;
       min-height: 100vh;
-      background: radial-gradient(circle at top, #1b2e4d 0%, var(--bg-deep) 75%);
+      background:
+        radial-gradient(circle at 15% 10%, rgba(56, 189, 248, 0.16), transparent 40%),
+        radial-gradient(circle at 85% 20%, rgba(244, 63, 94, 0.14), transparent 42%),
+        linear-gradient(180deg, #0d1330 0%, #090d1e 100%);
       color: var(--text-main);
       font-family: "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", system-ui, -apple-system, sans-serif;
       overflow-x: hidden;
-      line-height: 1.55;
+      line-height: 1.6;
     }
 
-    /* 背景復古格線紋理 */
+    /* 日系漫畫網點背景紋理 */
     body::before {
       content: "";
       position: fixed;
       inset: 0;
-      background-image:
-        linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
-      background-size: 24px 24px;
+      background-image: radial-gradient(rgba(148, 163, 184, 0.11) 1.2px, transparent 1.2px);
+      background-size: 20px 20px;
       pointer-events: none;
       z-index: 0;
     }
 
-    /* 畫面震動與色彩閃爍特效層 */
+    /* 飄浮光點裝飾 */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 80%, rgba(251, 191, 36, 0.08) 0%, transparent 25%),
+        radial-gradient(circle at 80% 70%, rgba(56, 189, 248, 0.08) 0%, transparent 25%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* 全畫面特效層 */
     #screen-flash {
       position: fixed;
       inset: 0;
@@ -77,13 +88,13 @@
       opacity: 0;
     }
 
-    .flash-red { animation: flashAnim 0.42s ease-out; background: rgba(239, 68, 68, 0.45); }
-    .flash-gold { animation: flashAnim 0.45s ease-out; background: rgba(250, 204, 21, 0.35); }
-    .flash-purple { animation: flashAnim 0.45s ease-out; background: rgba(168, 85, 247, 0.4); }
+    .flash-red { animation: flashAnim 0.42s ease-out; background: rgba(244, 63, 94, 0.45); }
+    .flash-gold { animation: flashAnim 0.48s ease-out; background: rgba(250, 204, 21, 0.36); }
+    .flash-purple { animation: flashAnim 0.45s ease-out; background: rgba(168, 85, 247, 0.42); }
     .flash-green { animation: flashAnim 0.4s ease-out; background: rgba(16, 185, 129, 0.32); }
 
     @keyframes flashAnim {
-      0% { opacity: 0.9; }
+      0% { opacity: 0.95; }
       100% { opacity: 0; }
     }
 
@@ -98,26 +109,26 @@
     }
 
     @keyframes shakeHeavyAnim {
-      10%, 90% { transform: translate3d(-7px, 2px, 0); }
-      20%, 80% { transform: translate3d(8px, -3px, 0); }
-      30%, 50%, 70% { transform: translate3d(-10px, 4px, 0); }
-      40%, 60% { transform: translate3d(10px, -4px, 0); }
+      10%, 90% { transform: translate3d(-8px, 2px, 0); }
+      20%, 80% { transform: translate3d(9px, -3px, 0); }
+      30%, 50%, 70% { transform: translate3d(-11px, 4px, 0); }
+      40%, 60% { transform: translate3d(11px, -4px, 0); }
     }
 
     /* 主容器 */
     #app-wrapper {
       position: relative;
       z-index: 1;
-      max-width: 820px;
+      max-width: 860px;
       margin: 0 auto;
-      padding: 12px 14px 40px;
+      padding: 12px 14px 44px;
       min-height: 100vh;
       display: flex;
       flex-direction: column;
     }
 
     /* ============================================================
-       頂部工具列與固定 4 大數值 HUD
+       頂部動漫風格工具列 & 固定 RPG 狀態欄 (HUD)
        ============================================================ */
     #top-bar {
       display: flex;
@@ -132,83 +143,121 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      font-weight: 800;
-      font-size: 0.95rem;
-      letter-spacing: 0.5px;
-      color: #fde68a;
-      text-shadow: 2px 2px 0 #090d16;
+      font-weight: 900;
+      font-size: 1rem;
+      letter-spacing: 0.6px;
+      color: #fef08a;
+      text-shadow: 2px 2px 0 var(--ink-black);
     }
 
-    .mode-pill {
-      font-size: 0.72rem;
-      padding: 2px 8px;
-      border-radius: 999px;
-      font-weight: 700;
-      border: 2px solid var(--border-pixel);
+    .anime-skew-pill {
+      display: inline-block;
+      font-size: 0.75rem;
+      padding: 2px 11px;
+      font-weight: 900;
+      border: 2px solid var(--ink-black);
+      box-shadow: 2px 2px 0 var(--ink-black);
+      transform: skewX(-10deg);
+      border-radius: 5px;
     }
-    .mode-pill.elem { background: #15803d; color: #dcfce7; }
-    .mode-pill.junior { background: #b91c1c; color: #fee2e2; }
+    .anime-skew-pill > span {
+      display: inline-block;
+      transform: skewX(10deg);
+    }
+    .anime-skew-pill.elem { background: linear-gradient(135deg, #22c55e, #15803d); color: #fff; }
+    .anime-skew-pill.junior { background: linear-gradient(135deg, #f43f5e, #be123c); color: #fff; }
 
     .top-actions {
       display: flex;
-      gap: 6px;
+      gap: 7px;
     }
 
     .icon-btn {
-      background: var(--panel-bg);
+      background: linear-gradient(180deg, #253363 0%, #1a2448 100%);
       color: var(--text-main);
-      border: 2px solid var(--border-pixel);
-      box-shadow: 0 3px 0 var(--border-pixel);
+      border: 2.5px solid var(--ink-black);
+      box-shadow: 2px 3px 0 var(--ink-black);
       border-radius: var(--radius-sm);
-      padding: 6px 10px;
+      padding: 6px 11px;
       font-size: 0.82rem;
-      font-weight: 700;
+      font-weight: 800;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      transition: transform 0.08s, box-shadow 0.08s, background 0.15s;
+      gap: 5px;
+      font-family: inherit;
+      transition: transform 0.08s, box-shadow 0.08s, border-color 0.15s;
     }
-    .icon-btn:hover { background: var(--panel-light); }
+    .icon-btn:hover { border-color: var(--anime-cyan); }
     .icon-btn:active {
-      transform: translateY(2px);
-      box-shadow: 0 1px 0 var(--border-pixel);
+      transform: translate(1px, 2px);
+      box-shadow: 1px 1px 0 var(--ink-black);
     }
 
-    /* HUD 固定區域 */
+    /* HUD */
     #hud-container {
       position: sticky;
       top: 8px;
       z-index: 40;
-      background: rgba(15, 23, 42, 0.94);
-      backdrop-filter: blur(8px);
-      border: 3px solid var(--border-pixel);
-      outline: 1px solid rgba(148, 163, 184, 0.28);
+      background: rgba(15, 22, 48, 0.94);
+      backdrop-filter: blur(10px);
+      border: 3px solid var(--ink-black);
+      outline: 2px solid rgba(56, 189, 248, 0.35);
       border-radius: var(--radius-md);
       padding: 10px 12px;
       margin-bottom: 14px;
-      box-shadow: var(--pixel-shadow);
+      box-shadow: var(--comic-shadow);
       display: none;
     }
 
-    .hud-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
+    .hud-top-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
-    @media (max-width: 600px) {
+    .hud-avatar {
+      width: 62px;
+      height: 62px;
+      flex-shrink: 0;
+      border-radius: 14px;
+      border: 3px solid var(--ink-black);
+      background: linear-gradient(135deg, #1e3a8a, #38bdf8);
+      box-shadow: 2px 3px 0 var(--ink-black);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hud-avatar svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    .hud-grid {
+      flex: 1;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    @media (max-width: 640px) {
       .hud-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 8px;
+        gap: 7px;
+      }
+      .hud-avatar {
+        width: 54px;
+        height: 54px;
       }
     }
 
     .stat-box {
-      position: relative;
-      background: #162033;
-      border: 2px solid #090d16;
-      border-radius: 8px;
+      background: #141c3b;
+      border: 2px solid var(--ink-black);
+      border-radius: 10px;
       padding: 6px 8px;
     }
 
@@ -216,8 +265,8 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      font-size: 0.78rem;
-      font-weight: 700;
+      font-size: 0.76rem;
+      font-weight: 800;
       margin-bottom: 4px;
     }
 
@@ -225,38 +274,37 @@
     .stat-val {
       font-family: "Courier New", monospace;
       font-weight: 900;
-      font-size: 0.95rem;
+      font-size: 0.92rem;
     }
 
     .bar-track {
-      height: 8px;
-      background: #090d16;
-      border-radius: 4px;
+      height: 9px;
+      background: #070b18;
+      border-radius: 999px;
       overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      border: 1.5px solid var(--ink-black);
     }
 
     .bar-fill {
       height: 100%;
       width: 50%;
-      transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.3s;
-      border-radius: 3px;
+      transition: width 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+      border-radius: 999px;
     }
-    .bar-hp { background: linear-gradient(90deg, #dc2626, #f87171); }
-    .bar-money { background: linear-gradient(90deg, #d97706, #fbbf24); }
-    .bar-san { background: linear-gradient(90deg, #7e22ce, #c084fc); }
+    .bar-hp { background: linear-gradient(90deg, #e11d48, #fb7185); }
+    .bar-money { background: linear-gradient(90deg, #d97706, #fde047); }
+    .bar-san { background: linear-gradient(90deg, #7e22ce, #e879f9); }
     .bar-rep { background: linear-gradient(90deg, #059669, #34d399); }
 
     .stat-danger {
-      animation: pulseDanger 0.9s infinite alternate;
-      border-color: #ef4444 !important;
+      animation: pulseDanger 0.8s infinite alternate;
+      border-color: #f43f5e !important;
     }
     @keyframes pulseDanger {
-      from { box-shadow: 0 0 0 rgba(239, 68, 68, 0.2); }
-      to { box-shadow: 0 0 12px rgba(239, 68, 68, 0.75); }
+      from { box-shadow: 0 0 0 rgba(244, 63, 94, 0.25); }
+      to { box-shadow: 0 0 12px rgba(244, 63, 94, 0.8); }
     }
 
-    /* 玩家身分標籤列（在 HUD 下方） */
     .hud-profile {
       display: flex;
       justify-content: space-between;
@@ -265,9 +313,8 @@
       gap: 6px;
       margin-top: 8px;
       padding-top: 7px;
-      border-top: 1px dashed rgba(148, 163, 184, 0.25);
+      border-top: 1px dashed rgba(148, 163, 184, 0.3);
       font-size: 0.78rem;
-      color: var(--text-muted);
     }
 
     .profile-tags {
@@ -278,11 +325,11 @@
     }
 
     .mini-tag {
-      background: #0f172a;
-      border: 1px solid #334155;
+      background: #0f1633;
+      border: 1.5px solid #334155;
       padding: 2px 8px;
       border-radius: 6px;
-      font-weight: 700;
+      font-weight: 800;
       display: inline-flex;
       align-items: center;
       gap: 4px;
@@ -291,20 +338,19 @@
     .mini-tag.sr { border-color: #c084fc; color: #e9d5ff; }
     .mini-tag.r { border-color: #60a5fa; color: #bfdbfe; }
     .mini-tag.n { border-color: #94a3b8; color: #e2e8f0; }
-    .mini-tag.cursed { border-color: #f43f5e; color: #fda4af; }
+    .mini-tag.cursed { border-color: #fb7185; color: #fda4af; }
 
-    /* 進度條 */
     .stage-badge {
-      font-weight: 800;
-      color: #38bdf8;
-      background: rgba(56, 189, 248, 0.12);
-      padding: 2px 8px;
-      border-radius: 6px;
-      border: 1px solid rgba(56, 189, 248, 0.35);
+      font-weight: 900;
+      color: #7dd3fc;
+      background: rgba(56, 189, 248, 0.14);
+      padding: 2px 10px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(56, 189, 248, 0.45);
     }
 
     /* ============================================================
-       螢幕飄字特效 & 迷因 Toast 吐槽彈窗
+       飄字與動漫吐槽 Toast
        ============================================================ */
     #floating-layer {
       position: fixed;
@@ -318,16 +364,16 @@
       position: absolute;
       font-family: "Courier New", "Microsoft JhengHei", monospace;
       font-weight: 900;
-      font-size: 1.25rem;
-      text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+      font-size: 1.3rem;
+      text-shadow: 2px 2px 0 #000, -1.5px -1.5px 0 #000, 1.5px -1.5px 0 #000, -1.5px 1.5px 0 #000;
       animation: floatUpFade 1.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       white-space: nowrap;
     }
 
     @keyframes floatUpFade {
-      0% { opacity: 0; transform: translate(-50%, 10px) scale(0.7); }
-      20% { opacity: 1; transform: translate(-50%, -12px) scale(1.18); }
-      100% { opacity: 0; transform: translate(-50%, -82px) scale(0.95); }
+      0% { opacity: 0; transform: translate(-50%, 10px) scale(0.75); }
+      20% { opacity: 1; transform: translate(-50%, -14px) scale(1.2); }
+      100% { opacity: 0; transform: translate(-50%, -85px) scale(0.95); }
     }
 
     #toast-container {
@@ -339,27 +385,25 @@
       display: flex;
       flex-direction: column;
       gap: 8px;
-      width: min(92vw, 440px);
+      width: min(92vw, 460px);
       pointer-events: none;
     }
 
     .meme-toast {
-      background: rgba(15, 23, 42, 0.96);
-      border: 3px solid #f59e0b;
-      box-shadow: 0 6px 0 #090d16, 0 10px 24px rgba(0, 0, 0, 0.6);
-      border-radius: 12px;
+      background: linear-gradient(135deg, rgba(17, 24, 52, 0.97), rgba(30, 41, 82, 0.97));
+      border: 3px solid var(--anime-gold);
+      box-shadow: 4px 5px 0 var(--ink-black), 0 12px 28px rgba(0, 0, 0, 0.65);
+      border-radius: 14px;
       padding: 10px 14px;
       color: #fef3c7;
       font-size: 0.92rem;
-      font-weight: 700;
+      font-weight: 800;
       display: flex;
       align-items: center;
       gap: 10px;
-      animation: toastIn 0.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+      animation: toastIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) forwards;
     }
-    .meme-toast.fade-out {
-      animation: toastOut 0.3s ease-in forwards;
-    }
+    .meme-toast.fade-out { animation: toastOut 0.28s ease-in forwards; }
 
     @keyframes toastIn {
       from { opacity: 0; transform: translateY(20px) scale(0.92); }
@@ -371,15 +415,15 @@
     }
 
     /* ============================================================
-       主遊戲卡片面板
+       主面板與動漫封面 Hero Banner
        ============================================================ */
     .game-panel {
       background: var(--panel-bg);
-      border: 3px solid var(--border-pixel);
-      outline: 1px solid rgba(148, 163, 184, 0.25);
+      border: 3px solid var(--ink-black);
+      outline: 2px solid rgba(56, 189, 248, 0.22);
       border-radius: var(--radius-lg);
-      box-shadow: var(--pixel-shadow);
-      padding: 20px;
+      box-shadow: var(--comic-shadow);
+      padding: 18px;
       animation: panelPop 0.32s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
@@ -389,22 +433,128 @@
     }
 
     @media (max-width: 520px) {
-      .game-panel { padding: 15px 13px; }
+      .game-panel { padding: 14px 12px; }
     }
 
-    /* 場景插畫區 */
+    /* 首頁封面視覺卡片 */
+    .anime-cover-hero {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: 16px;
+      border: 3px solid var(--ink-black);
+      overflow: hidden;
+      margin-bottom: 14px;
+      box-shadow: 4px 5px 0 var(--ink-black);
+      background: #0b132b;
+    }
+
+    .anime-cover-hero img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 6s ease-out;
+    }
+
+    .anime-cover-hero:hover img {
+      transform: scale(1.03);
+    }
+
+    .cover-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        180deg,
+        rgba(9, 13, 26, 0.15) 0%,
+        rgba(9, 13, 26, 0.05) 45%,
+        rgba(9, 13, 26, 0.88) 100%
+      );
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 12px 16px;
+    }
+
+    .cover-top-badges {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .cover-badge {
+      background: rgba(9, 13, 26, 0.86);
+      border: 2px solid var(--anime-gold);
+      color: #fde047;
+      font-size: 0.76rem;
+      font-weight: 900;
+      padding: 4px 11px;
+      border-radius: 999px;
+      box-shadow: 2px 2px 0 var(--ink-black);
+    }
+
+    .cover-badge-ep {
+      background: linear-gradient(135deg, #f43f5e, #e11d48);
+      border: 2px solid var(--ink-black);
+      color: #fff;
+      font-size: 0.74rem;
+      font-weight: 900;
+      padding: 4px 10px;
+      border-radius: 6px;
+      transform: skewX(-10deg);
+      box-shadow: 2px 2px 0 var(--ink-black);
+    }
+
+    .cover-title-block {
+      text-align: left;
+    }
+
+    .anime-main-title {
+      margin: 0;
+      font-size: clamp(1.7rem, 5.5vw, 2.55rem);
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: 2px;
+      color: #fff;
+      text-shadow:
+        -2px -2px 0 var(--ink-black),
+        2px -2px 0 var(--ink-black),
+        -2px 2px 0 var(--ink-black),
+        3px 4px 0 var(--ink-black),
+        0 0 22px rgba(251, 191, 36, 0.7);
+    }
+
+    .anime-main-title .accent {
+      color: #fde047;
+    }
+
+    .anime-sub-tagline {
+      display: inline-block;
+      margin-top: 6px;
+      background: rgba(56, 189, 248, 0.92);
+      color: #090d1a;
+      border: 2px solid var(--ink-black);
+      box-shadow: 2px 3px 0 var(--ink-black);
+      padding: 3px 12px;
+      border-radius: 6px;
+      font-size: clamp(0.82rem, 2.6vw, 0.98rem);
+      font-weight: 900;
+      transform: skewX(-6deg);
+    }
+
+    /* 動漫場景圖框 */
     .scene-box {
       width: 100%;
-      height: 170px;
+      height: 195px;
       border-radius: var(--radius-md);
-      border: 3px solid var(--border-pixel);
+      border: 3px solid var(--ink-black);
       overflow: hidden;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       position: relative;
-      background: #0f172a;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      background: #0d1330;
+      box-shadow: 3px 4px 0 var(--ink-black);
     }
 
     .scene-box svg {
@@ -415,87 +565,95 @@
 
     .scene-tag {
       position: absolute;
-      top: 8px;
-      left: 8px;
-      background: rgba(9, 13, 22, 0.85);
-      border: 2px solid rgba(255, 255, 255, 0.18);
-      color: #fde68a;
+      top: 9px;
+      left: 9px;
+      background: rgba(9, 13, 26, 0.88);
+      border: 2px solid var(--anime-cyan);
+      color: #e0f2fe;
       font-size: 0.76rem;
-      font-weight: 800;
-      padding: 3px 10px;
-      border-radius: 999px;
-      letter-spacing: 0.5px;
-    }
-
-    /* 標題與文字 */
-    .hero-title {
-      text-align: center;
-      font-size: clamp(1.55rem, 5vw, 2.25rem);
       font-weight: 900;
-      margin: 6px 0 4px;
-      color: #fef08a;
-      text-shadow: 3px 3px 0 #090d16, 0 0 18px rgba(250, 204, 21, 0.35);
-      letter-spacing: 1px;
+      padding: 3px 11px;
+      border-radius: 999px;
+      box-shadow: 2px 2px 0 var(--ink-black);
+      z-index: 2;
     }
 
-    .hero-subtitle {
-      text-align: center;
-      color: #93c5fd;
+    /* 動漫視覺小說對話框 */
+    .vn-box {
+      position: relative;
+      background: linear-gradient(180deg, rgba(22, 32, 68, 0.95) 0%, rgba(13, 19, 43, 0.98) 100%);
+      border: 3px solid var(--ink-black);
+      outline: 2px solid rgba(56, 189, 248, 0.35);
+      border-radius: var(--radius-md);
+      padding: 18px 16px 14px;
+      margin: 14px 0 16px;
+      box-shadow: 3px 4px 0 var(--ink-black);
+    }
+
+    .vn-speaker {
+      position: absolute;
+      top: -14px;
+      left: 14px;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #090d1a;
+      border: 2.5px solid var(--ink-black);
+      box-shadow: 2px 2px 0 var(--ink-black);
+      padding: 2px 12px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 900;
+      transform: skewX(-8deg);
+    }
+    .vn-speaker > span {
+      display: inline-block;
+      transform: skewX(8deg);
+    }
+
+    .vn-text {
+      margin: 0;
       font-size: 0.98rem;
-      font-weight: 700;
-      margin: 0 0 16px;
+      color: #f1f5f9;
+    }
+    .vn-text strong {
+      color: #fde047;
     }
 
     .event-title {
-      font-size: clamp(1.18rem, 3.6vw, 1.45rem);
+      font-size: clamp(1.18rem, 3.6vw, 1.48rem);
       font-weight: 900;
-      color: #fde68a;
-      margin: 0 0 10px;
-      text-shadow: 2px 2px 0 #090d16;
+      color: #fde047;
+      margin: 0 0 6px;
+      text-shadow: 2px 2px 0 var(--ink-black);
       display: flex;
       align-items: center;
       gap: 8px;
       flex-wrap: wrap;
     }
 
-    .event-story {
-      font-size: 0.98rem;
-      color: #e2e8f0;
-      margin: 0 0 16px;
-      background: rgba(15, 23, 42, 0.55);
-      border-left: 4px solid #38bdf8;
-      padding: 12px 14px;
-      border-radius: 0 10px 10px 0;
-    }
-
-    .event-story strong {
-      color: #fde047;
-    }
-
     .san-warning-box {
-      background: rgba(168, 85, 247, 0.18);
-      border: 2px dashed #c084fc;
-      color: #f3e8ff;
-      border-radius: 10px;
-      padding: 9px 12px;
+      background: rgba(168, 85, 247, 0.2);
+      border: 2.5px dashed #e879f9;
+      color: #fae8ff;
+      border-radius: 12px;
+      padding: 9px 13px;
       font-size: 0.88rem;
-      font-weight: 700;
-      margin-bottom: 14px;
+      font-weight: 800;
+      margin: 8px 0 14px;
     }
 
     /* ============================================================
-       按鈕系統（復古立體按壓感）
+       動漫風格按鈕 & 選項指令卡
        ============================================================ */
     .btn {
       width: 100%;
-      border: 3px solid var(--border-pixel);
+      border: 3px solid var(--ink-black);
       border-radius: var(--radius-md);
       padding: 13px 16px;
       font-size: 1rem;
-      font-weight: 800;
+      font-weight: 900;
       cursor: pointer;
       color: #fff;
-      box-shadow: 0 4px 0 var(--border-pixel);
+      box-shadow: 3px 4px 0 var(--ink-black);
       transition: transform 0.08s, box-shadow 0.08s, filter 0.15s;
       display: flex;
       align-items: center;
@@ -504,26 +662,24 @@
       text-align: center;
       font-family: inherit;
     }
-
-    .btn:hover:not(:disabled) { filter: brightness(1.08); }
+    .btn:hover:not(:disabled) { filter: brightness(1.08); transform: translateY(-1px); }
     .btn:active:not(:disabled) {
-      transform: translateY(3px);
-      box-shadow: 0 1px 0 var(--border-pixel);
+      transform: translate(2px, 3px);
+      box-shadow: 1px 1px 0 var(--ink-black);
     }
     .btn:disabled {
-      opacity: 0.52;
+      opacity: 0.5;
       cursor: not-allowed;
-      filter: grayscale(0.4);
+      filter: grayscale(0.45);
     }
 
-    .btn-primary { background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%); }
-    .btn-gold { background: linear-gradient(180deg, #f59e0b 0%, #b45309 100%); color: #fffbeb; }
-    .btn-green { background: linear-gradient(180deg, #22c55e 0%, #15803d 100%); }
-    .btn-red { background: linear-gradient(180deg, #ef4444 0%, #b91c1c 100%); }
-    .btn-purple { background: linear-gradient(180deg, #a855f7 0%, #6b21a8 100%); }
+    .btn-primary { background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%); color: #061325; }
+    .btn-gold { background: linear-gradient(180deg, #fbbf24 0%, #d97706 100%); color: #090d1a; }
+    .btn-green { background: linear-gradient(180deg, #34d399 0%, #059669 100%); color: #052e16; }
+    .btn-red { background: linear-gradient(180deg, #fb7185 0%, #e11d48 100%); }
+    .btn-purple { background: linear-gradient(180deg, #c084fc 0%, #7e22ce 100%); }
     .btn-slate { background: linear-gradient(180deg, #475569 0%, #334155 100%); }
 
-    /* 選項按鈕卡片 */
     .choices-list {
       display: flex;
       flex-direction: column;
@@ -533,28 +689,29 @@
     .choice-btn {
       width: 100%;
       text-align: left;
-      background: linear-gradient(180deg, #29384f 0%, #1f2b3e 100%);
-      border: 3px solid var(--border-pixel);
+      background: linear-gradient(135deg, #212e5e 0%, #172044 100%);
+      border: 3px solid var(--ink-black);
       border-radius: var(--radius-md);
-      padding: 13px 15px;
+      padding: 12px 14px;
       color: var(--text-main);
       cursor: pointer;
-      box-shadow: 0 4px 0 var(--border-pixel);
-      transition: transform 0.08s, box-shadow 0.08s, border-color 0.15s, background 0.15s;
+      box-shadow: 3px 4px 0 var(--ink-black);
+      transition: transform 0.1s, box-shadow 0.1s, border-color 0.15s, background 0.15s;
       font-family: inherit;
       display: flex;
-      flex-direction: column;
-      gap: 4px;
+      align-items: flex-start;
+      gap: 11px;
     }
 
     .choice-btn:hover:not(:disabled) {
-      background: linear-gradient(180deg, #334663 0%, #25344b 100%);
-      border-color: #f59e0b;
+      background: linear-gradient(135deg, #2c3d7a 0%, #1d2957 100%);
+      border-color: var(--anime-gold);
+      transform: translateX(3px);
     }
 
     .choice-btn:active:not(:disabled) {
-      transform: translateY(3px);
-      box-shadow: 0 1px 0 var(--border-pixel);
+      transform: translate(2px, 3px);
+      box-shadow: 1px 1px 0 var(--ink-black);
     }
 
     .choice-btn:disabled {
@@ -562,9 +719,33 @@
       cursor: not-allowed;
     }
 
+    .choice-key {
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      background: var(--anime-cyan);
+      color: #090d1a;
+      border: 2px solid var(--ink-black);
+      border-radius: 7px;
+      font-weight: 900;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 2px 2px 0 var(--ink-black);
+    }
+
+    .choice-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
     .choice-title {
       font-size: 1rem;
-      font-weight: 800;
+      font-weight: 900;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -573,32 +754,32 @@
     }
 
     .choice-hint {
-      font-size: 0.82rem;
-      color: #94a3b8;
+      font-size: 0.83rem;
+      color: #cbd5e1;
       font-weight: 600;
     }
 
     .cost-badge {
       font-size: 0.74rem;
-      padding: 2px 7px;
+      padding: 2px 8px;
       border-radius: 6px;
-      background: rgba(15, 23, 42, 0.85);
-      border: 1px solid #475569;
+      background: rgba(9, 13, 26, 0.9);
+      border: 1.5px solid #475569;
       color: #fde68a;
-      font-weight: 700;
+      font-weight: 800;
       white-space: nowrap;
     }
-    .cost-badge.risk { border-color: #ef4444; color: #fca5a5; }
-    .cost-badge.good { border-color: #10b981; color: #6ee7b7; }
+    .cost-badge.risk { border-color: #fb7185; color: #fda4af; }
+    .cost-badge.good { border-color: #34d399; color: #6ee7b7; }
 
     /* ============================================================
-       首頁模式選擇卡片
+       首頁故事路線卡片
        ============================================================ */
     .mode-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 12px;
-      margin: 16px 0;
+      margin: 14px 0;
     }
 
     @media (max-width: 600px) {
@@ -606,13 +787,14 @@
     }
 
     .mode-card {
-      background: #162033;
-      border: 3px solid var(--border-pixel);
+      position: relative;
+      background: linear-gradient(160deg, #1b2652 0%, #121938 100%);
+      border: 3px solid var(--ink-black);
       border-radius: var(--radius-md);
-      padding: 16px;
+      padding: 15px;
       cursor: pointer;
-      box-shadow: 0 5px 0 var(--border-pixel);
-      transition: transform 0.1s, border-color 0.15s, background 0.15s;
+      box-shadow: 4px 5px 0 var(--ink-black);
+      transition: transform 0.12s, border-color 0.15s, box-shadow 0.12s;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -623,20 +805,21 @@
     }
 
     .mode-card:hover {
-      transform: translateY(-2px);
-      background: #1e2d47;
+      transform: translateY(-3px);
+      border-color: var(--anime-cyan);
     }
     .mode-card:active {
-      transform: translateY(3px);
-      box-shadow: 0 1px 0 var(--border-pixel);
+      transform: translate(2px, 3px);
+      box-shadow: 1px 2px 0 var(--ink-black);
     }
 
     .mode-card.elem-card { border-top: 6px solid #22c55e; }
-    .mode-card.junior-card { border-top: 6px solid #ef4444; }
+    .mode-card.junior-card { border-top: 6px solid #f43f5e; }
 
     .mode-card h3 {
       margin: 0;
       font-size: 1.15rem;
+      font-weight: 900;
       display: flex;
       align-items: center;
       gap: 6px;
@@ -644,7 +827,7 @@
 
     .mode-card p {
       margin: 0;
-      font-size: 0.86rem;
+      font-size: 0.87rem;
       color: var(--text-muted);
     }
 
@@ -657,15 +840,16 @@
 
     .kw-chip {
       font-size: 0.72rem;
-      padding: 2px 6px;
-      border-radius: 5px;
-      background: rgba(255, 255, 255, 0.08);
-      color: #e2e8f0;
-      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: rgba(56, 189, 248, 0.14);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #e0f2fe;
+      font-weight: 800;
     }
 
     /* ============================================================
-       手遊抽卡質感卡片（階段 0 與 結局卡）
+       動漫手遊閃亮抽卡系統
        ============================================================ */
     .gacha-grid {
       display: grid;
@@ -681,14 +865,15 @@
     .gacha-card {
       position: relative;
       border-radius: var(--radius-md);
-      padding: 3px;
-      box-shadow: 0 6px 0 var(--border-pixel), 0 12px 24px rgba(0, 0, 0, 0.5);
+      padding: 4px;
+      border: 2.5px solid var(--ink-black);
+      box-shadow: 4px 6px 0 var(--ink-black), 0 14px 28px rgba(0, 0, 0, 0.5);
       overflow: hidden;
       animation: cardReveal 0.45s cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     @keyframes cardReveal {
-      0% { opacity: 0; transform: scale(0.82) rotateY(45deg); }
+      0% { opacity: 0; transform: scale(0.8) rotateY(45deg); }
       100% { opacity: 1; transform: scale(1) rotateY(0); }
     }
 
@@ -698,7 +883,6 @@
     .gacha-card.rarity-N { background: var(--n-grad); }
     .gacha-card.rarity-CURSED { background: var(--cursed-grad); }
 
-    /* SSR 流光掃描特效 */
     .gacha-card.rarity-SSR::after {
       content: "";
       position: absolute;
@@ -706,9 +890,9 @@
       left: -60%;
       width: 45%;
       height: 200%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.65), transparent);
       transform: rotate(25deg);
-      animation: shimmerSweep 2.6s infinite;
+      animation: shimmerSweep 2.4s infinite;
       pointer-events: none;
     }
 
@@ -718,8 +902,8 @@
     }
 
     .gacha-inner {
-      background: #131c2e;
-      border-radius: 9px;
+      background: radial-gradient(circle at top, #1f2b5e 0%, #101633 85%);
+      border-radius: 10px;
       padding: 15px 14px;
       height: 100%;
       display: flex;
@@ -733,41 +917,42 @@
       font-family: "Courier New", monospace;
       font-size: 0.78rem;
       font-weight: 900;
-      padding: 2px 10px;
+      padding: 2px 11px;
       border-radius: 999px;
-      color: #090d16;
+      color: #090d1a;
+      border: 1.5px solid var(--ink-black);
       letter-spacing: 0.6px;
     }
     .rarity-SSR .rarity-badge { background: #fde047; }
-    .rarity-SR .rarity-badge { background: #d8b4fe; }
-    .rarity-R .rarity-badge { background: #93c5fd; }
-    .rarity-N .rarity-badge { background: #cbd5e1; }
-    .rarity-CURSED .rarity-badge { background: #fda4af; }
+    .rarity-SR .rarity-badge { background: #e9d5ff; }
+    .rarity-R .rarity-badge { background: #bae6fd; }
+    .rarity-N .rarity-badge { background: #e2e8f0; }
+    .rarity-CURSED .rarity-badge { background: #fecdd3; }
 
     .card-emoji {
-      font-size: 2.7rem;
+      font-size: 2.9rem;
       line-height: 1.1;
       margin: 4px 0;
-      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5));
+      filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.55));
     }
 
     .card-name {
-      font-size: 1.12rem;
+      font-size: 1.15rem;
       font-weight: 900;
       color: #fff;
     }
 
     .card-desc {
-      font-size: 0.84rem;
+      font-size: 0.85rem;
       color: var(--text-muted);
     }
 
     .card-effect {
       margin-top: auto;
       padding-top: 6px;
-      font-size: 0.8rem;
-      font-weight: 800;
-      color: #fde68a;
+      font-size: 0.82rem;
+      font-weight: 900;
+      color: #fde047;
     }
 
     .btn-row {
@@ -781,23 +966,33 @@
     }
 
     /* ============================================================
-       黑水溝舀水限時小遊戲 (Mini-Game)
+       動漫必殺技連打：黑水溝舀水 QTE
        ============================================================ */
     .minigame-panel {
       text-align: center;
-      background: linear-gradient(180deg, #0c1f3f 0%, #091428 100%);
-      border: 3px solid #38bdf8;
+      background:
+        repeating-linear-gradient(
+          -20deg,
+          rgba(56, 189, 248, 0.06) 0px,
+          rgba(56, 189, 248, 0.06) 10px,
+          transparent 10px,
+          transparent 24px
+        ),
+        linear-gradient(180deg, #0d2149 0%, #09132e 100%);
+      border: 3px solid var(--ink-black);
+      outline: 2px solid var(--anime-cyan);
       border-radius: var(--radius-md);
       padding: 18px 14px;
       position: relative;
       overflow: hidden;
+      box-shadow: 4px 5px 0 var(--ink-black);
     }
 
     .boat-stage {
       font-size: 3.4rem;
-      margin: 8px 0;
+      margin: 6px 0;
       display: inline-block;
-      animation: boatRock 0.6s ease-in-out infinite alternate;
+      animation: boatRock 0.55s ease-in-out infinite alternate;
     }
 
     @keyframes boatRock {
@@ -805,10 +1000,23 @@
       to { transform: rotate(14deg) translateY(-5px); }
     }
 
+    .combo-pill {
+      display: inline-block;
+      background: #f43f5e;
+      color: #fff;
+      border: 2px solid var(--ink-black);
+      border-radius: 999px;
+      padding: 2px 12px;
+      font-weight: 900;
+      font-size: 0.86rem;
+      transform: skewX(-10deg);
+      margin-bottom: 6px;
+    }
+
     .mg-bars {
       display: grid;
       gap: 10px;
-      margin: 14px 0 18px;
+      margin: 12px 0 18px;
       text-align: left;
     }
 
@@ -822,37 +1030,37 @@
 
     .mg-track {
       height: 16px;
-      background: #020617;
-      border: 2px solid #1e293b;
+      background: #060a18;
+      border: 2.5px solid var(--ink-black);
       border-radius: 999px;
       overflow: hidden;
     }
 
     .mg-fill-time {
       height: 100%;
-      background: linear-gradient(90deg, #ef4444, #f59e0b);
+      background: linear-gradient(90deg, #f43f5e, #fbbf24);
       width: 100%;
       transition: width 0.08s linear;
     }
 
     .mg-fill-water {
       height: 100%;
-      background: linear-gradient(90deg, #0ea5e9, #38bdf8, #7dd3fc);
+      background: linear-gradient(90deg, #0284c7, #38bdf8, #a5f3fc);
       width: 0%;
-      transition: width 0.12s ease-out;
+      transition: width 0.1s ease-out;
     }
 
     .bail-btn {
-      width: min(100%, 300px);
-      height: 82px;
+      width: min(100%, 310px);
+      height: 84px;
       margin: 0 auto;
-      font-size: 1.35rem;
+      font-size: 1.32rem;
       font-weight: 900;
       border-radius: 18px;
       background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%);
-      color: #fff;
-      border: 4px solid #090d16;
-      box-shadow: 0 7px 0 #090d16, 0 0 24px rgba(56, 189, 248, 0.45);
+      color: #061325;
+      border: 3.5px solid var(--ink-black);
+      box-shadow: 0 7px 0 var(--ink-black), 0 0 26px rgba(56, 189, 248, 0.55);
       cursor: pointer;
       user-select: none;
       touch-action: manipulation;
@@ -860,20 +1068,22 @@
       align-items: center;
       justify-content: center;
       gap: 10px;
+      font-family: inherit;
       transition: transform 0.05s, box-shadow 0.05s;
     }
 
     .bail-btn:active, .bail-btn.pressed {
       transform: translateY(5px) scale(0.97);
-      box-shadow: 0 2px 0 #090d16;
+      box-shadow: 0 2px 0 var(--ink-black);
     }
 
     /* ============================================================
-       結果回饋卡與結局/圖鑑
+       結果回饋、歷史彩蛋與圖鑑 Modal
        ============================================================ */
     .outcome-box {
-      background: rgba(15, 23, 42, 0.72);
-      border: 2px solid #475569;
+      background: rgba(14, 20, 44, 0.85);
+      border: 2.5px solid var(--ink-black);
+      outline: 1.5px solid rgba(148, 163, 184, 0.3);
       border-radius: var(--radius-md);
       padding: 15px;
       margin-bottom: 14px;
@@ -883,27 +1093,29 @@
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin: 10px 0 12px;
+      margin: 12px 0 4px;
     }
 
     .delta-chip {
       font-size: 0.85rem;
-      font-weight: 800;
+      font-weight: 900;
       padding: 4px 10px;
       border-radius: 8px;
-      border: 2px solid #090d16;
+      border: 2px solid var(--ink-black);
+      box-shadow: 2px 2px 0 var(--ink-black);
     }
     .delta-chip.pos { background: #14532d; color: #86efac; }
-    .delta-chip.neg { background: #7f1d1d; color: #fca5a5; }
-    .delta-chip.neu { background: #334155; color: #e2e8f0; }
+    .delta-chip.neg { background: #881337; color: #fecdd3; }
 
     .history-egg {
-      background: linear-gradient(180deg, #1c2438 0%, #141c2e 100%);
-      border: 2px solid #f59e0b;
+      background: linear-gradient(180deg, #1d2547 0%, #141a34 100%);
+      border: 3px solid var(--ink-black);
+      outline: 2px solid var(--anime-gold);
       border-radius: var(--radius-md);
       padding: 14px 16px;
       margin: 16px 0;
       text-align: left;
+      box-shadow: 3px 4px 0 var(--ink-black);
     }
 
     .history-egg h4 {
@@ -922,33 +1134,28 @@
       font-size: 0.9rem;
     }
 
-    .history-egg li {
-      margin-bottom: 6px;
-    }
+    .history-egg li { margin-bottom: 6px; }
 
-    /* 圖鑑彈窗 Modal */
     .modal-backdrop {
       position: fixed;
       inset: 0;
-      background: rgba(2, 6, 23, 0.82);
-      backdrop-filter: blur(4px);
+      background: rgba(5, 8, 20, 0.84);
+      backdrop-filter: blur(5px);
       z-index: 200;
       display: none;
       align-items: center;
       justify-content: center;
       padding: 14px;
     }
-
-    .modal-backdrop.open {
-      display: flex;
-    }
+    .modal-backdrop.open { display: flex; }
 
     .modal-card {
-      background: var(--panel-bg);
-      border: 3px solid var(--border-pixel);
+      background: #141c3d;
+      border: 3px solid var(--ink-black);
+      outline: 2px solid var(--anime-cyan);
       border-radius: var(--radius-lg);
-      box-shadow: var(--pixel-shadow);
-      width: min(96vw, 720px);
+      box-shadow: var(--comic-shadow);
+      width: min(96vw, 740px);
       max-height: 88vh;
       display: flex;
       flex-direction: column;
@@ -958,18 +1165,19 @@
 
     .modal-header {
       padding: 14px 18px;
-      background: #131c2e;
-      border-bottom: 2px solid var(--border-pixel);
+      background: #0d132b;
+      border-bottom: 2.5px solid var(--ink-black);
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 10px;
+      flex-wrap: wrap;
     }
 
     .modal-header h3 {
       margin: 0;
-      font-size: 1.15rem;
-      color: #fde68a;
+      font-size: 1.12rem;
+      color: #fde047;
     }
 
     .modal-body {
@@ -984,37 +1192,40 @@
     }
 
     .gallery-item {
-      background: #162033;
-      border: 2px solid #334155;
-      border-radius: 10px;
+      background: #19244d;
+      border: 2.5px solid var(--ink-black);
+      border-radius: 12px;
       padding: 11px;
       display: flex;
       flex-direction: column;
       gap: 4px;
+      box-shadow: 2px 3px 0 var(--ink-black);
     }
 
     .gallery-item.unlocked {
-      border-color: #f59e0b;
-      background: #1c2840;
+      outline: 1.5px solid var(--anime-gold);
+      background: #1e2c5c;
     }
 
     .gallery-item.locked {
-      opacity: 0.58;
+      opacity: 0.56;
       filter: grayscale(0.8);
     }
 
     .confirm-box {
-      background: #1e293b;
-      border: 3px solid #ef4444;
-      border-radius: 14px;
+      background: #172044;
+      border: 3px solid var(--ink-black);
+      outline: 2px solid var(--anime-pink);
+      border-radius: 16px;
       padding: 20px;
-      width: min(92vw, 380px);
+      width: min(92vw, 390px);
       text-align: center;
+      box-shadow: var(--comic-shadow);
     }
 
     .footer-note {
       text-align: center;
-      font-size: 0.76rem;
+      font-size: 0.78rem;
       color: var(--text-dim);
       margin-top: auto;
       padding-top: 18px;
@@ -1022,19 +1233,15 @@
   </style>
 </head>
 <body>
-  <!-- 畫面閃爍遮罩 -->
   <div id="screen-flash"></div>
-  <!-- 螢幕飄字層 -->
   <div id="floating-layer"></div>
-  <!-- 迷因 Toast 彈窗層 -->
   <div id="toast-container"></div>
 
   <div id="app-wrapper">
-    <!-- 頂部工具列 -->
     <header id="top-bar">
       <div class="brand-mini">
         <span>⛵ 渡臺求生記</span>
-        <span id="mode-indicator" class="mode-pill elem" style="display:none;">🌱 國小探索</span>
+        <span id="mode-indicator" class="anime-skew-pill elem" style="display:none;"><span>🌱 國小熱血篇</span></span>
       </div>
       <div class="top-actions">
         <button id="btn-gallery-top" class="icon-btn" type="button">📖 圖鑑 <span id="gallery-count-top">0/11</span></button>
@@ -1043,61 +1250,63 @@
       </div>
     </header>
 
-    <!-- 固定於畫面上方的 4 大生存數值 HUD -->
+    <!-- 固定動漫 RPG 角色狀態欄 -->
     <section id="hud-container" aria-label="生存數值狀態欄">
-      <div class="hud-grid">
-        <div class="stat-box" id="box-hp">
-          <div class="stat-header">
-            <span class="stat-label">❤️ 體力 HP</span>
-            <span class="stat-val" id="val-hp" style="color:#f87171;">100</span>
+      <div class="hud-top-row">
+        <div class="hud-avatar" id="hud-avatar" title="主角狀態"></div>
+        <div class="hud-grid">
+          <div class="stat-box" id="box-hp">
+            <div class="stat-header">
+              <span class="stat-label">❤️ 體力 HP</span>
+              <span class="stat-val" id="val-hp" style="color:#fb7185;">100</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill bar-hp" id="bar-hp"></div></div>
           </div>
-          <div class="bar-track"><div class="bar-fill bar-hp" id="bar-hp"></div></div>
-        </div>
-        <div class="stat-box" id="box-money">
-          <div class="stat-header">
-            <span class="stat-label">💰 銀兩</span>
-            <span class="stat-val" id="val-money" style="color:#fbbf24;">100</span>
+          <div class="stat-box" id="box-money">
+            <div class="stat-header">
+              <span class="stat-label">💰 銀兩</span>
+              <span class="stat-val" id="val-money" style="color:#fde047;">100</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill bar-money" id="bar-money"></div></div>
           </div>
-          <div class="bar-track"><div class="bar-fill bar-money" id="bar-money"></div></div>
-        </div>
-        <div class="stat-box" id="box-san">
-          <div class="stat-header">
-            <span class="stat-label">🧠 理智 SAN</span>
-            <span class="stat-val" id="val-san" style="color:#c084fc;">90</span>
+          <div class="stat-box" id="box-san">
+            <div class="stat-header">
+              <span class="stat-label">🧠 理智 SAN</span>
+              <span class="stat-val" id="val-san" style="color:#e879f9;">90</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill bar-san" id="bar-san"></div></div>
           </div>
-          <div class="bar-track"><div class="bar-fill bar-san" id="bar-san"></div></div>
-        </div>
-        <div class="stat-box" id="box-rep">
-          <div class="stat-header">
-            <span class="stat-label">🤝 人脈</span>
-            <span class="stat-val" id="val-rep" style="color:#34d399;">30</span>
+          <div class="stat-box" id="box-rep">
+            <div class="stat-header">
+              <span class="stat-label">🤝 人脈</span>
+              <span class="stat-val" id="val-rep" style="color:#34d399;">30</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill bar-rep" id="bar-rep"></div></div>
           </div>
-          <div class="bar-track"><div class="bar-fill bar-rep" id="bar-rep"></div></div>
         </div>
       </div>
       <div class="hud-profile">
         <div class="profile-tags" id="hud-profile-tags">
-          <span class="mini-tag">尚未投胎</span>
+          <span class="mini-tag">尚未轉生抽卡</span>
         </div>
-        <span class="stage-badge" id="hud-stage-label">階段 0：投胎抽卡</span>
+        <span class="stage-badge" id="hud-stage-label">序章：命運召喚陣</span>
       </div>
     </section>
 
-    <!-- 主畫面動態渲染容器 -->
     <main id="game-root"></main>
 
     <footer class="footer-note">
-      《渡臺求生記：黑水溝不相信眼淚》｜結合 108 課綱清代臺灣史 × Roguelike 生存挑戰
+      《渡臺求生記：黑水溝不相信眼淚》動漫版｜108 課綱清代臺灣史 × 輕小說 Roguelike
     </footer>
   </div>
 
   <!-- 成就圖鑑 Modal -->
-  <div id="gallery-modal" class="modal-backdrop" role="dialog" aria-modal="true">
+  <div id="gallery-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-label="渡臺生存圖鑑">
     <div class="modal-card">
       <div class="modal-header">
-        <h3>📖 渡臺生存圖鑑（已收集 <span id="gallery-progress-text">0 / 11</span>）</h3>
+        <h3>📖 角色結局圖鑑（已解鎖 <span id="gallery-progress-text">0 / 11</span>）</h3>
         <div style="display:flex; gap:6px;">
-          <button id="btn-reset-gallery" class="icon-btn" type="button" style="color:#fca5a5;">🗑️ 清除紀錄</button>
+          <button id="btn-reset-gallery" class="icon-btn" type="button" style="color:#fda4af;">🗑️ 清空紀錄</button>
           <button id="btn-close-gallery" class="icon-btn" type="button">✖ 關閉</button>
         </div>
       </div>
@@ -1110,12 +1319,12 @@
     </div>
   </div>
 
-  <!-- 自訂清除圖鑑確認視窗（禁止使用 confirm()） -->
-  <div id="confirm-modal" class="modal-backdrop" role="dialog" aria-modal="true">
+  <!-- 自訂清除確認 Modal -->
+  <div id="confirm-modal" class="modal-backdrop" role="dialog" aria-modal="true" aria-label="確認清空圖鑑">
     <div class="confirm-box">
       <div style="font-size:2.4rem; margin-bottom:6px;">⚠️</div>
-      <h3 style="margin:0 0 8px; color:#fca5a5;">確定要清空所有圖鑑紀錄？</h3>
-      <p style="margin:0 0 16px; font-size:0.88rem; color:#cbd5e1;">清空後所有已解鎖的結局與隱藏死法都會歸零，必須重新橫渡黑水溝收集喔！</p>
+      <h3 style="margin:0 0 8px; color:#fda4af;">確定要清空所有圖鑑紀錄？</h3>
+      <p style="margin:0 0 16px; font-size:0.88rem; color:#cbd5e1;">清空後所有已解鎖的動漫結局與隱藏死法都會歸零，必須重新橫渡黑水溝收集喔！</p>
       <div class="btn-row">
         <button id="btn-confirm-cancel" class="btn btn-slate" type="button">算了，保留</button>
         <button id="btn-confirm-ok" class="btn btn-red" type="button">確定清空</button>
@@ -1125,7 +1334,7 @@
 
   <script>
     /* ==========================================================================
-       1. Web Audio API 8-bit 復古音效合成器（免外部音檔）
+       1. Web Audio API 動漫風 8-bit 音效合成器
        ========================================================================== */
     const SoundFX = (() => {
       let ctx = null;
@@ -1138,16 +1347,14 @@
             const AudioCtx = window.AudioContext || window.webkitAudioContext;
             if (AudioCtx) ctx = new AudioCtx();
           }
-          if (ctx && ctx.state === 'suspended') {
-            ctx.resume();
-          }
+          if (ctx && ctx.state === 'suspended') ctx.resume();
           return ctx;
         } catch (e) {
           return null;
         }
       }
 
-      function playTone(freq, duration, type = 'square', volume = 0.08, delay = 0, slideTo = null) {
+      function playTone(freq, duration, type = 'triangle', volume = 0.08, delay = 0, slideTo = null) {
         const audio = ensureCtx();
         if (!audio) return;
         try {
@@ -1156,19 +1363,15 @@
           const gain = audio.createGain();
           osc.type = type;
           osc.frequency.setValueAtTime(freq, now);
-          if (slideTo) {
-            osc.frequency.exponentialRampToValueAtTime(slideTo, now + duration);
-          }
+          if (slideTo) osc.frequency.exponentialRampToValueAtTime(slideTo, now + duration);
           gain.gain.setValueAtTime(0.0001, now);
-          gain.gain.linearRampToValueAtTime(volume, now + 0.01);
+          gain.gain.linearRampToValueAtTime(volume, now + 0.012);
           gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
           osc.connect(gain);
           gain.connect(audio.destination);
           osc.start(now);
           osc.stop(now + duration + 0.02);
-        } catch (e) {
-          // 忽略瀏覽器音訊限制錯誤
-        }
+        } catch (e) {}
       }
 
       return {
@@ -1179,227 +1382,283 @@
           return muted;
         },
         click() {
-          playTone(580, 0.06, 'square', 0.06, 0, 760);
+          playTone(660, 0.055, 'triangle', 0.07, 0, 920);
         },
         gachaTick() {
-          playTone(340 + Math.random() * 280, 0.05, 'triangle', 0.07);
+          playTone(420 + Math.random() * 340, 0.045, 'triangle', 0.07);
         },
         gachaReveal(isSSR) {
           if (isSSR) {
-            [523.25, 659.25, 783.99, 1046.5, 1318.5].forEach((f, i) => {
-              playTone(f, 0.16, 'square', 0.08, i * 0.075);
+            [523.25, 659.25, 783.99, 1046.5, 1318.5, 1567.98].forEach((f, i) => {
+              playTone(f, 0.16, 'triangle', 0.085, i * 0.07);
             });
           } else {
-            playTone(440, 0.1, 'triangle', 0.08, 0);
-            playTone(659.25, 0.16, 'triangle', 0.08, 0.09);
+            playTone(440, 0.09, 'triangle', 0.08, 0);
+            playTone(659.25, 0.16, 'triangle', 0.08, 0.08);
           }
         },
         coin() {
-          playTone(987.77, 0.08, 'square', 0.07, 0);
-          playTone(1318.51, 0.22, 'square', 0.07, 0.08);
+          playTone(987.77, 0.07, 'square', 0.06, 0);
+          playTone(1318.51, 0.22, 'triangle', 0.09, 0.07);
         },
         damage() {
-          playTone(220, 0.14, 'sawtooth', 0.1, 0, 95);
-          playTone(150, 0.18, 'sawtooth', 0.09, 0.1, 65);
+          playTone(210, 0.14, 'sawtooth', 0.09, 0, 95);
+          playTone(140, 0.18, 'sawtooth', 0.08, 0.1, 65);
         },
         sanDrop() {
-          playTone(390, 0.15, 'sine', 0.09, 0, 260);
-          playTone(310, 0.22, 'sine', 0.08, 0.14, 180);
+          playTone(420, 0.15, 'sine', 0.09, 0, 260);
+          playTone(310, 0.22, 'sine', 0.08, 0.13, 175);
         },
         splash() {
-          playTone(280 + Math.random() * 140, 0.06, 'triangle', 0.08, 0, 620);
+          playTone(320 + Math.random() * 180, 0.06, 'triangle', 0.08, 0, 740);
         },
         victory() {
-          const notes = [523.25, 523.25, 523.25, 659.25, 783.99, 1046.5];
-          const times = [0, 0.11, 0.22, 0.34, 0.48, 0.65];
-          const durs = [0.09, 0.09, 0.1, 0.12, 0.15, 0.4];
-          notes.forEach((n, i) => playTone(n, durs[i], 'square', 0.08, times[i]));
+          const notes = [523.25, 659.25, 783.99, 1046.5, 1318.5];
+          const times = [0, 0.1, 0.2, 0.32, 0.48];
+          const durs = [0.09, 0.09, 0.11, 0.15, 0.38];
+          notes.forEach((n, i) => playTone(n, durs[i], 'triangle', 0.085, times[i]));
         },
         gameover() {
-          const notes = [392, 349.23, 329.63, 261.63];
-          notes.forEach((n, i) => playTone(n, 0.24, 'sawtooth', 0.07, i * 0.2, n * 0.92));
+          [392, 349.23, 329.63, 261.63].forEach((n, i) => {
+            playTone(n, 0.24, 'sawtooth', 0.065, i * 0.19, n * 0.9);
+          });
         }
       };
     })();
 
     /* ==========================================================================
-       2. 內嵌精緻復古 SVG 場景插畫產生器（無外部圖檔）
+       2. 動漫賽璐珞風格動態頭像與 SVG 場景插畫
        ========================================================================== */
+    function getAnimeAvatarSvg(hp, san, originId) {
+      const isLowHp = hp <= 35;
+      const isLowSan = san <= 35;
+      const bg = isLowHp ? '#7f1d1d' : isLowSan ? '#581c87' : '#0369a1';
+      const tunic = originId === 'hakka' ? '#0ea5e9' : originId === 'zhangzhou' ? '#16a34a' : '#2563eb';
+      const eyes = isLowSan
+        ? `<circle cx="34" cy="40" r="4.5" fill="#fff" stroke="#090d1a" stroke-width="1.5"/>
+           <circle cx="54" cy="40" r="4.5" fill="#fff" stroke="#090d1a" stroke-width="1.5"/>
+           <circle cx="34" cy="40" r="1.8" fill="#090d1a"/><circle cx="54" cy="40" r="1.8" fill="#090d1a"/>
+           <path d="M63,24 Q67,31 63,34 Q59,31 63,24 Z" fill="#38bdf8" stroke="#090d1a" stroke-width="1.2"/>`
+        : `<ellipse cx="34" cy="40" rx="4.2" ry="5" fill="#090d1a"/>
+           <ellipse cx="54" cy="40" rx="4.2" ry="5" fill="#090d1a"/>
+           <circle cx="32.5" cy="38.2" r="1.7" fill="#fff"/>
+           <circle cx="52.5" cy="38.2" r="1.7" fill="#fff"/>`;
+      const mouth = isLowHp || isLowSan
+        ? `<path d="M38,52 Q44,48 50,52" fill="none" stroke="#090d1a" stroke-width="2.2" stroke-linecap="round"/>`
+        : `<path d="M38,50 Q44,56 51,49" fill="none" stroke="#090d1a" stroke-width="2.2" stroke-linecap="round"/>`;
+      const bandage = isLowHp
+        ? `<rect x="46" y="45" width="12" height="5" rx="1.5" transform="rotate(-15 52 47)" fill="#fef2f2" stroke="#090d1a" stroke-width="1.3"/>`
+        : '';
+
+      return `
+        <svg viewBox="0 0 88 88">
+          <rect width="88" height="88" fill="${bg}"/>
+          <circle cx="44" cy="44" r="38" fill="#fff" opacity="0.08"/>
+          <!-- 斗笠 -->
+          <polygon points="14,25 74,25 44,9" fill="#eab308" stroke="#090d1a" stroke-width="2.5"/>
+          <!-- 衣服 -->
+          <path d="M20,88 Q24,62 44,62 Q64,62 68,88 Z" fill="${tunic}" stroke="#090d1a" stroke-width="2.5"/>
+          <!-- 臉與髮絲 -->
+          <path d="M25,37 Q25,60 44,61 Q63,60 63,37 Q63,21 44,21 Q25,21 25,37 Z" fill="#fde6c4" stroke="#090d1a" stroke-width="2.5"/>
+          <path d="M22,36 Q23,16 44,16 Q65,16 66,36 Q59,26 52,32 Q45,23 37,31 Q30,25 22,36 Z" fill="#1e293b" stroke="#090d1a" stroke-width="2.2"/>
+          <path d="M29,33 L39,35 M59,33 L49,35" stroke="#090d1a" stroke-width="2.2" stroke-linecap="round"/>
+          ${eyes}
+          <ellipse cx="29" cy="46" rx="3" ry="1.8" fill="#fb7185" opacity="0.55"/>
+          <ellipse cx="59" cy="46" rx="3" ry="1.8" fill="#fb7185" opacity="0.55"/>
+          ${mouth}
+          ${bandage}
+        </svg>`;
+    }
+
     const SceneArt = {
-      seaStorm(tag = '黑水溝狂濤') {
+      fallbackCoverSvg() {
+        return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(`
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+            <defs>
+              <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#0f172a"/>
+                <stop offset="55%" stop-color="#1d4ed8"/>
+                <stop offset="100%" stop-color="#f59e0b"/>
+              </linearGradient>
+            </defs>
+            <rect width="800" height="450" fill="url(#g)"/>
+            <circle cx="620" cy="140" r="70" fill="#fde047" opacity="0.85"/>
+            <path d="M470,330 Q570,190 670,240 Q740,185 800,330 Z" fill="#15803d"/>
+            <path d="M0,330 Q100,280 200,330 T400,330 T600,330 T800,330 L800,450 L0,450 Z" fill="#0c2847"/>
+          </svg>
+        `)}`;
+      },
+      seaStorm(tag = '黑水溝狂濤・激鬥篇') {
         return `
           <div class="scene-box">
             <span class="scene-tag">🌊 ${tag}</span>
-            <svg viewBox="0 0 600 180" preserveAspectRatio="xMidYMid slice">
+            <svg viewBox="0 0 640 200" preserveAspectRatio="xMidYMid slice">
               <defs>
-                <linearGradient id="skyStorm" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#091124"/>
-                  <stop offset="100%" stop-color="#1e3a5f"/>
+                <linearGradient id="anSeaSky" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#0a0f2c"/>
+                  <stop offset="60%" stop-color="#1e3a8a"/>
+                  <stop offset="100%" stop-color="#0284c7"/>
                 </linearGradient>
               </defs>
-              <rect width="600" height="180" fill="url(#skyStorm)"/>
-              <circle cx="490" cy="42" r="22" fill="#fef08a" opacity="0.22"/>
-              <circle cx="490" cy="42" r="14" fill="#fde047" opacity="0.85"/>
-              <path d="M70,40 Q100,20 135,38 Q165,24 195,44 Q130,54 70,40 Z" fill="#334155" opacity="0.8"/>
-              <path d="M310,32 Q340,12 385,30 Q415,18 440,36 Q370,46 310,32 Z" fill="#1e293b" opacity="0.9"/>
-              <path d="M165,42 L152,72 L166,72 L155,98" stroke="#fde047" stroke-width="3" fill="none" opacity="0.85"/>
-              <!-- 戎克船 -->
-              <g transform="translate(265,62) rotate(-7)">
-                <path d="M0,48 L95,48 L78,72 L16,72 Z" fill="#78350f" stroke="#090d16" stroke-width="3"/>
-                <rect x="44" y="4" width="6" height="45" fill="#451a03"/>
-                <path d="M50,8 L84,18 L78,42 L50,42 Z" fill="#fef3c7" stroke="#090d16" stroke-width="2"/>
-                <line x1="50" y1="20" x2="82" y2="26" stroke="#b45309" stroke-width="2"/>
-                <line x1="50" y1="31" x2="80" y2="35" stroke="#b45309" stroke-width="2"/>
-                <polygon points="44,8 22,22 44,32" fill="#dc2626" stroke="#090d16" stroke-width="2"/>
+              <rect width="640" height="200" fill="url(#anSeaSky)"/>
+              <!-- 動漫速度線 -->
+              <g stroke="#bae6fd" stroke-width="1.5" opacity="0.28">
+                <line x1="0" y1="20" x2="160" y2="60"/><line x1="0" y1="55" x2="130" y2="80"/>
+                <line x1="640" y1="25" x2="480" y2="65"/><line x1="640" y1="70" x2="500" y2="95"/>
               </g>
-              <!-- 黑水溝海浪 -->
-              <path d="M0,132 Q45,110 90,132 T180,132 T270,132 T360,132 T450,132 T540,132 T630,132 L630,180 L0,180 Z" fill="#0f2942"/>
-              <path d="M-20,148 Q35,126 80,148 T180,148 T280,148 T380,148 T480,148 T580,148 T660,148 L660,180 L-20,180 Z" fill="#071526"/>
+              <path d="M135,20 L118,58 L136,58 L120,96" stroke="#fde047" stroke-width="4" fill="none" stroke-linecap="round"/>
+              <!-- 動漫戎克船與主角剪影 -->
+              <g transform="translate(235,54) rotate(-6)">
+                <path d="M0,58 L150,58 L124,90 L22,90 Z" fill="#7c2d12" stroke="#090d1a" stroke-width="3.5"/>
+                <rect x="68" y="-4" width="8" height="62" fill="#451a03" stroke="#090d1a" stroke-width="2"/>
+                <path d="M76,0 L132,16 L124,50 L76,50 Z" fill="#fef3c7" stroke="#090d1a" stroke-width="3"/>
+                <line x1="76" y1="17" x2="130" y2="26" stroke="#b45309" stroke-width="2.5"/>
+                <line x1="76" y1="34" x2="127" y2="40" stroke="#b45309" stroke-width="2.5"/>
+                <!-- 發光媽祖燈籠 -->
+                <circle cx="52" cy="40" r="16" fill="#fde047" opacity="0.35"/>
+                <ellipse cx="52" cy="40" rx="8" ry="11" fill="#fbbf24" stroke="#090d1a" stroke-width="2"/>
+                <!-- 船頭少年主角 -->
+                <circle cx="122" cy="42" r="9" fill="#fde6c4" stroke="#090d1a" stroke-width="2.5"/>
+                <path d="M113,39 Q122,28 132,39" fill="#1e293b" stroke="#090d1a" stroke-width="2"/>
+                <path d="M114,50 L130,50 L133,66 L112,66 Z" fill="#38bdf8" stroke="#090d1a" stroke-width="2.5"/>
+              </g>
+              <path d="M0,145 Q55,112 110,145 T220,145 T330,145 T440,145 T550,145 T660,145 L660,200 L0,200 Z" fill="#0f3460" stroke="#38bdf8" stroke-width="2"/>
+              <path d="M-20,164 Q45,134 105,164 T230,164 T355,164 T480,164 T605,164 T700,164 L700,200 L-20,200 Z" fill="#071936"/>
             </svg>
           </div>`;
       },
-      sandbar(tag = '荒涼沙洲・放生陷阱') {
+      sandbar(tag = '危機！沙洲放生陷阱') {
         return `
           <div class="scene-box">
             <span class="scene-tag">🏝️ ${tag}</span>
-            <svg viewBox="0 0 600 180" preserveAspectRatio="xMidYMid slice">
-              <rect width="600" height="180" fill="#172554"/>
-              <rect y="100" width="600" height="80" fill="#0c4a6e"/>
-              <ellipse cx="220" cy="145" rx="145" ry="26" fill="#d97706" stroke="#090d16" stroke-width="3"/>
-              <ellipse cx="220" cy="142" rx="120" ry="15" fill="#fbbf24"/>
-              <!-- 孤單移民 -->
-              <circle cx="210" cy="112" r="8" fill="#fde68a" stroke="#090d16" stroke-width="2"/>
-              <rect x="203" y="120" width="14" height="18" rx="3" fill="#3b82f6" stroke="#090d16" stroke-width="2"/>
-              <polygon points="196,108 224,108 210,97" fill="#a16207" stroke="#090d16" stroke-width="2"/>
-              <!-- 落跑的黑心船 -->
-              <g transform="translate(445,76) scale(0.65)">
-                <path d="M0,40 L85,40 L70,60 L15,60 Z" fill="#7c2d12" stroke="#090d16" stroke-width="3"/>
-                <path d="M40,5 L72,15 L68,36 L40,36 Z" fill="#fca5a5" stroke="#090d16" stroke-width="2"/>
+            <svg viewBox="0 0 640 200" preserveAspectRatio="xMidYMid slice">
+              <defs>
+                <linearGradient id="anSandSky" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#1e1b4b"/>
+                  <stop offset="100%" stop-color="#be123c"/>
+                </linearGradient>
+              </defs>
+              <rect width="640" height="200" fill="url(#anSandSky)"/>
+              <rect y="110" width="640" height="90" fill="#0c4a6e"/>
+              <ellipse cx="220" cy="162" rx="160" ry="28" fill="#d97706" stroke="#090d1a" stroke-width="3.5"/>
+              <ellipse cx="220" cy="158" rx="130" ry="16" fill="#fbbf24"/>
+              <!-- 震驚主角 + 漫畫驚嘆號 -->
+              <circle cx="215" cy="118" r="11" fill="#fde6c4" stroke="#090d1a" stroke-width="2.5"/>
+              <path d="M204,114 Q215,102 226,114" fill="#1e293b" stroke="#090d1a" stroke-width="2"/>
+              <rect x="206" y="129" width="18" height="22" rx="4" fill="#38bdf8" stroke="#090d1a" stroke-width="2.5"/>
+              <polygon points="196,112 234,112 215,98" fill="#eab308" stroke="#090d1a" stroke-width="2.5"/>
+              <text x="242" y="106" fill="#fde047" stroke="#090d1a" stroke-width="1.2" font-size="22" font-weight="900">！？</text>
+              <!-- 逃跑黑船 -->
+              <g transform="translate(465,78) scale(0.7)">
+                <path d="M0,45 L95,45 L78,68 L16,68 Z" fill="#7c2d12" stroke="#090d1a" stroke-width="3"/>
+                <path d="M44,5 L82,18 L76,40 L44,40 Z" fill="#fda4af" stroke="#090d1a" stroke-width="2.5"/>
               </g>
-              <text x="430" y="64" fill="#fde047" font-size="14" font-weight="bold">「臺灣到囉掰！」</text>
+              <rect x="405" y="34" width="175" height="32" rx="10" fill="#fff" stroke="#090d1a" stroke-width="2.5"/>
+              <text x="492" y="55" text-anchor="middle" fill="#090d1a" font-size="14" font-weight="900">「臺灣到囉先掰啦！」</text>
             </svg>
           </div>`;
       },
-      canal(tag = '水圳開墾・農田水利') {
+      canal(tag = '水利大開拓・豐收篇') {
         return `
           <div class="scene-box">
             <span class="scene-tag">🌾 ${tag}</span>
-            <svg viewBox="0 0 600 180" preserveAspectRatio="xMidYMid slice">
+            <svg viewBox="0 0 640 200" preserveAspectRatio="xMidYMid slice">
               <defs>
-                <linearGradient id="skyDay" x1="0" y1="0" x2="0" y2="1">
+                <linearGradient id="anDaySky" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stop-color="#0284c7"/>
-                  <stop offset="100%" stop-color="#7dd3fc"/>
+                  <stop offset="70%" stop-color="#7dd3fc"/>
+                  <stop offset="100%" stop-color="#fef08a"/>
                 </linearGradient>
               </defs>
-              <rect width="600" height="180" fill="url(#skyDay)"/>
-              <circle cx="515" cy="40" r="22" fill="#fde047"/>
-              <path d="M0,115 L120,62 L240,115 L370,55 L520,115 L600,82 L600,180 L0,180 Z" fill="#166534"/>
-              <rect y="110" width="600" height="70" fill="#4d7c0f"/>
-              <!-- 水圳河道 -->
-              <path d="M250,110 L315,110 L420,180 L195,180 Z" fill="#0ea5e9" stroke="#0369a1" stroke-width="3"/>
-              <path d="M275,126 L310,126 M262,145 L335,145 M245,165 L360,165" stroke="#e0f2fe" stroke-width="3" stroke-linecap="round"/>
-              <!-- 稻穗 -->
-              <g fill="#facc15" stroke="#854d0e" stroke-width="1.5">
-                <circle cx="90" cy="135" r="7"/><circle cx="115" cy="142" r="7"/><circle cx="140" cy="133" r="7"/>
-                <circle cx="465" cy="138" r="7"/><circle cx="495" cy="145" r="7"/><circle cx="525" cy="134" r="7"/>
+              <rect width="640" height="200" fill="url(#anDaySky)"/>
+              <circle cx="535" cy="46" r="32" fill="#fde047" opacity="0.4"/>
+              <circle cx="535" cy="46" r="20" fill="#fef08a"/>
+              <path d="M0,122 L120,62 L255,122 L390,54 L540,122 L640,80 L640,200 L0,200 Z" fill="#15803d" stroke="#052e16" stroke-width="2.5"/>
+              <rect y="118" width="640" height="82" fill="#65a30d"/>
+              <path d="M265,118 L335,118 L455,200 L205,200 Z" fill="#0ea5e9" stroke="#090d1a" stroke-width="3"/>
+              <path d="M285,138 L325,138 M270,158 L355,158 M248,180 L385,180" stroke="#e0f2fe" stroke-width="3.5" stroke-linecap="round"/>
+              <g fill="#facc15" stroke="#854d0e" stroke-width="2">
+                <circle cx="95" cy="148" r="8"/><circle cx="122" cy="156" r="8"/><circle cx="148" cy="145" r="8"/>
+                <circle cx="495" cy="150" r="8"/><circle cx="525" cy="158" r="8"/><circle cx="555" cy="146" r="8"/>
               </g>
             </svg>
           </div>`;
       },
-      frontier(tag = '土牛溝番界・山林邊境') {
+      frontier(tag = '番界防線・土牛溝') {
         return `
           <div class="scene-box">
             <span class="scene-tag">⛰️ ${tag}</span>
-            <svg viewBox="0 0 600 180" preserveAspectRatio="xMidYMid slice">
-              <rect width="600" height="180" fill="#1e293b"/>
-              <path d="M0,118 L110,48 L225,118 L345,35 L490,118 L600,68 L600,180 L0,180 Z" fill="#064e3b"/>
-              <rect y="118" width="600" height="62" fill="#3f6212"/>
-              <!-- 土牛溝與界碑 -->
-              <path d="M285,118 L325,118 L365,180 L250,180 Z" fill="#78350f" stroke="#451a03" stroke-width="3"/>
-              <rect x="285" y="74" width="38" height="54" rx="4" fill="#cbd5e1" stroke="#090d16" stroke-width="3"/>
-              <text x="304" y="96" text-anchor="middle" fill="#b91c1c" font-size="13" font-weight="900">番</text>
-              <text x="304" y="115" text-anchor="middle" fill="#b91c1c" font-size="13" font-weight="900">界</text>
-              <!-- 竹林 -->
-              <line x1="450" y1="68" x2="450" y2="145" stroke="#22c55e" stroke-width="6"/>
-              <line x1="472" y1="58" x2="472" y2="145" stroke="#16a34a" stroke-width="6"/>
-              <line x1="494" y1="74" x2="494" y2="145" stroke="#22c55e" stroke-width="6"/>
+            <svg viewBox="0 0 640 200" preserveAspectRatio="xMidYMid slice">
+              <defs>
+                <linearGradient id="anFrontSky" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#1e1b4b"/>
+                  <stop offset="100%" stop-color="#4338ca"/>
+                </linearGradient>
+              </defs>
+              <rect width="640" height="200" fill="url(#anFrontSky)"/>
+              <circle cx="120" cy="48" r="22" fill="#e0e7ff" opacity="0.85"/>
+              <path d="M0,126 L120,52 L240,126 L360,38 L510,126 L640,68 L640,200 L0,200 Z" fill="#065f46" stroke="#090d1a" stroke-width="2.5"/>
+              <rect y="126" width="640" height="74" fill="#3f6212"/>
+              <path d="M295,126 L345,126 L390,200 L255,200 Z" fill="#78350f" stroke="#090d1a" stroke-width="3"/>
+              <rect x="298" y="76" width="44" height="62" rx="6" fill="#e2e8f0" stroke="#090d1a" stroke-width="3.5"/>
+              <text x="320" y="102" text-anchor="middle" fill="#e11d48" font-size="16" font-weight="900">番</text>
+              <text x="320" y="123" text-anchor="middle" fill="#e11d48" font-size="16" font-weight="900">界</text>
+              <line x1="475" y1="68" x2="475" y2="155" stroke="#22c55e" stroke-width="7" stroke-linecap="round"/>
+              <line x1="500" y1="54" x2="500" y2="155" stroke="#16a34a" stroke-width="7" stroke-linecap="round"/>
             </svg>
           </div>`;
       },
-      temple(tag = '媽祖廟與土地公・心靈寄託') {
+      temple(tag = '守護神明・媽祖廟') {
         return `
           <div class="scene-box">
             <span class="scene-tag">🏮 ${tag}</span>
-            <svg viewBox="0 0 600 180" preserveAspectRatio="xMidYMid slice">
-              <rect width="600" height="180" fill="#2e1065"/>
-              <rect y="135" width="600" height="45" fill="#475569"/>
-              <!-- 廟宇屋頂 -->
-              <path d="M140,86 Q300,40 460,86 L435,96 L165,96 Z" fill="#dc2626" stroke="#fde047" stroke-width="3"/>
-              <rect x="190" y="96" width="220" height="46" fill="#7f1d1d" stroke="#090d16" stroke-width="3"/>
-              <rect x="274" y="106" width="52" height="36" fill="#f59e0b" stroke="#090d16" stroke-width="2"/>
-              <!-- 燈籠 -->
-              <circle cx="170" cy="108" r="11" fill="#ef4444" stroke="#fde047" stroke-width="2"/>
-              <circle cx="430" cy="108" r="11" fill="#ef4444" stroke="#fde047" stroke-width="2"/>
-              <circle cx="300" cy="46" r="14" fill="#fde047" opacity="0.28"/>
+            <svg viewBox="0 0 640 200" preserveAspectRatio="xMidYMid slice">
+              <defs>
+                <linearGradient id="anTempSky" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#311042"/>
+                  <stop offset="100%" stop-color="#7c2d12"/>
+                </linearGradient>
+              </defs>
+              <rect width="640" height="200" fill="url(#anTempSky)"/>
+              <circle cx="320" cy="80" r="65" fill="#fbbf24" opacity="0.22"/>
+              <rect y="146" width="640" height="54" fill="#334155"/>
+              <path d="M145,92 Q320,38 495,92 L465,104 L175,104 Z" fill="#dc2626" stroke="#fde047" stroke-width="3.5"/>
+              <rect x="200" y="104" width="240" height="50" fill="#7f1d1d" stroke="#090d1a" stroke-width="3.5"/>
+              <rect x="292" y="114" width="56" height="40" fill="#fbbf24" stroke="#090d1a" stroke-width="2.5"/>
+              <circle cx="178" cy="118" r="13" fill="#ef4444" stroke="#fde047" stroke-width="2.5"/>
+              <circle cx="462" cy="118" r="13" fill="#ef4444" stroke="#fde047" stroke-width="2.5"/>
             </svg>
           </div>`;
       },
-      conflict(tag = '風暴來襲・械鬥與民變') {
+      conflict(tag = '熱血衝突・大時代風暴') {
         return `
           <div class="scene-box">
             <span class="scene-tag">🔥 ${tag}</span>
-            <svg viewBox="0 0 600 180" preserveAspectRatio="xMidYMid slice">
+            <svg viewBox="0 0 640 200" preserveAspectRatio="xMidYMid slice">
               <defs>
-                <linearGradient id="fireSky" x1="0" y1="0" x2="0" y2="1">
+                <linearGradient id="anFireSky" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="0%" stop-color="#450a0a"/>
-                  <stop offset="100%" stop-color="#991b1b"/>
+                  <stop offset="100%" stop-color="#dc2626"/>
                 </linearGradient>
               </defs>
-              <rect width="600" height="180" fill="url(#fireSky)"/>
-              <rect y="128" width="600" height="52" fill="#1c1917"/>
-              <!-- 旗幟 -->
-              <line x1="170" y1="44" x2="170" y2="145" stroke="#fde68a" stroke-width="5"/>
-              <polygon points="172,46 250,62 172,82" fill="#f59e0b" stroke="#090d16" stroke-width="2"/>
-              <line x1="430" y1="44" x2="430" y2="145" stroke="#fde68a" stroke-width="5"/>
-              <polygon points="428,46 350,62 428,82" fill="#3b82f6" stroke="#090d16" stroke-width="2"/>
-              <!-- 火光 -->
-              <path d="M270,130 Q285,82 300,115 Q316,74 330,130 Z" fill="#f97316"/>
-              <path d="M282,130 Q300,98 318,130 Z" fill="#fde047"/>
-            </svg>
-          </div>`;
-      },
-      titleBanner() {
-        return `
-          <div class="scene-box" style="height:155px;">
-            <span class="scene-tag">📜 清領時期・唐山過臺灣</span>
-            <svg viewBox="0 0 600 170" preserveAspectRatio="xMidYMid slice">
-              <defs>
-                <linearGradient id="heroSky" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stop-color="#0f172a"/>
-                  <stop offset="65%" stop-color="#1e3a8a"/>
-                  <stop offset="100%" stop-color="#0ea5e9"/>
-                </linearGradient>
-              </defs>
-              <rect width="600" height="170" fill="url(#heroSky)"/>
-              <circle cx="115" cy="46" r="24" fill="#fde047" opacity="0.9"/>
-              <!-- 臺灣島輪廓剪影（遠方希望之地） -->
-              <path d="M410,122 Q455,66 505,82 Q545,58 595,122 Z" fill="#15803d" stroke="#052e16" stroke-width="3"/>
-              <!-- 渡海大船 -->
-              <g transform="translate(185,55)">
-                <path d="M0,45 L105,45 L88,68 L18,68 Z" fill="#92400e" stroke="#090d16" stroke-width="3"/>
-                <rect x="48" y="4" width="6" height="42" fill="#451a03"/>
-                <path d="M54,8 L92,20 L86,40 L54,40 Z" fill="#fef3c7" stroke="#090d16" stroke-width="2"/>
-                <text x="64" y="30" fill="#b91c1c" font-size="14" font-weight="900">臺</text>
+              <rect width="640" height="200" fill="url(#anFireSky)"/>
+              <g stroke="#fde047" stroke-width="2" opacity="0.26">
+                <line x1="0" y1="15" x2="240" y2="95"/><line x1="640" y1="15" x2="400" y2="95"/>
               </g>
-              <path d="M0,126 Q50,108 100,126 T200,126 T300,126 T400,126 T500,126 T600,126 L600,170 L0,170 Z" fill="#0c2847"/>
-              <path d="M-20,144 Q40,128 95,144 T215,144 T335,144 T455,144 T575,144 T650,144 L650,170 L-20,170 Z" fill="#081b33"/>
+              <rect y="140" width="640" height="60" fill="#1c1917"/>
+              <line x1="175" y1="44" x2="175" y2="155" stroke="#fde68a" stroke-width="6"/>
+              <polygon points="178,46 268,64 178,86" fill="#fbbf24" stroke="#090d1a" stroke-width="3"/>
+              <line x1="465" y1="44" x2="465" y2="155" stroke="#fde68a" stroke-width="6"/>
+              <polygon points="462,46 372,64 462,86" fill="#38bdf8" stroke="#090d1a" stroke-width="3"/>
+              <path d="M284,142 Q302,84 320,124 Q338,76 356,142 Z" fill="#f97316" stroke="#090d1a" stroke-width="2.5"/>
+              <path d="M298,142 Q320,104 342,142 Z" fill="#fde047"/>
             </svg>
           </div>`;
       }
     };
 
     /* ==========================================================================
-       3. 遊戲靜態資料庫：祖籍、天賦卡、結局圖鑑、歷史課綱重點
+       3. 遊戲靜態資料庫
        ========================================================================== */
     const ORIGINS = [
       {
@@ -1407,7 +1666,7 @@
         name: '泉州人（閩南）',
         emoji: '⚓',
         rarity: 'R',
-        desc: '沿海港口出身，擅長做生意與出海打拚，臺灣早期的商業主力！',
+        desc: '港灣商貿系的熱血少年，對市場與航海天生敏銳！',
         effectText: '開局 銀兩 +15、人脈 +5',
         mods: { hp: 0, money: 15, san: 0, rep: 5 }
       },
@@ -1416,7 +1675,7 @@
         name: '漳州人（閩南）',
         emoji: '🌾',
         rarity: 'R',
-        desc: '務農開墾一把罩，耐操耐磨，專門鎖定肥沃的平原地帶！',
+        desc: '耐操耐磨的平原開拓者，抗壓與體力素質超群！',
         effectText: '開局 體力 +10、理智 +5',
         mods: { hp: 10, money: 0, san: 5, rep: 0 }
       },
@@ -1425,7 +1684,7 @@
         name: '粵東客家人',
         emoji: '⛰️',
         rarity: 'SR',
-        desc: '團結硬頸、擅長丘陵開墾！但在硬核模式下要小心清初「禁粵令」刁難。',
+        desc: '硬頸團結的山林開墾者！但在修羅模式會面臨清初「禁粵令」考驗。',
         effectText: '開局 人脈 +12、體力 +5',
         mods: { hp: 5, money: 0, san: 0, rep: 12 }
       }
@@ -1437,15 +1696,15 @@
         name: '媽祖的乾兒子',
         emoji: '🏮',
         rarity: 'SSR',
-        desc: '出海前在湄洲拜了三天三夜，自帶神明金光外掛！',
-        effectText: '被動：抵擋 1 次致命歸零傷害（鎖血復活至 20 HP）'
+        desc: '出海前在湄洲獲神明賜福，自帶主角不死金光結界！',
+        effectText: '被動：抵擋 1 次致命傷害（鎖血復活至 20 HP）'
       },
       {
         id: 'rich_heir',
         name: '唐山富二代盤纏',
         emoji: '💰',
         rarity: 'SR',
-        desc: '臨走前阿公偷偷塞了兩根大黃魚進你的包袱。',
+        desc: '出發前阿公偷偷塞了兩根大黃魚，開局直接點滿鈔能力！',
         effectText: '開局 銀兩 +40（鈔能力啟動！）',
         mods: { money: 40 }
       },
@@ -1454,15 +1713,15 @@
         name: '鐵胃不怕暈船',
         emoji: '⚓',
         rarity: 'R',
-        desc: '別人在甲板吐到懷疑人生，你還能邊嗑地瓜乾邊看海景。',
-        effectText: '黑水溝舀水目標減輕（只需 12 下），風浪減傷'
+        desc: '別人在甲板吐成一片，你還能邊吹海風邊啃番薯乾！',
+        effectText: '黑水溝 QTE 目標降至 12 下，風浪傷害減免'
       },
       {
         id: 'sweet_talker',
         name: '嘴甜交際花',
         emoji: '🗣️',
         rarity: 'R',
-        desc: '見人三分笑，跟碼頭工人、通事還是地主都能聊成拜把兄弟。',
+        desc: '自帶滿點魅力值，跟碼頭工人、通事或地主都能秒變麻吉！',
         effectText: '開局 人脈 +18、理智 +10',
         mods: { rep: 18, san: 10 }
       },
@@ -1471,8 +1730,8 @@
         name: '羅漢腳體質',
         emoji: '🥢',
         rarity: 'N',
-        desc: '一人吃飽全家不餓，雖然孤單寂寞覺得冷，但逃跑特別快。',
-        effectText: '開局 體力 +8、理智 -10（抗壓考驗）',
+        desc: '一人吃飽全家不餓，雖然孤獨寂寞覺得冷，但逃命速度 S 級！',
+        effectText: '開局 體力 +8、理智 -10（心態考驗）',
         mods: { hp: 8, san: -10 }
       },
       {
@@ -1480,22 +1739,21 @@
         name: '路痴屬性',
         emoji: '🧭',
         rarity: 'CURSED',
-        desc: '明明要去鹿耳門，卻常常莫名走到奇怪的地方……有時反而塞翁失馬？',
+        desc: '標準動漫路痴男主！常常莫名走錯路，但偶爾會觸發神祕撿寶事件？',
         effectText: '開局 理智 -8，隨機事件可能迷路或意外撿到錢',
         mods: { san: -8 }
       }
     ];
 
-    // 11 種結局圖鑑（含一般生存結局與隱藏死法）
     const ENDINGS = {
       ssr_ancestor: {
         id: 'ssr_ancestor',
         rarity: 'SSR',
         title: '一代開臺祖',
         emoji: '🏛️',
-        tag: '傳奇結局',
-        desc: '你熬過黑水溝、挺過械鬥與民變，在臺灣落地生根、建立宗祠，成為後世子孫清明必拜的傳奇「開臺祖」！',
-        toast: '恭喜！你直接從社畜逆襲成族譜第一頁！'
+        tag: '真・傳奇結局',
+        desc: '你熬過黑水溝、挺過械鬥與民變，在臺灣落地生根建立宗祠，成為後代子孫族譜第一頁的傳奇「開臺祖」！',
+        toast: '主角光環開滿！直接成為族譜傳說！'
       },
       ssr_canal: {
         id: 'ssr_canal',
@@ -1503,8 +1761,8 @@
         title: '水圳大富翁',
         emoji: '💎',
         tag: '首富結局',
-        desc: '你獨具慧眼投資水利建設，稻田年年大豐收，收水租收到手抽筋，堪稱清代臺灣的房地產暨水力大亨！',
-        toast: '別人賣肝，你靠收水租財富自由！'
+        desc: '你獨具慧眼投資水利大工程，稻田年年大豐收，收水租收到手抽筋，堪稱清代臺灣最猛房地產暨水力大亨！',
+        toast: '別人肝到爆，你靠收水租實現財富自由！'
       },
       sr_yimin: {
         id: 'sr_yimin',
@@ -1512,8 +1770,8 @@
         title: '忠義雙全的義民英雄',
         emoji: '🛡️',
         tag: '英雄結局',
-        desc: '動亂之際你挺身保衛家園與鄉親，名聲響徹全臺，連朝廷都頒匾額表揚你的忠義精神！',
-        toast: '全村的希望！這波操作人脈直接拉滿！'
+        desc: '動亂之際你挺身保衛家園與鄉親，名聲響徹全臺，連朝廷都頒發「褒忠」匾額表揚你的熱血忠義！',
+        toast: '全村的希望！這波操作人脈直接封頂！'
       },
       sr_tycoon: {
         id: 'sr_tycoon',
@@ -1521,7 +1779,7 @@
         title: '渡海大頭家',
         emoji: '🪙',
         tag: '富豪結局',
-        desc: '憑藉精明的頭腦與過人膽識，你在臺灣累積了驚人財富，開起商行與米糧鋪，成為地方響噹噹的大頭家！',
+        desc: '憑藉精明頭腦與膽識，你在臺灣開起商行與米糧鋪，成為地方響噹噹的大頭家！',
         toast: '真・臺灣錢淹腳目！'
       },
       r_farmer: {
@@ -1529,7 +1787,7 @@
         rarity: 'R',
         title: '落地生根小農夫',
         emoji: '🌾',
-        tag: '平安結局',
+        tag: '日常結局',
         desc: '雖然沒有大富大貴，但你在這座美麗之島擁有一方安穩田地，拜拜土地公、吃飽穿暖，平凡就是最大幸福。',
         toast: '活下來就贏過清代一半移民了，給過！'
       },
@@ -1558,7 +1816,7 @@
         emoji: '🏖️',
         tag: '隱藏死法',
         desc: '你輕信黑心客頭的鬼話走上荒涼沙洲，結果海水漲潮無處可逃，正式成為歷史課本裡「放生／種芋」的悲劇主角！',
-        toast: '這海景第一排太濕了，退貨不能啊！'
+        toast: '這海景第一排太濕了，不能退貨啊！'
       },
       hidden_sea: {
         id: 'hidden_sea',
@@ -1567,7 +1825,7 @@
         emoji: '🦈',
         tag: '隱藏死法',
         desc: '「十去，六死，三留，一回頭」——你成了那六分之一個被黑水溝巨浪吞噬的倒楣鬼，連臺灣海岸線都沒摸到。',
-        toast: '黑水溝真的不相信眼淚，下輩子手速練快點！'
+        toast: '黑水溝不相信眼淚，下輩子手速練快點！'
       },
       hidden_san: {
         id: 'hidden_san',
@@ -1575,8 +1833,8 @@
         title: 'SAN值歸零原地升天',
         emoji: '🤯',
         tag: '隱藏死法',
-        desc: '長期孤獨思鄉加上水土不服與動盪壓力，你的理智徹底斷線，看著大海大喊「我想回家」後直接原地升天！',
-        toast: '警告：出門在外請適時去廟裡拜拜補 SAN 值！'
+        desc: '長期孤獨思鄉加上水土不服與動盪壓力，你的理智徹底斷線，看著大海大喊「我想回家」後直接原地登出！',
+        toast: '警告：出門在外記得常去廟口補 SAN 值！'
       },
       hidden_jail: {
         id: 'hidden_jail',
@@ -1589,7 +1847,6 @@
       }
     };
 
-    // 歷史真相解密知識庫（依玩家該局經歷動態抽出 3 句重點）
     const HISTORY_FACTS = {
       black_ditch: '【黑水溝與渡臺危機】澎湖水道水流湍急、海水深黑稱「黑水溝」，俗語「十去、六死、三留、一回頭」形容渡海極度危險。',
       ban_three: '【清初渡臺禁令三條】清領初期規定：須申請「照單」、嚴禁「攜帶家眷」、禁止「粵東（廣東）」人渡臺，導致早期移民多為單身男性「羅漢腳」。',
@@ -1604,7 +1861,7 @@
     };
 
     /* ==========================================================================
-       4. 本地存檔管理（LocalStorage + try/catch 容錯）
+       4. 本地存檔管理
        ========================================================================== */
     const STORAGE_KEY = 'dutai_survival_endings_v1';
 
@@ -1626,31 +1883,44 @@
           isNew = true;
           try {
             localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
-          } catch (e) {
-            // 忽略隱私模式寫入限制
-          }
+          } catch (e) {}
         }
         updateGalleryCounter();
         return isNew;
       },
       clear() {
-        try {
-          localStorage.removeItem(STORAGE_KEY);
-        } catch (e) {}
+        try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
         updateGalleryCounter();
       }
     };
 
     /* ==========================================================================
-       5. 遊戲全域狀態與核心回饋引擎（飄字、震動、閃光、Toast）
+       5. 全域狀態、計時器與事件安全清理機制
        ========================================================================== */
     let GameState = null;
     let activeMiniGameTimer = null;
+    let activeGachaTimer = null;
+    let activeKeyHandler = null;
+
+    function cleanupTransientState() {
+      if (activeMiniGameTimer) {
+        clearInterval(activeMiniGameTimer);
+        activeMiniGameTimer = null;
+      }
+      if (activeGachaTimer) {
+        clearInterval(activeGachaTimer);
+        activeGachaTimer = null;
+      }
+      if (activeKeyHandler) {
+        window.removeEventListener('keydown', activeKeyHandler);
+        activeKeyHandler = null;
+      }
+    }
 
     function createInitialState(mode) {
       const isElem = mode === 'elementary';
       return {
-        mode, // 'elementary' | 'junior'
+        mode,
         stage: 0,
         stats: {
           hp: isElem ? 100 : 85,
@@ -1672,9 +1942,7 @@
           mazuShieldUsed: false,
           rebellionType: Math.random() < 0.5 ? 'zhuyigui' : 'linshuangwen'
         },
-        learnedTags: new Set(['black_ditch']),
-        deathReason: null,
-        lastEventStep: ''
+        learnedTags: new Set(['black_ditch'])
       };
     }
 
@@ -1686,22 +1954,19 @@
       el.className = 'meme-toast';
       el.innerHTML = `<span style="font-size:1.3rem;">${emoji}</span><span>${text}</span>`;
       container.appendChild(el);
-
-      // 最多同時顯示 2 則，避免擋畫面
       while (container.children.length > 2) {
         container.removeChild(container.firstChild);
       }
-
       setTimeout(() => {
         el.classList.add('fade-out');
-        setTimeout(() => el.remove(), 320);
+        setTimeout(() => el.remove(), 300);
       }, 2800);
     }
 
     function flashScreen(type) {
       const el = $('screen-flash');
       el.className = '';
-      void el.offsetWidth; // 強制 reflow 讓動畫重播
+      void el.offsetWidth;
       el.className = `flash-${type}`;
     }
 
@@ -1756,14 +2021,14 @@
       $('box-hp').classList.toggle('stat-danger', hp <= 25);
       $('box-san').classList.toggle('stat-danger', san <= 25);
 
-      if (stageText) {
-        $('hud-stage-label').textContent = stageText;
-      }
+      $('hud-avatar').innerHTML = getAnimeAvatarSvg(hp, san, GameState.origin ? GameState.origin.id : null);
+
+      if (stageText) $('hud-stage-label').textContent = stageText;
 
       const tagsEl = $('hud-profile-tags');
       if (GameState.origin && GameState.talent) {
         const shieldNote = (GameState.talent.id === 'mazu_godson' && !GameState.flags.mazuShieldUsed)
-          ? `<span class="mini-tag ssr">🛡️ 媽祖護體未觸發</span>`
+          ? `<span class="mini-tag ssr">🛡️ 媽祖結界待命</span>`
           : '';
         const canalNote = GameState.flags.investedCanal
           ? `<span class="mini-tag r">💧 ${GameState.flags.canalName}股東</span>`
@@ -1777,10 +2042,8 @@
       }
     }
 
-    /**
-     * 核心數值增減函式：即時更新 HUD、飄字、音效、震動、閃光與死亡檢查
-     */
     function applyStatChanges(delta, options = {}) {
+      if (!GameState) return { changes: [], diedEndingId: null, mazuSaved: false };
       const { deathCause = 'normal', silent = false } = options;
       const changes = [];
       let tookDamage = false;
@@ -1789,7 +2052,7 @@
 
       if (delta.hp) {
         GameState.stats.hp = Math.min(100, GameState.stats.hp + delta.hp);
-        changes.push({ label: `${delta.hp > 0 ? '+' : ''}${delta.hp} HP`, color: delta.hp > 0 ? '#4ade80' : '#f87171', box: 'box-hp', pos: delta.hp > 0 });
+        changes.push({ label: `${delta.hp > 0 ? '+' : ''}${delta.hp} HP`, color: delta.hp > 0 ? '#4ade80' : '#fb7185', box: 'box-hp', pos: delta.hp > 0 });
         if (delta.hp < 0) tookDamage = true;
       }
       if (delta.money) {
@@ -1799,15 +2062,14 @@
       }
       if (delta.san) {
         GameState.stats.san = Math.max(0, Math.min(100, GameState.stats.san + delta.san));
-        changes.push({ label: `${delta.san > 0 ? '+' : ''}${delta.san} SAN`, color: delta.san > 0 ? '#d8b4fe' : '#f472b6', box: 'box-san', pos: delta.san > 0 });
+        changes.push({ label: `${delta.san > 0 ? '+' : ''}${delta.san} SAN`, color: delta.san > 0 ? '#e879f9' : '#f472b6', box: 'box-san', pos: delta.san > 0 });
         if (delta.san < 0) lostSan = true;
       }
       if (delta.rep) {
         GameState.stats.rep = Math.max(0, Math.min(100, GameState.stats.rep + delta.rep));
-        changes.push({ label: `${delta.rep > 0 ? '+' : ''}${delta.rep} 人脈`, color: delta.rep > 0 ? '#34d399' : '#fca5a5', box: 'box-rep', pos: delta.rep > 0 });
+        changes.push({ label: `${delta.rep > 0 ? '+' : ''}${delta.rep} 人脈`, color: delta.rep > 0 ? '#34d399' : '#fda4af', box: 'box-rep', pos: delta.rep > 0 });
       }
 
-      // SSR 媽祖乾兒子鎖血被動檢查
       let mazuSaved = false;
       if (GameState.stats.hp <= 0 && GameState.talent && GameState.talent.id === 'mazu_godson' && !GameState.flags.mazuShieldUsed) {
         GameState.flags.mazuShieldUsed = true;
@@ -1815,8 +2077,8 @@
         mazuSaved = true;
         flashScreen('gold');
         SoundFX.gachaReveal(true);
-        showToast('🏮 媽祖顯靈啦！一道金光護體，把你從鬼門關拉回來（體力鎖在 20）！', '✨');
-        changes.push({ label: '媽祖保命！HP→20', color: '#fde047', box: 'box-hp', pos: true });
+        showToast('🏮 媽祖神威發動！SSR 金光護體鎖血復活（HP→20）！', '✨');
+        changes.push({ label: '媽祖護體！HP→20', color: '#fde047', box: 'box-hp', pos: true });
       }
 
       if (!silent) {
@@ -1843,7 +2105,6 @@
 
       updateHUD();
 
-      // 檢查死亡條件
       let diedEndingId = null;
       if (GameState.stats.hp <= 0) {
         GameState.stats.hp = 0;
@@ -1860,13 +2121,10 @@
     }
 
     /* ==========================================================================
-       6. 畫面渲染：首頁與模式選擇
+       6. 首頁與故事路線選擇
        ========================================================================== */
     function renderHome() {
-      if (activeMiniGameTimer) {
-        clearInterval(activeMiniGameTimer);
-        activeMiniGameTimer = null;
-      }
+      cleanupTransientState();
       GameState = null;
       $('hud-container').style.display = 'none';
       $('mode-indicator').style.display = 'none';
@@ -1877,19 +2135,32 @@
 
       $('game-root').innerHTML = `
         <div class="game-panel">
-          ${SceneArt.titleBanner()}
-          <h1 class="hero-title">渡臺求生記：黑水溝不相信眼淚</h1>
-          <p class="hero-subtitle">「十去，六死，三留，一回頭」——你能靠選擇與手速成為一代開臺祖嗎？</p>
+          <div class="anime-cover-hero">
+            <img id="cover-hero-img" src="./cover.jpg" alt="渡臺求生記動漫封面插畫" />
+            <div class="cover-overlay">
+              <div class="cover-top-badges">
+                <span class="cover-badge">✨ 108課綱清代臺灣史 × 動漫輕小說RPG</span>
+                <span class="cover-badge-ep">SEASON 1</span>
+              </div>
+              <div class="cover-title-block">
+                <h1 class="anime-main-title">渡臺<span class="accent">求生記</span></h1>
+                <div class="anime-sub-tagline">⚔️ 黑水溝不相信眼淚！你能活成一代開臺祖嗎？</div>
+              </div>
+            </div>
+          </div>
 
-          <div style="background:rgba(15,23,42,0.55); border-radius:10px; padding:11px 14px; font-size:0.9rem; color:#cbd5e1; border:1px solid #334155;">
-            🎮 <strong>玩法簡介</strong>：開局先抽<strong>祖籍</strong>與<strong>天賦卡</strong>，接著闖過「橫渡黑水溝（含 5 秒限時舀水挑戰）」、「水圳與土牛溝開墾」、「分類械鬥與大時代民變」。隨時注意上方 4 大數值，體力或理智歸零就會直接領便當！
+          <div class="vn-box" style="margin-top:8px;">
+            <div class="vn-speaker"><span>🎙️ 系統精靈</span></div>
+            <p class="vn-text">
+              歡迎來到清代臺灣冒險世界！開局先抽取<strong>轉生祖籍</strong>與<strong>SSR/SR 天賦卡</strong>，接著闖過「黑水溝 5 秒限時舀水 QTE」、「八堡圳/瑠公圳大投資」、「土牛溝番界與分類械鬥」以及「朱一貴/林爽文大時代風暴」！
+            </p>
           </div>
 
           <div class="mode-grid">
             <button class="mode-card elem-card" id="start-elem" type="button">
               <div>
-                <h3>🌱 國小探索模式</h3>
-                <p style="margin-top:6px;">語氣幽默白話、開局資源充裕、容錯率高，輕鬆體驗先民渡海開墾的熱血故事！</p>
+                <h3>🌱 國小熱血探索篇</h3>
+                <p style="margin-top:6px;">輕小說白話語氣、開局資源充裕、容錯率高，輕鬆體驗先民渡海開墾的熱血故事！</p>
               </div>
               <div class="mode-keywords">
                 <span class="kw-chip">唐山過臺灣</span>
@@ -1898,13 +2169,13 @@
                 <span class="kw-chip">八堡圳/瑠公圳</span>
                 <span class="kw-chip">媽祖與土地公</span>
               </div>
-              <div style="margin-top:8px; color:#4ade80; font-weight:900; font-size:0.9rem;">▶ 點擊開始探索</div>
+              <div style="margin-top:8px; color:#4ade80; font-weight:900; font-size:0.92rem;">▶ START 探索模式</div>
             </button>
 
             <button class="mode-card junior-card" id="start-junior" type="button">
               <div>
-                <h3>🔥 國中硬核模式</h3>
-                <p style="margin-top:6px;">銀兩緊繃、暗藏歷史因果與禁令考驗！考驗你對清代臺灣社會衝突的生存智慧。</p>
+                <h3>🔥 國中修羅硬核篇</h3>
+                <p style="margin-top:6px;">銀兩緊繃、暗藏歷史因果與禁令考驗！只有看懂清代臺灣社會衝突的人才能活到最後！</p>
               </div>
               <div class="mode-keywords">
                 <span class="kw-chip">渡臺禁令三條</span>
@@ -1913,15 +2184,22 @@
                 <span class="kw-chip">泉漳/閩粵械鬥</span>
                 <span class="kw-chip">民變與開臺祖</span>
               </div>
-              <div style="margin-top:8px; color:#f87171; font-weight:900; font-size:0.9rem;">▶ 點擊挑戰硬核</div>
+              <div style="margin-top:8px; color:#fb7185; font-weight:900; font-size:0.92rem;">▶ CHALLENGE 硬核模式</div>
             </button>
           </div>
 
           <button id="btn-home-gallery" class="btn btn-slate" type="button">
-            📖 查看生存結局圖鑑（已解鎖 ${unlockedCount} / ${totalEndings}）
+            📖 角色結局圖鑑收藏庫（已解鎖 ${unlockedCount} / ${totalEndings}）
           </button>
         </div>
       `;
+
+      const coverImg = $('cover-hero-img');
+      if (coverImg) {
+        coverImg.addEventListener('error', () => {
+          coverImg.src = SceneArt.fallbackCoverSvg();
+        }, { once: true });
+      }
 
       $('start-elem').addEventListener('click', () => {
         SoundFX.click();
@@ -1938,39 +2216,44 @@
     }
 
     function startNewGame(mode) {
+      cleanupTransientState();
       GameState = createInitialState(mode);
       $('hud-container').style.display = 'block';
       $('btn-home').style.display = 'inline-flex';
       const ind = $('mode-indicator');
       ind.style.display = 'inline-block';
-      ind.className = `mode-pill ${mode === 'elementary' ? 'elem' : 'junior'}`;
-      ind.textContent = mode === 'elementary' ? '🌱 國小探索' : '🔥 國中硬核';
-      updateHUD('階段 0：投胎抽卡');
+      ind.className = `anime-skew-pill ${mode === 'elementary' ? 'elem' : 'junior'}`;
+      ind.innerHTML = `<span>${mode === 'elementary' ? '🌱 國小熱血篇' : '🔥 國中修羅篇'}</span>`;
+      updateHUD('序章：命運轉生召喚');
       renderStage0Gacha(false);
     }
 
     /* ==========================================================================
-       7. 階段 0：投胎抽卡系統（祖籍 + 天賦卡，可免費重抽 1 次）
+       7. 序章：動漫手遊召喚陣（祖籍 + 天賦卡）
        ========================================================================== */
     function renderStage0Gacha(isReroll = false) {
+      cleanupTransientState();
       const root = $('game-root');
       root.innerHTML = `
         <div class="game-panel" style="text-align:center;">
-          <h2 class="event-title" style="justify-content:center;">🎰 階段 0：投胎轉生抽卡祭壇</h2>
-          <p style="color:#cbd5e1; margin:0 0 14px; font-size:0.92rem;">
-            ${isReroll ? '香火再燃！你向命運女神申請了一次逆天改命⋯⋯' : '西元 18 世紀，唐山家鄉田地不夠種，你決定打包行囊渡海去臺灣拚一波！先來看看你的出生配置：'}
+          <h2 class="event-title" style="justify-content:center;">🎰 序章：異世界（清代臺灣）轉生召喚！</h2>
+          <p style="color:#cbd5e1; margin:0 0 14px; font-size:0.93rem;">
+            ${isReroll ? '🌟 命運齒輪再次轉動！你發動了唯一一次「逆天改命」技能⋯⋯' : '西元 18 世紀，唐山田地不夠種，你決定背上行囊渡海去臺灣闖蕩！先抽看看你的主角設定吧：'}
           </p>
           <div id="gacha-stage-area">
             <div style="padding:36px 10px; font-size:1.25rem; font-weight:900; color:#fde047;">
-              ✨ 正在向媽祖與命運抽籤中⋯⋯ ✨
+              ✨ 命運召喚陣旋轉中⋯⋯ ✨
             </div>
           </div>
         </div>
       `;
 
-      // 抽卡閃動動畫
       let ticks = 0;
-      const rollInterval = setInterval(() => {
+      activeGachaTimer = setInterval(() => {
+        if (!GameState) {
+          cleanupTransientState();
+          return;
+        }
         SoundFX.gachaTick();
         ticks++;
         const tempO = ORIGINS[Math.floor(Math.random() * ORIGINS.length)];
@@ -1981,14 +2264,14 @@
             <div class="gacha-grid">
               <div class="gacha-card rarity-${tempO.rarity}">
                 <div class="gacha-inner">
-                  <span class="rarity-badge">祖籍</span>
+                  <span class="rarity-badge">祖籍血統</span>
                   <div class="card-emoji">${tempO.emoji}</div>
                   <div class="card-name">${tempO.name}</div>
                 </div>
               </div>
               <div class="gacha-card rarity-${tempT.rarity}">
                 <div class="gacha-inner">
-                  <span class="rarity-badge">[${tempT.rarity}] 天賦</span>
+                  <span class="rarity-badge">[${tempT.rarity}] 角色天賦</span>
                   <div class="card-emoji">${tempT.emoji}</div>
                   <div class="card-name">${tempT.name}</div>
                 </div>
@@ -1998,33 +2281,31 @@
         }
 
         if (ticks >= 8) {
-          clearInterval(rollInterval);
+          cleanupTransientState();
           finalizeGachaDraw();
         }
-      }, 95);
+      }, 90);
     }
 
     function finalizeGachaDraw() {
-      // 重置為該模式預設基礎數值再套用卡片加成
+      if (!GameState) return;
       const base = createInitialState(GameState.mode).stats;
       GameState.stats = { ...base };
 
       const origin = ORIGINS[Math.floor(Math.random() * ORIGINS.length)];
-      // 天賦抽卡加權（SSR 約 16%）
       const pool = [
-        TALENTS[0], // SSR
-        TALENTS[1], TALENTS[1], // SR
-        TALENTS[2], TALENTS[2], // R
-        TALENTS[3], TALENTS[3], // R
-        TALENTS[4], TALENTS[4], // N
-        TALENTS[5]  // CURSED
+        TALENTS[0],
+        TALENTS[1], TALENTS[1],
+        TALENTS[2], TALENTS[2],
+        TALENTS[3], TALENTS[3],
+        TALENTS[4], TALENTS[4],
+        TALENTS[5]
       ];
       const talent = pool[Math.floor(Math.random() * pool.length)];
 
       GameState.origin = origin;
       GameState.talent = talent;
 
-      // 套用開局加成
       const combineMods = {
         hp: (origin.mods?.hp || 0) + (talent.mods?.hp || 0),
         money: (origin.mods?.money || 0) + (talent.mods?.money || 0),
@@ -2040,15 +2321,15 @@
       SoundFX.gachaReveal(talent.rarity === 'SSR');
       if (talent.rarity === 'SSR') {
         flashScreen('gold');
-        showToast('金光閃閃！歐皇降臨！抽到 SSR 媽祖乾兒子啦！', '🌟');
+        showToast('SSR 金光爆發！歐皇降臨！抽到「媽祖的乾兒子」啦！', '🌟');
       } else if (talent.rarity === 'CURSED') {
         flashScreen('purple');
-        showToast('抽到詛咒卡「路痴屬性」……希望你找得到臺灣在哪。', '🧭');
+        showToast('抽到詛咒卡「路痴屬性」……希望你找得到臺灣在哪！', '🧭');
       } else {
-        showToast(`開局身分：${origin.name}＋[${talent.rarity}] ${talent.name}！`, '🎴');
+        showToast(`轉生完成：${origin.name}＋[${talent.rarity}] ${talent.name}！`, '🎴');
       }
 
-      updateHUD('階段 0：投胎抽卡完成');
+      updateHUD('序章：轉生召喚完成');
 
       const area = $('gacha-stage-area');
       if (!area) return;
@@ -2065,7 +2346,7 @@
           </div>
           <div class="gacha-card rarity-${talent.rarity}">
             <div class="gacha-inner">
-              <span class="rarity-badge">[${talent.rarity}] 開局天賦</span>
+              <span class="rarity-badge">[${talent.rarity}] 開局外掛</span>
               <div class="card-emoji">${talent.emoji}</div>
               <div class="card-name">${talent.name}</div>
               <div class="card-desc">${talent.desc}</div>
@@ -2075,10 +2356,10 @@
         </div>
         <div class="btn-row">
           <button id="btn-reroll" class="btn btn-purple" type="button" ${GameState.rerollsLeft <= 0 ? 'disabled' : ''}>
-            🔄 逆天改命（剩餘 ${GameState.rerollsLeft} 次免費重抽）
+            🔄 逆天改命（剩餘 ${GameState.rerollsLeft} 次重抽）
           </button>
           <button id="btn-go-stage1" class="btn btn-gold" type="button">
-            ⛵ 背起行囊，出發去廈門港！
+            ⛵ 背上斗笠，前往廈門港出發！
           </button>
         </div>
       `;
@@ -2097,9 +2378,10 @@
     }
 
     /* ==========================================================================
-       通用事件結果卡片渲染器（讓玩家看清楚選擇的劇情與數值增減）
+       通用視覺小說結果卡片渲染器
        ========================================================================== */
-    function renderOutcomeCard({ artHtml, title, narrative, changes, toastMsg, toastEmoji, nextLabel, onNext, diedEndingId }) {
+    function renderOutcomeCard({ artHtml, title, speaker = '🎙️ 劇情旁白', narrative, changes, toastMsg, toastEmoji, nextLabel, onNext, diedEndingId }) {
+      cleanupTransientState();
       if (toastMsg) showToast(toastMsg, toastEmoji || '💬');
 
       const chipsHtml = changes.length
@@ -2110,33 +2392,32 @@
       $('game-root').innerHTML = `
         <div class="game-panel">
           ${artHtml}
-          <h2 class="event-title">${isDead ? '💀 命運急轉直下！' : title}</h2>
-          <div class="outcome-box">
-            <p style="margin:0; font-size:0.98rem; color:#f1f5f9;">${narrative}</p>
+          <h2 class="event-title">${isDead ? '💀 命運急轉直下！BAD END 逼近！' : title}</h2>
+          <div class="vn-box">
+            <div class="vn-speaker"><span>${speaker}</span></div>
+            <p class="vn-text">${narrative}</p>
             ${chipsHtml}
           </div>
           <button id="btn-next-step" class="btn ${isDead ? 'btn-red' : 'btn-primary'}" type="button">
-            ${isDead ? '⚰️ 查看最終結局結算' : (nextLabel || '繼續前進 ▶')}
+            ${isDead ? '⚰️ 查看最終結局動畫卡' : (nextLabel || '下一幕 ▶')}
           </button>
         </div>
       `;
 
       $('btn-next-step').addEventListener('click', () => {
         SoundFX.click();
-        if (isDead) {
-          renderStage4Ending(diedEndingId);
-        } else {
-          onNext();
-        }
+        if (isDead) renderStage4Ending(diedEndingId);
+        else onNext();
       });
     }
 
     /* ==========================================================================
-       8. 階段 1：橫渡黑水溝（合法照單 vs 偷渡 + 5 秒舀水小遊戲 + 沙洲種芋頭）
+       8. 第一章：橫渡黑水溝
        ========================================================================== */
     function renderStage1A_Departure() {
+      cleanupTransientState();
       GameState.stage = 1;
-      updateHUD('階段 1：橫渡黑水溝 (1/3)');
+      updateHUD('第一章：黑水溝啟航 (1/3)');
       const isJunior = GameState.mode === 'junior';
       const isHakkaBlocked = isJunior && GameState.origin.id === 'hakka';
       GameState.learnedTags.add('ban_three');
@@ -2145,37 +2426,49 @@
       const smuggleCost = isJunior ? 20 : 15;
 
       const storyText = isJunior
-        ? `你來到福建廈門港準備渡臺，碼頭公告貼滿清廷的<strong>「渡臺禁令三條」</strong>：必須花錢申請官方<strong>「照單」</strong>、不准攜帶家眷，甚至<strong>禁止廣東客家人渡臺</strong>！${isHakkaBlocked ? '<br><br>⚠️ <strong>慘了！你是粵東客家人</strong>，官員直接擋下你，要多塞一大筆打點費才肯偷偷發照單！' : ''}`
-        : `你來到海邊碼頭準備「唐山過臺灣」！碼頭邊一邊是官府的正規客船（要買貴鬆鬆的通行證<strong>「照單」</strong>），另一邊有個戴斗笠的神秘<strong>「客頭」</strong>偷偷招手說可以便宜偷渡！`;
+        ? `廈門港碼頭貼滿清廷的<strong>「渡臺禁令三條」</strong>：必須花錢買官方<strong>「照單」</strong>、不准攜帶家眷，甚至<strong>禁止廣東客家人渡臺</strong>！${isHakkaBlocked ? '<br><br>💢 <strong>慘了！你是粵東客家人</strong>，碼頭官員直接把你攔下來，要多塞一大筆打點費才肯偷蓋章！' : ''}`
+        : `你背起行囊來到海邊碼頭準備「唐山過臺灣」！眼前有兩條路：一邊是規規矩矩買超貴的官方通行證<strong>「照單」</strong>，另一邊有個戴斗笠的神秘<strong>「客頭」</strong>壓低聲音說可以便宜搭黑船！`;
 
       $('game-root').innerHTML = `
         <div class="game-panel">
-          ${SceneArt.seaStorm('階段 1-1：廈門港啟航抉擇')}
+          ${SceneArt.seaStorm('第一章 1-1：廈門港抉擇')}
           <h2 class="event-title">⛵ 怎麼橫渡臺灣海峽？</h2>
-          <div class="event-story">${storyText}</div>
+          <div class="vn-box">
+            <div class="vn-speaker"><span>⛵ 碼頭見聞</span></div>
+            <p class="vn-text">${storyText}</p>
+          </div>
           <div class="choices-list">
             <button class="choice-btn" id="c-legal" type="button" ${GameState.stats.money < permitCost ? 'disabled' : ''}>
-              <div class="choice-title">
-                <span>📜 乖乖花大錢買「照單」合法渡海</span>
-                <span class="cost-badge">花費 ${permitCost} 銀兩</span>
+              <span class="choice-key">A</span>
+              <div class="choice-body">
+                <div class="choice-title">
+                  <span>📜 乖乖花錢買「照單」搭正規大船</span>
+                  <span class="cost-badge">花費 ${permitCost} 銀兩</span>
+                </div>
+                <div class="choice-hint">${isHakkaBlocked ? '含禁粵令疏通費，荷包大失血但不用被丟包！' : '大船比較穩，合法入關最安心。'}${GameState.stats.money < permitCost ? '（銀兩不足！）' : ''}</div>
               </div>
-              <div class="choice-hint">${isHakkaBlocked ? '含禁粵令疏通紅包，荷包大失血但不用被黑心船長丟包！' : '大船比較穩，安全抵達鹿耳門港，合法最安心。'}${GameState.stats.money < permitCost ? '（銀兩不足！）' : ''}</div>
             </button>
 
             <button class="choice-btn" id="c-smuggle" type="button" ${GameState.stats.money < smuggleCost ? 'disabled' : ''}>
-              <div class="choice-title">
-                <span>🏴‍☠️ 找「客頭」搭黑船偷渡！</span>
-                <span class="cost-badge risk">只要 ${smuggleCost} 銀兩・高風險</span>
+              <span class="choice-key" style="background:#fb7185;">B</span>
+              <div class="choice-body">
+                <div class="choice-title">
+                  <span>🏴‍☠️ 找「客頭」搭黑船偷渡！</span>
+                  <span class="cost-badge risk">只要 ${smuggleCost} 銀兩・高風險</span>
+                </div>
+                <div class="choice-hint">省錢首選，但船艙又擠又臭，還要提防黑心船長中途「放生」！</div>
               </div>
-              <div class="choice-hint">省錢首選，但船艙又擠又臭，還要提防黑心船長中途把人「放生」！</div>
             </button>
 
             <button class="choice-btn" id="c-borrow" type="button">
-              <div class="choice-title">
-                <span>🤝 找同鄉老大哥幫忙湊船資買照單</span>
-                <span class="cost-badge">花費 20 銀兩・消耗人脈</span>
+              <span class="choice-key" style="background:#34d399;">C</span>
+              <div class="choice-body">
+                <div class="choice-title">
+                  <span>🤝 找同鄉大哥湊船資買照單</span>
+                  <span class="cost-badge">花費 20 銀兩・人脈 -12</span>
+                </div>
+                <div class="choice-hint">欠同鄉一個人情，但保證能搭上合法大船！</div>
               </div>
-              <div class="choice-hint">欠同鄉一個人情（人脈 -12），但能搭上合法大船！</div>
             </button>
           </div>
         </div>
@@ -2185,15 +2478,16 @@
         GameState.flags.smuggled = false;
         const res = applyStatChanges({ money: -permitCost, san: 5 });
         renderOutcomeCard({
-          artHtml: SceneArt.seaStorm('合法啟航'),
-          title: '📜 領到照單，昂首登船！',
+          artHtml: SceneArt.seaStorm('合法啟航・滿帆前進！'),
+          title: '📜 領到照單，帥氣登船！',
+          speaker: '⛵ 主角內心',
           narrative: isHakkaBlocked
-            ? '官員收了紅包後笑咪咪地幫你把籍貫寫得糊糊的，雖然荷包痛到像被車撞，但你終於合法登上渡臺官船！'
-            : '你掏出一大把白花花的銀子買到官方照單，雖然荷包瞬間變扁，但至少不用躲在臭魚乾堆裡偷渡。',
+            ? '官員收下紅包後笑咪咪地把你的籍貫寫得模糊不清，雖然荷包瞬間變扁，但你終於堂堂正正踏上甲板！'
+            : '你掏出白花花的銀子買到官方照單，雖然荷包哭泣，但至少不用縮在臭魚乾堆裡偷渡！',
           changes: res.changes,
-          toastMsg: isHakkaBlocked ? '禁粵令＋紅包經濟，古今皆然啊！' : '合法買票，媽祖保佑一路順風！',
+          toastMsg: isHakkaBlocked ? '禁粵令＋紅包經濟，古今皆然！' : '合法買票，媽祖保佑順風順水！',
           toastEmoji: '📜',
-          nextLabel: '揚帆駛入黑水溝 ▶',
+          nextLabel: '揚帆衝向黑水溝 ▶',
           onNext: renderStage1B_MiniGame,
           diedEndingId: res.diedEndingId
         });
@@ -2204,9 +2498,10 @@
         GameState.learnedTags.add('smuggle_taro');
         const res = applyStatChanges({ money: -smuggleCost, san: -10 });
         renderOutcomeCard({
-          artHtml: SceneArt.seaStorm('黑船偷渡'),
+          artHtml: SceneArt.seaStorm('黑船底艙・偷渡潛行'),
           title: '🏴‍☠️ 鑽進黑船底艙偷渡出發！',
-          narrative: '客頭把你和幾十個羅漢腳像沙丁魚一樣塞進黑漆漆的船底，空氣裡混著魚腥味和嘔吐味，你的理智條正在瑟瑟發抖……',
+          speaker: '🏴‍☠️ 神秘客頭',
+          narrative: '「噓！別出聲！」客頭把你和幾十名羅漢腳像沙丁魚一樣塞進船底暗艙，搖晃與魚腥味讓你的 SAN 值狂掉……',
           changes: res.changes,
           toastMsg: '廉價航空（清代黑船版）正式起飛！',
           toastEmoji: '🤢',
@@ -2221,13 +2516,14 @@
         const pay = Math.min(GameState.stats.money, 20);
         const res = applyStatChanges({ money: -pay, rep: -12, san: 2 });
         renderOutcomeCard({
-          artHtml: SceneArt.seaStorm('同鄉相挺'),
+          artHtml: SceneArt.seaStorm('同鄉熱血相挺'),
           title: '🤝 同鄉湊錢，順利搭上正船！',
-          narrative: '同鄉老大哥拍拍你的肩膀：「去到臺灣站穩腳步再還我！」你成功拿到照單，心裡既感動又背負著人情債。',
+          speaker: '🤝 同鄉老大哥',
+          narrative: '同鄉大哥用力拍拍你的背：「到了臺灣站穩腳步再還我！」你成功拿到照單，心裡充滿熱血與人情債。',
           changes: res.changes,
-          toastMsg: '出外靠朋友，人情債最難還！',
+          toastMsg: '出外靠朋友，熱血少年漫劇情啟動！',
           toastEmoji: '🤝',
-          nextLabel: '揚帆駛入黑水溝 ▶',
+          nextLabel: '揚帆衝向黑水溝 ▶',
           onNext: renderStage1B_MiniGame,
           diedEndingId: res.diedEndingId
         });
@@ -2235,25 +2531,30 @@
     }
 
     /**
-     * 階段 1-2：黑水溝 5 秒限時狂點「舀水」小遊戲
+     * 第一章 1-2：動漫 QTE「超必殺・5秒狂點舀水」
      */
     function renderStage1B_MiniGame() {
-      updateHUD('階段 1：黑水溝大風浪 (2/3)');
+      cleanupTransientState();
+      updateHUD('第一章：黑水溝 QTE (2/3)');
       const hasIronStomach = GameState.talent && GameState.talent.id === 'iron_stomach';
       const targetClicks = hasIronStomach ? 12 : 15;
       const totalDuration = 5.0;
 
       $('game-root').innerHTML = `
         <div class="game-panel">
-          <h2 class="event-title">🌊 緊急危機：黑水溝巨浪來襲！</h2>
-          <div class="event-story">
-            船才剛駛入澎湖水道「<strong>黑水溝</strong>」，天空瞬間烏雲密布、巨浪拍進船艙！<br>
-            ⚠️ <strong>限時生存挑戰</strong>：請在 <strong>5 秒內</strong>狂點下方「🪣 瘋狂舀水」按鈕（或狂按空白鍵）至少 <strong>${targetClicks} 下</strong>${hasIronStomach ? '（鐵胃天賦已減輕目標！）' : ''}，否則船艙進水將狂扣血量！
+          <h2 class="event-title">🌊 緊急 QTE：黑水溝超級暴風雨！</h2>
+          <div class="vn-box">
+            <div class="vn-speaker"><span>⚡ 突發戰鬥</span></div>
+            <p class="vn-text">
+              船隻駛入澎湖水道「<strong>黑水溝</strong>」，十級狂浪瘋狂灌進船艙！<br>
+              🔥 <strong>限時連打挑戰</strong>：在 <strong>5 秒內</strong>狂點「🪣 狂舀海水」（或狂按<strong>空白鍵</strong>）至少 <strong>${targetClicks} 下</strong>${hasIronStomach ? '（鐵胃外掛已降低目標！）' : ''}，守住這艘船！
+            </p>
           </div>
 
           <div class="minigame-panel" id="mg-area">
+            <div class="combo-pill" id="mg-combo">⚡ QTE READY</div><br>
             <div class="boat-stage" id="mg-boat">⛵</div>
-            <div style="font-size:1rem; font-weight:800; color:#7dd3fc;" id="mg-status">準備好你的手速了嗎？</div>
+            <div style="font-size:1rem; font-weight:900; color:#7dd3fc;" id="mg-status">準備好解放你的手速了嗎？</div>
 
             <div class="mg-bars">
               <div>
@@ -2265,18 +2566,18 @@
               </div>
               <div>
                 <div class="mg-bar-label">
-                  <span>🪣 舀水進度</span>
-                  <span id="mg-count-text">0 / ${targetClicks} 下</span>
+                  <span>🪣 舀水連擊進度</span>
+                  <span id="mg-count-text">0 / ${targetClicks} HIT</span>
                 </div>
                 <div class="mg-track"><div class="mg-fill-water" id="mg-water-bar"></div></div>
               </div>
             </div>
 
-            <button id="btn-mg-start" class="btn btn-gold" type="button" style="max-width:300px; margin:0 auto;">
-              🔥 開始 5 秒舀水大作戰！
+            <button id="btn-mg-start" class="btn btn-gold" type="button" style="max-width:310px; margin:0 auto;">
+              🔥 發動 5 秒舀水連打！
             </button>
             <button id="btn-mg-bail" class="bail-btn" type="button" style="display:none;">
-              🪣 瘋狂舀水！(點我)
+              🪣 瘋狂舀水！(連點 / 空白鍵)
             </button>
           </div>
         </div>
@@ -2290,26 +2591,25 @@
       const startBtn = $('btn-mg-start');
       const bailBtn = $('btn-mg-bail');
 
-      function handleKeyDown(e) {
-        if (e.code === 'Space' && started && !finished) {
-          e.preventDefault();
-          registerBail();
-        }
-      }
-
       function registerBail() {
-        if (!started || finished) return;
+        if (!started || finished || !GameState) return;
+        const countEl = $('mg-count-text');
+        const waterBar = $('mg-water-bar');
+        const comboEl = $('mg-combo');
+        if (!countEl || !waterBar) return;
+
         clicks++;
         SoundFX.splash();
         bailBtn.classList.add('pressed');
-        setTimeout(() => bailBtn.classList.remove('pressed'), 60);
+        setTimeout(() => bailBtn.classList.remove('pressed'), 55);
 
         const pct = Math.min(100, (clicks / targetClicks) * 100);
-        $('mg-count-text').textContent = `${clicks} / ${targetClicks} 下`;
-        $('mg-water-bar').style.width = `${pct}%`;
+        countEl.textContent = `${clicks} / ${targetClicks} HIT`;
+        waterBar.style.width = `${pct}%`;
+        if (comboEl) comboEl.textContent = `🔥 ${clicks} COMBO!`;
 
         if (clicks % 4 === 0) {
-          spawnFloatingText('💦 舀水!', '#7dd3fc', null, 0);
+          spawnFloatingText(`💦 ${clicks} HIT!`, '#7dd3fc', null, 0);
         }
 
         if (clicks >= targetClicks) {
@@ -2318,37 +2618,36 @@
       }
 
       function finishMiniGame(success) {
-        if (finished) return;
+        if (finished || !GameState) return;
         finished = true;
-        if (activeMiniGameTimer) {
-          clearInterval(activeMiniGameTimer);
-          activeMiniGameTimer = null;
-        }
-        window.removeEventListener('keydown', handleKeyDown);
+        cleanupTransientState();
 
         if (success) {
-          const res = applyStatChanges({ hp: -5, san: 10, rep: 5 }, { deathCause: 'sea' });
+          // 修正：成功通關不再無故扣 HP，避免邊界條件誤判死亡
+          const res = applyStatChanges({ san: 10, rep: 5 });
           renderOutcomeCard({
-            artHtml: SceneArt.seaStorm('成功熬過黑水溝！'),
-            title: '🏆 手速驚人！成功把海水舀光！',
-            narrative: `你在 5 秒內狂舀 ${clicks} 下，全船乘客看你像裝了馬達一樣拼命舀水，士氣大振！烏雲終於散開，遠方隱約看見臺灣的山影了！`,
+            artHtml: SceneArt.seaStorm('超必殺連打成功・突破黑水溝！'),
+            title: '🏆 神手速！船艙海水瞬間清光！',
+            speaker: '⛵ 全船乘客',
+            narrative: `你在 5 秒內狂打 ${clicks} 下，水花飛濺宛如動漫奧義發動！全船乘客看傻了眼，烏雲隨即散開，遠方已經看見臺灣的翡翠山脈了！`,
             changes: res.changes,
-            toastMsg: '手速單身二十年（誤），黑水溝也拿你沒轍！',
-            toastEmoji: '💪',
+            toastMsg: '手速突破天際！黑水溝直接被你刷爆！',
+            toastEmoji: '⚡',
             nextLabel: '準備靠岸登陸臺灣 ▶',
             onNext: renderStage1C_Landing,
             diedEndingId: res.diedEndingId
           });
         } else {
-          const baseDmg = GameState.mode === 'elementary' ? -32 : -45;
+          const baseDmg = GameState.mode === 'elementary' ? -30 : -45;
           const finalDmg = hasIronStomach ? baseDmg + 12 : baseDmg;
           const res = applyStatChanges({ hp: finalDmg, san: -15 }, { deathCause: 'sea' });
           renderOutcomeCard({
-            artHtml: SceneArt.seaStorm('船艙進水大慘劇！'),
-            title: '🌊 糟糕！舀水太慢，船艙嚴重進水！',
-            narrative: `你只舀了 ${clicks} 下（差了 ${targetClicks - clicks} 下）！巨浪把你沖得七葷八素，喝了三大口鹹到爆的黑水溝海水，差點就原地去見龍王！`,
+            artHtml: SceneArt.seaStorm('船艙進水大危機！'),
+            title: '🌊 糟糕！舀水來不及，巨浪打翻甲板！',
+            speaker: '⛵ 船長大喊',
+            narrative: `你只打了 ${clicks} 下（還差 ${targetClicks - clicks} 下）！巨浪把你沖得七葷八素，喝了好幾口鹹死人的黑水溝海水，差點就領便當去見海龍王！`,
             changes: res.changes,
-            toastMsg: '黑水溝不相信眼淚，只相信手速！',
+            toastMsg: '黑水溝不相信眼淚，只相信你的手速！',
             toastEmoji: '🌊',
             nextLabel: '狼狽漂向臺灣海岸 ▶',
             onNext: renderStage1C_Landing,
@@ -2357,21 +2656,35 @@
         }
       }
 
+      activeKeyHandler = (e) => {
+        if (e.code === 'Space' && started && !finished) {
+          e.preventDefault();
+          registerBail();
+        }
+      };
+
       startBtn.addEventListener('click', () => {
         SoundFX.click();
         started = true;
         startBtn.style.display = 'none';
         bailBtn.style.display = 'flex';
-        $('mg-status').textContent = '🌊 狂風暴雨！快狂點舀水！';
+        $('mg-status').textContent = '🌊 狂風暴雨來襲！快連打舀水！';
+        $('mg-combo').textContent = '🔥 FIGHT!';
         startTime = performance.now();
-        window.addEventListener('keydown', handleKeyDown);
+        window.addEventListener('keydown', activeKeyHandler);
         shakeScreen(false);
 
         activeMiniGameTimer = setInterval(() => {
+          if (!GameState) {
+            cleanupTransientState();
+            return;
+          }
           const elapsed = (performance.now() - startTime) / 1000;
           const remain = Math.max(0, totalDuration - elapsed);
-          $('mg-time-text').textContent = `${remain.toFixed(1)} 秒`;
-          $('mg-time-bar').style.width = `${(remain / totalDuration) * 100}%`;
+          const timeText = $('mg-time-text');
+          const timeBar = $('mg-time-bar');
+          if (timeText) timeText.textContent = `${remain.toFixed(1)} 秒`;
+          if (timeBar) timeBar.style.width = `${(remain / totalDuration) * 100}%`;
 
           if (remain <= 0) {
             finishMiniGame(clicks >= targetClicks);
@@ -2379,7 +2692,6 @@
         }, 50);
       });
 
-      // 使用 pointerdown 讓手機觸控與滑鼠點擊皆零延遲反應
       bailBtn.addEventListener('pointerdown', (e) => {
         e.preventDefault();
         registerBail();
@@ -2387,44 +2699,57 @@
     }
 
     /**
-     * 階段 1-3：靠岸事件（偷渡觸發黑心船長沙洲放生/種芋頭；合法則觸發鹿耳門入關）
+     * 第一章 1-3：靠岸事件
      */
     function renderStage1C_Landing() {
-      updateHUD('階段 1：靠岸危機 (3/3)');
+      cleanupTransientState();
+      updateHUD('第一章：靠岸危機 (3/3)');
       const isLostCursed = GameState.talent && GameState.talent.id === 'lost_curse';
 
       if (GameState.flags.smuggled) {
         GameState.learnedTags.add('smuggle_taro');
         $('game-root').innerHTML = `
           <div class="game-panel">
-            ${SceneArt.sandbar('偷渡限定危機：黑心船長「放生／種芋頭」')}
-            <h2 class="event-title">🏝️ 船長大喊：「臺灣到囉！快下船！」</h2>
-            <div class="event-story">
-              半夜霧濛濛的，黑心船長把船停在一片光禿禿的<strong>沙洲</strong>旁，催促大家趕快跳船上岸！但你仔細一看，這附近完全沒有村莊燈火，而且海水好像正在<strong>漲潮</strong>……（這就是歷史上有名的黑心偷渡<strong>「放生／種芋」</strong>騙局！）
+            ${SceneArt.sandbar('偷渡限定陷阱：黑心船長「放生／種芋頭」')}
+            <h2 class="event-title">🏝️ 船長大喊：「臺灣到囉！快跳船！」</h2>
+            <div class="vn-box">
+              <div class="vn-speaker"><span>🏴‍☠️ 黑心船長</span></div>
+              <p class="vn-text">
+                半夜霧氣濃重，船長把船停在一片光禿禿的<strong>荒涼沙洲</strong>旁催大家下船！但四周連一盞村莊燈火都沒有，而且海水正在迅速<strong>漲潮</strong>……（這就是歷史上有名的黑心偷渡<strong>「放生／種芋」</strong>騙局！）
+              </p>
             </div>
             <div class="choices-list">
               <button class="choice-btn" id="c-sand-trust" type="button">
-                <div class="choice-title">
-                  <span>🚶 相信船長，直接跳上沙洲狂奔！</span>
-                  <span class="cost-badge risk">極度危險・可能觸發隱藏死法</span>
+                <span class="choice-key" style="background:#fb7185;">A</span>
+                <div class="choice-body">
+                  <div class="choice-title">
+                    <span>🚶 相信船長的話，跳上沙洲狂奔！</span>
+                    <span class="cost-badge risk">極高死亡率・隱藏死法警告</span>
+                  </div>
+                  <div class="choice-hint">「船長這麼熱情，應該不會騙我吧……？」</div>
                 </div>
-                <div class="choice-hint">「船長這麼親切，應該不會騙人吧……？」</div>
               </button>
 
               <button class="choice-btn" id="c-sand-bribe" type="button" ${GameState.stats.money < 20 ? 'disabled' : ''}>
-                <div class="choice-title">
-                  <span>💰 識破騙局！掏出銀兩逼船長開到真正岸邊</span>
-                  <span class="cost-badge">花費 20 銀兩</span>
+                <span class="choice-key">B</span>
+                <div class="choice-body">
+                  <div class="choice-title">
+                    <span>💰 識破陰謀！掏出銀兩逼船長開到真海岸</span>
+                    <span class="cost-badge">花費 20 銀兩</span>
+                  </div>
+                  <div class="choice-hint">破財消災，拒當海景第一排芋頭！${GameState.stats.money < 20 ? '（銀兩不足）' : ''}</div>
                 </div>
-                <div class="choice-hint">破財消災，免得變成沙洲海景第一排的芋頭！${GameState.stats.money < 20 ? '（銀兩不足）' : ''}</div>
               </button>
 
               <button class="choice-btn" id="c-sand-rally" type="button">
-                <div class="choice-title">
-                  <span>📢 大喊「這是騙局！」號召全船偷渡客一起對峙船長</span>
-                  <span class="cost-badge">考驗人脈（需 ≥ 25）</span>
+                <span class="choice-key" style="background:#34d399;">C</span>
+                <div class="choice-body">
+                  <div class="choice-title">
+                    <span>📢 大喊「這是騙局！」號召全船偷渡客反抗！</span>
+                    <span class="cost-badge">人脈檢定（需 ≥ 25）</span>
+                  </div>
+                  <div class="choice-hint">主角嘴遁發動！但沒人挺的話會被船員圍毆……</div>
                 </div>
-                <div class="choice-hint">團結力量大！但如果沒人理你，可能會被船員揍一頓……</div>
               </button>
             </div>
           </div>
@@ -2434,13 +2759,14 @@
           const dmg = GameState.mode === 'elementary' ? -45 : -65;
           const res = applyStatChanges({ hp: dmg, money: -15, san: -18 }, { deathCause: 'sandbar' });
           renderOutcomeCard({
-            artHtml: SceneArt.sandbar('漲潮啦！救命啊！'),
-            title: '🌊 慘遭放生！沙洲海水淹上來了！',
+            artHtml: SceneArt.sandbar('漲潮吞沒！大危機！'),
+            title: '🌊 慘遭放生！海水淹過腰際了！',
+            speaker: '🎙️ 系統警報',
             narrative: res.diedEndingId
-              ? '黑心船長放完人就開船落跑！漲潮的海水迅速吞沒整座沙洲，你雙腳深陷泥沼動彈不得，正式解鎖「沙洲海景第一排」……'
-              : '黑心船長把你丟包在沙洲就落跑！幸好你拼死抓著一塊漂流木撐過漲潮，被隔天清晨的漁民撈起，但全身行李幾乎泡湯！',
+              ? '黑心船長放完人就開船落跑！漲潮巨浪瞬間吞沒整座沙洲，你雙腳深陷泥沼動彈不得，正式解鎖「沙洲海景第一排」……'
+              : '黑心船長把你丟包在沙洲就落跑！幸好你死抓著漂流木撐過漲潮被漁民救起，但行李全泡湯了！',
             changes: res.changes,
-            toastMsg: '歷史課本沒騙你，黑心客頭真的會把人拿去「種芋頭」！',
+            toastMsg: '歷史課本沒騙你，黑心客頭真的會把人「放生」！',
             toastEmoji: '🏖️',
             nextLabel: '大難不死，踏上臺灣土地 ▶',
             onNext: renderStage2A_WaterCanal,
@@ -2451,13 +2777,14 @@
         $('c-sand-bribe').addEventListener('click', () => {
           const res = applyStatChanges({ money: -20, san: 8 });
           renderOutcomeCard({
-            artHtml: SceneArt.temple('驚險上岸'),
-            title: '💰 銀兩開路，成功逼船長靠岸！',
-            narrative: '你冷笑一聲丟出 20 兩銀子：「老子讀過 108 課綱，別想把我在沙洲放生！」船長見你不好惹，乖乖把船開進真正的淺灘讓你登陸。',
+            artHtml: SceneArt.temple('識破陷阱・平安上岸'),
+            title: '💰 鈔能力壓制！船長乖乖開向真正淺灘！',
+            speaker: '😎 主角宣言',
+            narrative: '你冷笑丟出 20 兩銀子：「我有認真讀 108 課綱，休想把我在沙洲放生！」船長嚇一跳，乖乖把船靠向真正岸邊。',
             changes: res.changes,
-            toastMsg: '讀書真的有用，關鍵時刻救自己一命！',
+            toastMsg: '知識就是力量，關鍵時刻救自己一命！',
             toastEmoji: '🧠',
-            nextLabel: '踏上臺灣，開始開墾 ▶',
+            nextLabel: '踏上臺灣，進入第二章 ▶',
             onNext: renderStage2A_WaterCanal,
             diedEndingId: res.diedEndingId
           });
@@ -2468,13 +2795,14 @@
           if (ok) {
             const res = applyStatChanges({ rep: 12, san: 10 });
             renderOutcomeCard({
-              artHtml: SceneArt.temple('全船暴動逼船長靠岸'),
-              title: '📢 鄉親全站出來了！船長嚇到跪地求饒！',
+              artHtml: SceneArt.temple('全船暴動・船長跪地求饒'),
+              title: '📢 嘴遁成功！偷渡客全站出來了！',
+              speaker: '✊ 熱血群眾',
               narrative: isLostCursed && GameState.stats.rep < 25
-                ? '你本來只是迷路走到船長室門口，結果後面的羅漢腳以為你要帶頭造反，全跟著衝上去，船長嚇得立刻乖乖靠岸！'
-                : '全船幾十名壯漢聽完你的揭發瞬間氣炸，拿著扁擔團團圍住船長！船長只好乖乖把大家送到真正的臺灣海岸！',
+                ? '其實你只是迷路走到船長室門口，後面的壯漢卻以為你要帶頭起義全衝上去，船長嚇到立刻把船靠向海岸！'
+                : '幾十名羅漢腳聽完你的揭發瞬間氣炸，拿著扁擔團團圍住船長！船長只好乖乖把大家送到真正的臺灣海岸！',
               changes: res.changes,
-              toastMsg: '團結就是力量，黑心老闆踢到鐵板！',
+              toastMsg: '團結力量大，黑心老闆踢到鋼板！',
               toastEmoji: '✊',
               nextLabel: '風光登陸臺灣 ▶',
               onNext: renderStage2A_WaterCanal,
@@ -2485,9 +2813,9 @@
             renderOutcomeCard({
               artHtml: SceneArt.sandbar('孤掌難鳴'),
               title: '💥 沒人敢出頭，你被船員推下淺灘！',
-              narrative: '大家怕惹事不敢幫你，結果你被船員毒打一頓推入齊腰深的海水中，好不容易才涉水爬上岸，全身傷痕累累。',
+              narrative: '大家怕惹事不敢出聲，結果你被船員圍毆一頓推入海水中，好不容易才涉水爬上岸。',
               changes: res.changes,
-              toastMsg: '人脈不夠別亂當出頭鳥啊！',
+              toastMsg: '人脈不夠別亂當領頭羊啊！',
               toastEmoji: '🤕',
               nextLabel: '咬牙爬上臺灣土地 ▶',
               onNext: renderStage2A_WaterCanal,
@@ -2496,31 +2824,39 @@
           }
         });
       } else {
-        // 合法登陸鹿耳門
         GameState.learnedTags.add('beliefs');
         const isJunior = GameState.mode === 'junior';
         $('game-root').innerHTML = `
           <div class="game-panel">
-            ${SceneArt.temple('順利抵達臺灣・鹿耳門登陸')}
-            <h2 class="event-title">⛩️ 平安踏上臺灣！鹿耳門天后宮就在眼前</h2>
-            <div class="event-story">
-              官船順利駛入<strong>鹿耳門港</strong>！${isJunior ? '但看著碼頭旁冷冰冰的<strong>「禁攜眷」</strong>告示，想到留在唐山的親人不能一起來，內心還是泛起一陣孤單。' : '終於活著踏上臺灣土地了！岸邊香火鼎盛的<strong>媽祖廟</strong>正傳來陣陣鐘聲。'}上岸第一件事要做什麼？
+            ${SceneArt.temple('鹿耳門登陸・香火鼎盛媽祖廟')}
+            <h2 class="event-title">⛩️ 平安登陸鹿耳門！第一站要去哪？</h2>
+            <div class="vn-box">
+              <div class="vn-speaker"><span>⛩️ 鹿耳門港</span></div>
+              <p class="vn-text">
+                官船順利駛入<strong>鹿耳門港</strong>！${isJunior ? '看著碼頭旁寫著<strong>「嚴禁攜眷」</strong>的告示牌，想到留在唐山的家人不能同行，心頭仍有點酸澀。' : '終於活著踏上臺灣土地了！不遠處的<strong>媽祖廟</strong>正傳來陣陣鐘聲與湯圓香。'}上岸第一件事要做什麼？
+              </p>
             </div>
             <div class="choices-list">
               <button class="choice-btn" id="c-land-mazu" type="button">
-                <div class="choice-title">
-                  <span>🏮 進媽祖廟上香還願，順便吃平安湯圓</span>
-                  <span class="cost-badge good">花費 5 銀兩・大補 SAN & 體力</span>
+                <span class="choice-key" style="background:#34d399;">A</span>
+                <div class="choice-body">
+                  <div class="choice-title">
+                    <span>🏮 進媽祖廟上香還願，順便吃平安湯圓</span>
+                    <span class="cost-badge good">5 銀兩・HP +10・SAN +15・人脈 +8</span>
+                  </div>
+                  <div class="choice-hint">感謝天上聖母保佑，補滿元氣再開啟冒險！</div>
                 </div>
-                <div class="choice-hint">感謝天上聖母保佑度過黑水溝，心安理得再出發！</div>
               </button>
 
               <button class="choice-btn" id="c-land-work" type="button">
-                <div class="choice-title">
-                  <span>📦 立刻去碼頭扛米袋賺第一筆工錢</span>
-                  <span class="cost-badge">體力 -12・賺取 25 銀兩</span>
+                <span class="choice-key">B</span>
+                <div class="choice-body">
+                  <div class="choice-title">
+                    <span>📦 立刻去碼頭扛米袋賺第一桶小金！</span>
+                    <span class="cost-badge">體力 -12・銀兩 +25</span>
+                  </div>
+                  <div class="choice-hint">時間就是金錢，一落地就開啟超強打工模式！</div>
                 </div>
-                <div class="choice-hint">時間就是金錢，一落地就開啟社畜模式！</div>
               </button>
             </div>
           </div>
@@ -2530,13 +2866,14 @@
           const pay = Math.min(GameState.stats.money, 5);
           const res = applyStatChanges({ money: -pay, hp: 10, san: 15, rep: 8 });
           renderOutcomeCard({
-            artHtml: SceneArt.temple('媽祖保佑'),
+            artHtml: SceneArt.temple('媽祖保佑・元氣滿滿'),
             title: '🏮 香火鼎盛，身心都被治癒了！',
-            narrative: '你在媽祖廟虔誠叩拜，廟公還熱情請你吃了一碗熱騰騰的平安圓，並介紹了幾個剛來臺灣的同鄉給你認識！',
+            speaker: '🙏 廟公阿伯',
+            narrative: '廟公熱情請你吃了一碗熱騰騰的平安圓，還幫你介紹了幾位同鄉好夥伴，狀態瞬間拉滿！',
             changes: res.changes,
-            toastMsg: '有拜有保庇，SAN 值瞬間回血！',
+            toastMsg: '有拜有保庇，SAN 值滿血復活！',
             toastEmoji: '🙏',
-            nextLabel: '進入階段 2：落地開墾 ▶',
+            nextLabel: '進入第二章：落地開墾 ▶',
             onNext: renderStage2A_WaterCanal,
             diedEndingId: res.diedEndingId
           });
@@ -2545,13 +2882,13 @@
         $('c-land-work').addEventListener('click', () => {
           const res = applyStatChanges({ hp: -12, money: 25, san: isJunior ? -8 : -4 });
           renderOutcomeCard({
-            artHtml: SceneArt.canal('碼頭打工仔'),
-            title: '📦 揮汗如雨，賺到臺灣第一桶小金！',
-            narrative: '你咬緊牙關在鹿耳門碼頭扛了一整天蔗糖和米袋，雖然腰痠背痛又想家，但口袋裡叮噹作響的銀兩讓你踏實不少。',
+            artHtml: SceneArt.canal('碼頭熱血打工'),
+            title: '📦 揮汗如雨，賺到臺灣第一筆工錢！',
+            narrative: '你在碼頭扛了一整天蔗糖與米袋，雖然腰痠背痛，但口袋叮噹作響的銀兩讓你信心大增。',
             changes: res.changes,
-            toastMsg: '落地 10 分鐘就開始加班，真・清代卷王！',
+            toastMsg: '落地 10 分鐘就開始打工，超勤奮主角！',
             toastEmoji: '💼',
-            nextLabel: '進入階段 2：落地開墾 ▶',
+            nextLabel: '進入第二章：落地開墾 ▶',
             onNext: renderStage2A_WaterCanal,
             diedEndingId: res.diedEndingId
           });
@@ -2560,50 +2897,62 @@
     }
 
     /* ==========================================================================
-       9. 階段 2：落地開墾與番界挑戰（水圳投資 + 土牛溝/通事 + 信仰/理智檢定）
+       9. 第二章：水利建設與番界挑戰
        ========================================================================== */
     function renderStage2A_WaterCanal() {
+      cleanupTransientState();
       GameState.stage = 2;
-      updateHUD('階段 2：落地開墾 (1/3)');
+      updateHUD('第二章：水圳大投資 (1/3)');
       GameState.learnedTags.add('canal_water');
 
-      // 依祖籍或隨機決定遇到八堡圳或瑠公圳
       const isBabu = GameState.origin.id === 'zhangzhou' || Math.random() < 0.55;
       const canalName = isBabu ? '八堡圳' : '瑠公圳';
-      const builder = isBabu ? '施世榜（傳說還遇到神秘高人林先生指導引水！）' : '郭錫瑠（為了引新店溪水灌溉臺北盆地傾盡家產！）';
+      const builder = isBabu ? '施世榜（傳說還出現神祕高人「林先生」指點引水！）' : '郭錫瑠（為了引新店溪水灌溉臺北盆地傾盡家產！）';
       const investCost = GameState.mode === 'elementary' ? 45 : 50;
 
       $('game-root').innerHTML = `
         <div class="game-panel">
-          ${SceneArt.canal(`階段 2-1：重大水利建設「${canalName}」`)}
-          <h2 class="event-title">💧 投資機會：要不要入股「${canalName}」？</h2>
-          <div class="event-story">
-            你在臺灣開始務農，但看天吃飯太不穩，一遇到旱災收成就完蛋！這時地方仕紳<strong>${builder}</strong>正在招募合夥人集資開鑿<strong>「${canalName}」</strong>。<br>
-            💡 提示：前期要砸一大筆銀兩，但只要水圳完工，後期回合將會<strong>自動翻倍回本</strong>！
+          ${SceneArt.canal(`第二章 2-1：世紀水利工程「${canalName}」`)}
+          <h2 class="event-title">💧 關鍵抉擇：要不要入股「${canalName}」？</h2>
+          <div class="vn-box">
+            <div class="vn-speaker"><span>💧 地方仕紳</span></div>
+            <p class="vn-text">
+              看天吃飯太危險，只要鬧旱災收成就完蛋！現在<strong>${builder}</strong>正在招募合夥人集資開鑿<strong>「${canalName}」</strong>。<br>
+              💡 提示：前期需要投入大量資金，但只要下個階段水圳完工，將會<strong>翻倍暴賺回本</strong>！
+            </p>
           </div>
           <div class="choices-list">
             <button class="choice-btn" id="c-canal-invest" type="button" ${GameState.stats.money < investCost ? 'disabled' : ''}>
-              <div class="choice-title">
-                <span>💎 梭哈入股「${canalName}」！放長線釣大魚</span>
-                <span class="cost-badge good">先付 ${investCost} 銀兩・後期翻倍暴富</span>
+              <span class="choice-key" style="background:#fde047;">A</span>
+              <div class="choice-body">
+                <div class="choice-title">
+                  <span>💎 梭哈入股「${canalName}」！坐等通水收租</span>
+                  <span class="cost-badge good">先付 ${investCost} 銀兩・下章翻倍暴富</span>
+                </div>
+                <div class="choice-hint">現在勒緊褲帶，完工直接變身水圳大股東！${GameState.stats.money < investCost ? '（銀兩不足！）' : ''}</div>
               </div>
-              <div class="choice-hint">現在吃土喝西北風，等通水就變水圳大股東！${GameState.stats.money < investCost ? '（銀兩不足！）' : ''}</div>
             </button>
 
             <button class="choice-btn" id="c-canal-labor" type="button">
-              <div class="choice-title">
-                <span>⛏️ 沒錢出錢就出力！去工地挖水溝領日薪</span>
-                <span class="cost-badge">體力 -18・銀兩 +25・人脈 +12</span>
+              <span class="choice-key">B</span>
+              <div class="choice-body">
+                <div class="choice-title">
+                  <span>⛏️ 去工地挖水圳領現金日薪！</span>
+                  <span class="cost-badge">體力 -18・銀兩 +25・人脈 +12</span>
+                </div>
+                <div class="choice-hint">靠雙手流汗穩定賺錢，順便認識全庄頭的農夫朋友！</div>
               </div>
-              <div class="choice-hint">靠雙手流汗賺穩定的錢，還能結交全庄頭的農夫！</div>
             </button>
 
             <button class="choice-btn" id="c-canal-skip" type="button">
-              <div class="choice-title">
-                <span>🙏 保守為上，先去田頭拜土地公求風調雨順</span>
-                <span class="cost-badge">體力 +8・理智 +12</span>
+              <span class="choice-key" style="background:#34d399;">C</span>
+              <div class="choice-body">
+                <div class="choice-title">
+                  <span>🙏 保守為上，去田頭拜土地公保平安</span>
+                  <span class="cost-badge good">體力 +8・理智 +12・銀兩 +5</span>
+                </div>
+                <div class="choice-hint">「投資有賺有賠，我還是留著現金最安心！」</div>
               </div>
-              <div class="choice-hint">「投資一定有風險，水圳投資有賺有賠，我還是留現金吧！」</div>
             </button>
           </div>
         </div>
@@ -2614,13 +2963,14 @@
         GameState.flags.canalName = canalName;
         const res = applyStatChanges({ money: -investCost, rep: 15, san: 5 });
         renderOutcomeCard({
-          artHtml: SceneArt.canal(`${canalName}大股東`),
-          title: `💎 你正式成為「${canalName}」創始股東！`,
-          narrative: `雖然荷包瞬間乾涸，但看著工人們熱火朝天開鑿水渠的模樣，你彷彿已經聽見未來白花花銀子流進口袋的聲音！`,
+          artHtml: SceneArt.canal(`${canalName}創始股東！`),
+          title: `💎 成為「${canalName}」合夥股東！`,
+          speaker: '📈 投資成功',
+          narrative: `雖然荷包瞬間見底，但看著大夥熱血開鑿水渠的樣子，你彷彿已經聽見下個階段白花花銀兩流進口袋的聲音！`,
           changes: res.changes,
-          toastMsg: '清代巴菲特就是你！坐等下階段通水收租！',
+          toastMsg: '清代投資大神！坐等水圳完工開大招！',
           toastEmoji: '📈',
-          nextLabel: '面對下一個土地難題 ▶',
+          nextLabel: '面對下一道土地試煉 ▶',
           onNext: renderStage2B_Frontier,
           diedEndingId: res.diedEndingId
         });
@@ -2629,13 +2979,13 @@
       $('c-canal-labor').addEventListener('click', () => {
         const res = applyStatChanges({ hp: -18, money: 25, rep: 12 });
         renderOutcomeCard({
-          artHtml: SceneArt.canal('挑土挖圳'),
-          title: '⛏️ 揮汗挑土，練出一身精壯肌肉！',
-          narrative: `你在烈日下幫忙挖掘「${canalName}」整整三個月，雖然累到快變成人乾，但領到紮實的工錢，大夥兒也都很敬重你的勤奮。`,
+          artHtml: SceneArt.canal('工地熱血特訓'),
+          title: '⛏️ 揮汗挖圳，順便練出六塊腹肌！',
+          narrative: `你在烈日下幫忙挖掘「${canalName}」，雖然累到快變成人乾，但領到了紮實工錢，全庄頭都誇你超靠譜！`,
           changes: res.changes,
-          toastMsg: '汗水不會背叛你，頂多讓你腰閃到！',
+          toastMsg: '汗水不會背叛你，頂多讓你腰痠三天！',
           toastEmoji: '💪',
-          nextLabel: '面對下一個土地難題 ▶',
+          nextLabel: '面對下一道土地試煉 ▶',
           onNext: renderStage2B_Frontier,
           diedEndingId: res.diedEndingId
         });
@@ -2645,24 +2995,22 @@
         GameState.learnedTags.add('beliefs');
         const res = applyStatChanges({ hp: 8, san: 12, money: 5 });
         renderOutcomeCard({
-          artHtml: SceneArt.temple('田頭土地公'),
+          artHtml: SceneArt.temple('田頭土地公伯仔'),
           title: '🙏 土地公保佑，小農生活穩穩過！',
-          narrative: '你帶著麻糬去拜田頭的土地公伯仔，雖然沒有大發財，但今年雨水還算充沛，身心獲得難得的喘息。',
+          narrative: '你帶著花生麻糬去拜田頭的土地公，雖然沒大富大貴，但今年風調雨順，身心都獲得滿滿療癒！',
           changes: res.changes,
-          toastMsg: '土地公最愛吃甜食，麻糬黏錢黏好運！',
+          toastMsg: '土地公最愛麻糬，黏錢又黏好運！',
           toastEmoji: '🍡',
-          nextLabel: '面對下一個土地難題 ▶',
+          nextLabel: '面對下一道土地試煉 ▶',
           onNext: renderStage2B_Frontier,
           diedEndingId: res.diedEndingId
         });
       });
     }
 
-    /**
-     * 階段 2-2：土地危機與「土牛溝」番界挑戰 vs 「通事」向原住民租地
-     */
     function renderStage2B_Frontier() {
-      updateHUD('階段 2：番界與土地挑戰 (2/3)');
+      cleanupTransientState();
+      updateHUD('第二章：番界防線 (2/3)');
       GameState.learnedTags.add('tuniugou');
       GameState.learnedTags.add('tongshi');
 
@@ -2671,35 +3019,47 @@
 
       $('game-root').innerHTML = `
         <div class="game-panel">
-          ${SceneArt.frontier('階段 2-2：土牛溝番界線')}
-          <h2 class="event-title">⛰️ 平地不夠種了！要偷越「土牛溝」嗎？</h2>
-          <div class="event-story">
-            越來越多唐山移民湧入，西部平原的好田早被搶光！山腳下有一條清廷官府挖出來的深溝與土堆——這就是劃分漢人與原住民生活區的<strong>「土牛溝」番界</strong>。<br>
-            ${isJunior ? '官府嚴禁越界私墾，但聽說山裡土地肥沃；另一邊，也有懂原住民語言的<strong>「通事」</strong>表示可以仲介向平埔族合法承租土地（繳交<strong>番大租</strong>）。' : '界線另一邊是原住民世居的獵場與土地。有人鼓吹半夜偷越「土牛溝」去開墾，也有人建議透過翻譯官<strong>「通事」</strong>跟原住民好好談租地！'}
+          ${SceneArt.frontier('第二章 2-2：土牛溝番界線')}
+          <h2 class="event-title">⛰️ 平地搶光了！要偷越「土牛溝」嗎？</h2>
+          <div class="vn-box">
+            <div class="vn-speaker"><span>⛰️ 山林邊境</span></div>
+            <p class="vn-text">
+              西部平原良田都被先來的人佔光了！山腳下出現一道清廷官府挖掘的土堆與深溝——這就是劃分漢人與原住民活動範圍的<strong>「土牛溝」番界</strong>。<br>
+              ${isJunior ? '官府嚴禁越界私墾，但聽說裡面土地肥沃；另一邊，懂原住民語言的仲介<strong>「通事」</strong>表示可以幫忙向平埔族合法承租土地（繳交<strong>番大租</strong>）。' : '有人鼓吹趁半夜偷越「土牛溝」開墾，也有人建議透過懂原住民語言的仲介<strong>「通事」</strong>好好跟原住民談租地！'}
+            </p>
           </div>
           <div class="choices-list">
             <button class="choice-btn" id="c-cross-tuniugou" type="button">
-              <div class="choice-title">
-                <span>🌙 趁半夜偷越「土牛溝」私自開墾！</span>
-                <span class="cost-badge risk">暴賺 45 銀兩・極高衝突與官府風險</span>
+              <span class="choice-key" style="background:#fb7185;">A</span>
+              <div class="choice-body">
+                <div class="choice-title">
+                  <span>🌙 半夜偷越「土牛溝」私自開墾！</span>
+                  <span class="cost-badge risk">暴賺 45 銀兩・高衝突與圍捕風險</span>
+                </div>
+                <div class="choice-hint">撐死膽大的、餓死膽小的！但可能引發族群衝突或被官兵抓包！</div>
               </div>
-              <div class="choice-hint">撐死膽大的、餓死膽小的！但可能惹怒原住民或被官兵抓包！</div>
             </button>
 
             <button class="choice-btn" id="c-rent-tongshi" type="button" ${GameState.stats.money < rentCost ? 'disabled' : ''}>
-              <div class="choice-title">
-                <span>🤝 透過「通事」向原住民合法承租土地（繳番大租）</span>
-                <span class="cost-badge good">花費 ${rentCost} 銀兩・人脈 +22・理智 +12</span>
+              <span class="choice-key" style="background:#34d399;">B</span>
+              <div class="choice-body">
+                <div class="choice-title">
+                  <span>🤝 透過「通事」向原住民合法租地（繳番大租）</span>
+                  <span class="cost-badge good">花費 ${rentCost} 銀兩・人脈 +22・理智 +12</span>
+                </div>
+                <div class="choice-hint">尊重原住民族土地權益，和平共處還能解鎖跨族群友誼！${GameState.stats.money < rentCost ? '（銀兩不足）' : ''}</div>
               </div>
-              <div class="choice-hint">尊重原住民族土地權益，和平共處還能交到原住民好朋友！${GameState.stats.money < rentCost ? '（銀兩不足）' : ''}</div>
             </button>
 
             <button class="choice-btn" id="c-stay-tenant" type="button">
-              <div class="choice-title">
-                <span>🌾 乖乖留在界內當佃農幫大地主種田</span>
-                <span class="cost-badge">體力 -10・銀兩 +18・理智 -6</span>
+              <span class="choice-key">C</span>
+              <div class="choice-body">
+                <div class="choice-title">
+                  <span>🌾 乖乖留在界內當佃農幫大地主種田</span>
+                  <span class="cost-badge">體力 -10・銀兩 +18・理智 -6</span>
+                </div>
+                <div class="choice-hint">雖然一半收成被地主收走，但至少晚上睡得安心。</div>
               </div>
-              <div class="choice-hint">雖然一半收成都被地主抽走，但至少晚上睡得著覺。</div>
             </button>
           </div>
         </div>
@@ -2711,11 +3071,12 @@
         if (caughtBadly) {
           const res = applyStatChanges({ hp: -32, money: -10, rep: -15, san: -12 }, { deathCause: 'jail' });
           renderOutcomeCard({
-            artHtml: SceneArt.frontier('越界私墾踢鐵板！'),
+            artHtml: SceneArt.frontier('越界私墾被包夾！'),
             title: '🚨 遭巡山官兵與部落勇士前後包夾！',
-            narrative: '你才剛越過土牛溝砍了兩棵樹，就被憤怒的部落巡守隊和清廷官兵撞個正著！田沒種成，還挨了一頓狠揍外加罰款！',
+            speaker: '🚨 巡山官兵',
+            narrative: '「不許動！」你剛越過土牛溝砍樹，就被部落巡守隊和官兵撞個正著！田沒種成還挨了一頓狠揍外加罰款！',
             changes: res.changes,
-            toastMsg: '番界石碑不是立好看的啊！',
+            toastMsg: '番界石碑不是立來當裝飾品的啊！',
             toastEmoji: '🚨',
             nextLabel: '狼狽逃回漢人庄頭 ▶',
             onNext: renderStage2C_SanCheck,
@@ -2724,11 +3085,11 @@
         } else {
           const res = applyStatChanges({ hp: -22, money: 45, rep: -12, san: -8 });
           renderOutcomeCard({
-            artHtml: SceneArt.frontier('私墾成功但心驚膽戰'),
-            title: '🌙 偷墾了一塊山坡地，但每天都提心吊膽！',
-            narrative: '你偷偷在土牛溝外開出了一片田，收成換了不少銀兩，但這行為加深了漢人與原住民之間的緊張與衝突，你的良心與體力都頗受折磨。',
+            artHtml: SceneArt.frontier('私墾雖賺但心驚膽戰'),
+            title: '🌙 偷墾了一塊地，但每天都心驚膽戰！',
+            narrative: '你偷偷在番界外種出不少作物換到銀兩，但也加深了漢人與原住民之間的緊張與摩擦，每天都睡不好。',
             changes: res.changes,
-            toastMsg: '賺了黑心私墾財，晚上連風吹草動都怕！',
+            toastMsg: '賺了私墾財，晚上連風吹草動都怕！',
             toastEmoji: '😰',
             nextLabel: '繼續在臺灣求生 ▶',
             onNext: renderStage2C_SanCheck,
@@ -2741,11 +3102,12 @@
         GameState.flags.rentedFromIndigenous = true;
         const res = applyStatChanges({ money: -rentCost, rep: 22, san: 12, hp: 5 });
         renderOutcomeCard({
-          artHtml: SceneArt.canal('和平租地・漢原共榮'),
+          artHtml: SceneArt.canal('和平租地・漢原雙贏'),
           title: '🤝 簽下「番大租」契約，收穫跨族群友誼！',
-          narrative: '你拒絕不肖通事的陰招，誠實按約繳納番大租給平埔族社頭目。頭目非常欣賞你的誠信，不只給你肥沃好田，還送你山產鹿肉補身體！',
+          speaker: '🦌 平埔族社頭目',
+          narrative: '你拒絕不肖通事的陰招，誠實按約繳納番大租。頭目非常欣賞你的誠信，不但分給你肥沃良田，還送你山產鹿肉補身！',
           changes: res.changes,
-          toastMsg: '以和為貴，跨族群人脈直接起飛！',
+          toastMsg: '以和為貴，跨族群羈絆直接滿格！',
           toastEmoji: '🦌',
           nextLabel: '繼續在臺灣求生 ▶',
           onNext: renderStage2C_SanCheck,
@@ -2758,7 +3120,7 @@
         renderOutcomeCard({
           artHtml: SceneArt.canal('佃農日常'),
           title: '🌾 平安當個佃農，雖然有點像社畜',
-          narrative: '你安分守己幫地主耕作，雖然辛苦種的米大半交了租，但口袋多少存了點私房錢，平平安安度過這一年。',
+          narrative: '你安分守己幫地主耕作，雖然辛苦種的米大半交了地租，但口袋多少存了一點錢，平安度過這一年。',
           changes: res.changes,
           toastMsg: '清代打工人：老闆騎駿馬，我騎老水牛。',
           toastEmoji: '🐂',
@@ -2769,11 +3131,9 @@
       });
     }
 
-    /**
-     * 階段 2-3：理智檢定與羅漢腳思鄉／信仰事件
-     */
     function renderStage2C_SanCheck() {
-      updateHUD('階段 2：異鄉心靈考驗 (3/3)');
+      cleanupTransientState();
+      updateHUD('第二章：心靈與祭典 (3/3)');
       GameState.learnedTags.add('beliefs');
       const isLowSan = GameState.stats.san < 40;
       const isLostCursed = GameState.talent && GameState.talent.id === 'lost_curse';
@@ -2781,29 +3141,38 @@
       if (isLowSan) {
         $('game-root').innerHTML = `
           <div class="game-panel">
-            ${SceneArt.temple('理智警報！思鄉崩潰危機')}
+            ${SceneArt.temple('SAN 值警報！思鄉崩潰邊緣')}
             <h2 class="event-title">🧠 警告：羅漢腳的孤獨深夜（SAN 值過低！）</h2>
             <div class="san-warning-box">
-              ⚠️ 你的理智值僅剩 <strong>${GameState.stats.san}</strong>！夜深人靜時，你聽著海浪聲思念唐山阿母，腦袋快要當機了！
+              ⚠️ 你的理智值僅剩 <strong>${GameState.stats.san}</strong>！聽著深夜海浪聲思念唐山阿母，腦袋快當機了！
             </div>
-            <div class="event-story">
-              旁邊幾個同為單身「<strong>羅漢腳</strong>」的鄰居正在喝酒賭博，拉著你要你借酒澆愁；另一邊，庄裡的<strong>土地公廟</strong>正在演酬神野台戲。
+            <div class="vn-box">
+              <div class="vn-speaker"><span>🍶 同鄉羅漢腳</span></div>
+              <p class="vn-text">
+                幾個同樣單身的「<strong>羅漢腳</strong>」鄰居正在喝酒賭博，喊著：「來乾一杯啦！」另一頭，庄裡的<strong>土地公廟</strong>正在演超熱鬧的野台戲！
+              </p>
             </div>
             <div class="choices-list">
               <button class="choice-btn" id="c-san-opera" type="button">
-                <div class="choice-title">
-                  <span>🎭 去廟口看野台戲、求個平安符</span>
-                  <span class="cost-badge good">花費 10 銀兩・理智 +25・人脈 +8</span>
+                <span class="choice-key" style="background:#34d399;">A</span>
+                <div class="choice-body">
+                  <div class="choice-title">
+                    <span>🎭 去廟口看野台戲、求平安符！</span>
+                    <span class="cost-badge good">最多花 10 銀兩・SAN +25・人脈 +8</span>
+                  </div>
+                  <div class="choice-hint">在熱鬧民俗信仰中找回心靈能量！</div>
                 </div>
-                <div class="choice-hint">在熱鬧的民俗信仰中找回心靈寄託！</div>
               </button>
 
               <button class="choice-btn" id="c-san-drink" type="button">
-                <div class="choice-title">
-                  <span>🍶 跟羅漢腳兄弟喝米酒買醉忘掉煩惱！</span>
-                  <span class="cost-badge risk">免費・但傷身又傷理智</span>
+                <span class="choice-key" style="background:#fb7185;">B</span>
+                <div class="choice-body">
+                  <div class="choice-title">
+                    <span>🍶 跟羅漢腳喝米酒買醉忘掉煩惱</span>
+                    <span class="cost-badge risk">免費・傷身又傷理智</span>
+                  </div>
+                  <div class="choice-hint">「今朝有酒今朝醉，明天宿醉再崩潰！」</div>
                 </div>
-                <div class="choice-hint">「今朝有酒今朝醉，明天宿醉再後悔！」</div>
               </button>
             </div>
           </div>
@@ -2813,13 +3182,13 @@
           const pay = Math.min(GameState.stats.money, 10);
           const res = applyStatChanges({ money: -pay, san: 25, rep: 8 });
           renderOutcomeCard({
-            artHtml: SceneArt.temple('廟口看戲心情好'),
+            artHtml: SceneArt.temple('廟口看戲心情超好'),
             title: '🎭 鑼鼓喧天，思鄉鬱悶一掃而空！',
-            narrative: '你在廟口邊看戲邊跟鄉親吃花生聊天，感覺臺灣也漸漸像家一樣溫暖了，理智值大幅回穩！',
+            narrative: '你在廟口邊看戲邊跟鄉親啃瓜子聊天，突然覺得臺灣也漸漸像家一樣溫暖，SAN 值瞬間大回補！',
             changes: res.changes,
-            toastMsg: '廟口文化就是最強心理諮商！',
+            toastMsg: '廟口文化就是最強心靈補給站！',
             toastEmoji: '🎭',
-            nextLabel: '邁入階段 3：大時代風暴 ▶',
+            nextLabel: '邁入最終章：大時代風暴 ▶',
             onNext: triggerStage3Start,
             diedEndingId: res.diedEndingId
           });
@@ -2829,60 +3198,70 @@
           const res = applyStatChanges({ hp: -15, san: -15, rep: 5 });
           renderOutcomeCard({
             artHtml: SceneArt.conflict('喝到斷片'),
-            title: '🍶 越喝越憂愁，隔天宿醉吐滿地！',
-            narrative: '你們喝著劣質私釀米酒抱頭痛哭，結果你不但頭痛欲裂，還因為情緒失控差點跟隔壁庄頭的人吵起來……',
+            title: '🍶 越喝越憂愁，隔天宿醉頭痛欲裂！',
+            narrative: '你們喝著劣質私釀米酒抱頭痛哭，結果隔天頭痛爆表，還差點跟隔壁庄頭的人吵起來……',
             changes: res.changes,
-            toastMsg: '借酒澆愁愁更愁，SAN 值快見底啦！',
+            toastMsg: '借酒澆愁愁更愁，SAN 值拉警報啦！',
             toastEmoji: '😵',
-            nextLabel: '邁入階段 3：大時代風暴 ▶',
+            nextLabel: '邁入最終章：大時代風暴 ▶',
             onNext: triggerStage3Start,
             diedEndingId: res.diedEndingId
           });
         });
       } else {
-        // 正常狀態：遇見民俗祭典或路痴彩蛋
+        // 修正 Bug：先發動路痴天賦加錢，再依最新銀兩判斷按鈕是否可用！
+        if (isLostCursed) {
+          applyStatChanges({ money: 12 }, { silent: false });
+          showToast('🧭 路痴塞翁失馬！走錯巷子居然撿到 12 兩碎銀！', '✨');
+        }
+
         $('game-root').innerHTML = `
           <div class="game-panel">
-            ${SceneArt.temple('歲末謝神・迎媽祖與拜有應公')}
-            <h2 class="event-title">🏮 庄頭大事：廟會募款與同鄉結盟</h2>
-            <div class="event-story">
-              轉眼在臺灣站穩了腳步！庄頭正要舉辦盛大的<strong>迎媽祖遶境</strong>，同時也想替早年客死異鄉的無主羅漢腳整修<strong>「有應公廟」</strong>。${isLostCursed ? '<br><br>🧭 <strong>路痴天賦觸發</strong>：你去廟裡的路上走錯巷子，居然在榕樹下撿到別人掉的 <strong>12 兩碎銀</strong>！' : ''}
+            ${SceneArt.temple('歲末謝神・迎媽祖與修繕有應公')}
+            <h2 class="event-title">🏮 庄頭盛會：廟會募款與同鄉結盟</h2>
+            <div class="vn-box">
+              <div class="vn-speaker"><span>🥁 廟會總幹事</span></div>
+              <p class="vn-text">
+                轉眼你在臺灣站穩腳步了！庄頭正要舉辦盛大的<strong>迎媽祖遶境</strong>，同時也想替早年客死異鄉的無主羅漢腳整修<strong>「有應公廟」</strong>。
+                ${isLostCursed ? '<br><br>🧭 <strong>路痴天賦發動</strong>：你來廟裡的路上走錯巷子，居然在榕樹下撿到別人掉的 <strong>12 兩碎銀</strong>（已直接入袋）！' : ''}
+              </p>
             </div>
             <div class="choices-list">
               <button class="choice-btn" id="c-fest-donate" type="button" ${GameState.stats.money < 20 ? 'disabled' : ''}>
-                <div class="choice-title">
-                  <span>🪙 慷慨捐出 20 兩建廟費，刻名在石碑上！</span>
-                  <span class="cost-badge good">銀兩 -20・人脈 +20・理智 +15</span>
+                <span class="choice-key" style="background:#fde047;">A</span>
+                <div class="choice-body">
+                  <div class="choice-title">
+                    <span>🪙 慷慨捐出 20 兩建廟費，名字刻上石碑！</span>
+                    <span class="cost-badge good">銀兩 -20・人脈 +20・理智 +15</span>
+                  </div>
+                  <div class="choice-hint">行善積德又賺爆全庄聲望！${GameState.stats.money < 20 ? '（銀兩不足）' : ''}</div>
                 </div>
-                <div class="choice-hint">行善積德又賺爆全庄聲望，日後有難大家一定挺你！</div>
               </button>
 
               <button class="choice-btn" id="c-fest-help" type="button">
-                <div class="choice-title">
-                  <span>🥁 免費幫忙扛神轎、辦桌招呼鄉親</span>
-                  <span class="cost-badge">體力 -10・人脈 +12・體力回補飯菜</span>
+                <span class="choice-key" style="background:#34d399;">B</span>
+                <div class="choice-body">
+                  <div class="choice-title">
+                    <span>🥁 義務扛神轎、辦桌招呼鄉親！</span>
+                    <span class="cost-badge">淨體力 -5・人脈 +12・理智 +10</span>
+                  </div>
+                  <div class="choice-hint">扛轎累到噴汗（-10），但辦桌狂嗑補回來（+5），CP 值爆表！</div>
                 </div>
-                <div class="choice-hint">流點汗就能白吃超豐盛流水席，CP 值爆表！</div>
               </button>
             </div>
           </div>
         `;
 
-        if (isLostCursed) {
-          applyStatChanges({ money: 12 }, { silent: false });
-          showToast('🧭 路痴塞翁失馬！迷路居然撿到 12 兩銀子！', '✨');
-        }
-
         $('c-fest-donate').addEventListener('click', () => {
           const res = applyStatChanges({ money: -20, rep: 20, san: 15 });
           renderOutcomeCard({
-            artHtml: SceneArt.temple('善名遠播'),
+            artHtml: SceneArt.temple('善名遠播全庄頭'),
             title: '🪙 你的名字被刻在廟宇捐獻石碑上！',
-            narrative: '全庄頭都稱讚你是有情有義的大善人，連地方仕紳都對你刮目相看！',
+            narrative: '全庄頭都稱讚你是有情有義的大善人，地方仕紳與長老紛紛主動加你好友！',
             changes: res.changes,
             toastMsg: '清代課金大佬，直接買進地方 VIP 名單！',
             toastEmoji: '🏆',
-            nextLabel: '邁入階段 3：大時代風暴 ▶',
+            nextLabel: '邁入最終章：大時代風暴 ▶',
             onNext: triggerStage3Start,
             diedEndingId: res.diedEndingId
           });
@@ -2891,13 +3270,13 @@
         $('c-fest-help').addEventListener('click', () => {
           const res = applyStatChanges({ hp: -5, rep: 12, san: 10 });
           renderOutcomeCard({
-            artHtml: SceneArt.temple('辦桌吃到飽'),
-            title: '🥁 扛完神轎狂吃辦桌，超爽！',
-            narrative: '雖然肩膀被神轎壓得有點紅腫，但流水席的爌肉跟佛跳牆直接治癒了你的胃與心！',
+            artHtml: SceneArt.temple('廟口辦桌吃到飽'),
+            title: '🥁 扛完神轎狂吃流水席，太爽啦！',
+            narrative: '雖然肩膀被神轎壓得有點紅腫，但流水席的封肉跟佛跳牆直接治癒了你的胃與心！',
             changes: res.changes,
             toastMsg: '臺灣最強社交場合：廟口辦桌！',
             toastEmoji: '🍖',
-            nextLabel: '邁入階段 3：大時代風暴 ▶',
+            nextLabel: '邁入最終章：大時代風暴 ▶',
             onNext: triggerStage3Start,
             diedEndingId: res.diedEndingId
           });
@@ -2906,21 +3285,22 @@
     }
 
     /* ==========================================================================
-       10. 階段 3：社會衝突與大時代風暴（水圳分紅 + 分類械鬥 + 民變 + 開臺祖）
+       10. 第三章：大時代衝突與落地生根
        ========================================================================== */
     function triggerStage3Start() {
+      cleanupTransientState();
       GameState.stage = 3;
       if (GameState.flags.investedCanal) {
-        // 水圳投資自動翻倍回本高光時刻！
-        updateHUD('階段 3：水圳通水大豐收！');
+        updateHUD('第三章：水圳通水大高潮！');
         const payout = GameState.mode === 'elementary' ? 115 : 110;
         const res = applyStatChanges({ money: payout, rep: 20, san: 15 });
         renderOutcomeCard({
           artHtml: SceneArt.canal(`${GameState.flags.canalName}全線通水！`),
-          title: `💰 狂賀！「${GameState.flags.canalName}」正式通水，你躺著收水租啦！`,
-          narrative: `清澈的溪水順著水圳奔流進萬頃良田，原本只能種旱作的土地變成一年兩熟的水稻田！當初笑你亂花錢的人現在全排隊來繳水租，你的投資直接翻倍暴賺 <strong>+${payout} 銀兩</strong>！`,
+          title: `💰 超級反轉！「${GameState.flags.canalName}」正式通水啦！`,
+          speaker: '💎 股東分紅',
+          narrative: `清澈溪水湧入萬頃良田，原本只能旱作的土地變成一年兩熟的水稻田！當初笑你傻的人現在全排隊來繳水租，你的投資翻倍暴賺 <strong>+${payout} 銀兩</strong>！`,
           changes: res.changes,
-          toastMsg: '史詩級翻身！這就是基礎建設的複利威力！',
+          toastMsg: '史詩級逆襲！這就是基礎建設的複利神威！',
           toastEmoji: '🤑',
           nextLabel: '然而好景不常，社會風暴逼近 ▶',
           onNext: renderStage3A_Xiedou,
@@ -2931,11 +3311,9 @@
       }
     }
 
-    /**
-     * 階段 3-1：分類械鬥（依照開局祖籍觸發泉漳械鬥或閩粵械鬥！）
-     */
     function renderStage3A_Xiedou() {
-      updateHUD('階段 3：分類械鬥風暴 (1/3)');
+      cleanupTransientState();
+      updateHUD('第三章：分類械鬥 (1/3)');
       GameState.learnedTags.add('xiedou');
 
       const originId = GameState.origin.id;
@@ -2948,36 +3326,48 @@
 
       $('game-root').innerHTML = `
         <div class="game-panel">
-          ${SceneArt.conflict(`階段 3-1：${isHakka ? '閩粵械鬥' : '泉漳械鬥'}`)}
+          ${SceneArt.conflict(`第三章 3-1：${isHakka ? '閩粵械鬥' : '泉漳械鬥'}`)}
           <h2 class="event-title">⚔️ ${conflictTitle}</h2>
-          ${isSanLow ? '<div class="san-warning-box">🧠 <strong>理智過低警示！</strong>你最近壓力爆棚，聽到戰鼓聲熱血直衝腦門，想要冷靜避戰變得更加困難！</div>' : ''}
-          <div class="event-story">
-            因為灌溉水源與土地利益爭執，加上平日裡祖籍與神明信仰的隔閡，你們<strong>${GameState.origin.name}</strong>跟<strong>${rival}</strong>徹底翻臉啦！<br>
-            村長在<strong>${godText}</strong>前敲響銅鑼，大喊：「同鄉們抄傢伙！絕不能讓對方踩到頭上！」你要怎麼做？
+          ${isSanLow ? '<div class="san-warning-box">🧠 <strong>理智過低警示！</strong>壓力爆棚的你聽到戰鼓聲熱血直衝腦門，想冷靜避戰變得更困難！</div>' : ''}
+          <div class="vn-box">
+            <div class="vn-speaker"><span>🥁 庄頭長老</span></div>
+            <p class="vn-text">
+              因為水源灌溉與土地利益衝突，加上平日祖籍與神明信仰隔閡，你們<strong>${GameState.origin.name}</strong>跟<strong>${rival}</strong>徹底撕破臉！<br>
+              村長在<strong>${godText}</strong>前敲響銅鑼：「同鄉們抄傢伙！絕不能輸！」你該怎麼辦？
+            </p>
           </div>
           <div class="choices-list">
             <button class="choice-btn" id="c-fight" type="button">
-              <div class="choice-title">
-                <span>🔱 抄起竹竿扁擔衝第一排，為同鄉拼命！</span>
-                <span class="cost-badge risk">體力 -26・理智 -12・人脈 +22</span>
+              <span class="choice-key" style="background:#fb7185;">A</span>
+              <div class="choice-body">
+                <div class="choice-title">
+                  <span>🔱 抄起扁擔衝第一排，為同鄉拚了！</span>
+                  <span class="cost-badge risk">體力 -26・理智 -12・人脈 +22・銀兩 +15</span>
+                </div>
+                <div class="choice-hint">義氣爆表，但刀劍無眼，小心變砲灰！</div>
               </div>
-              <div class="choice-hint">義氣滿點，但刀劍無眼，小心變砲灰！</div>
             </button>
 
             <button class="choice-btn" id="c-mediate" type="button" ${(GameState.stats.money < 30 && GameState.stats.rep < 50) ? 'disabled' : ''}>
-              <div class="choice-title">
-                <span>🕊️ 聯合地方仕紳與神明出面調解停戰</span>
-                <span class="cost-badge good">${GameState.stats.rep >= 50 ? '高人脈免費調解！' : '需 30 銀兩請客和談'}</span>
+              <span class="choice-key" style="background:#34d399;">B</span>
+              <div class="choice-body">
+                <div class="choice-title">
+                  <span>🕊️ 聯合仕紳出面調解停戰！</span>
+                  <span class="cost-badge good">${GameState.stats.rep >= 50 ? '高人脈免費調解！' : '花 30 銀兩擺和解酒'}</span>
+                </div>
+                <div class="choice-hint">打破仇恨循環，人脈 +25、理智 +18！（需人脈 ≥ 50 或銀兩 ≥ 30）</div>
               </div>
-              <div class="choice-hint">打破仇恨循環！成功的話聲望與理智雙雙暴漲！（需人脈 ≥ 50 或銀兩 ≥ 30）</div>
             </button>
 
             <button class="choice-btn" id="c-hide" type="button">
-              <div class="choice-title">
-                <span>🏃 趁亂打包細軟，躲去山邊或親友家避風頭</span>
-                <span class="cost-badge">保命首選・人脈 -15・${isSanLow ? '理智 -12' : '銀兩 -10'}</span>
+              <span class="choice-key">C</span>
+              <div class="choice-body">
+                <div class="choice-title">
+                  <span>🏃 趁亂打包細軟去親友家避風頭</span>
+                  <span class="cost-badge">保命首選・人脈 -15・${isSanLow ? '理智 -12' : '銀兩 -10'}</span>
+                </div>
+                <div class="choice-hint">「三十六計走為上策，活下來才是贏家！」</div>
               </div>
-              <div class="choice-hint">「打贏進大牢，打輸進醫院，三十六計走為上策！」</div>
             </button>
           </div>
         </div>
@@ -2988,11 +3378,11 @@
         renderOutcomeCard({
           artHtml: SceneArt.conflict('血戰庄頭'),
           title: '🔱 激戰三天三夜，兩敗俱傷！',
-          narrative: `你跟著同鄉死守庄頭，雖然最後逼退了${rival}、贏得全庄敬重，但看著被燒毀的農田與受傷的鄉親，你才體會到「分類械鬥」其實沒有真正的贏家……`,
+          narrative: `雖然逼退了${rival}贏得全庄敬重，但看著被燒毀的農田與受傷的鄉親，你深深體會到「分類械鬥」沒有真正的贏家……`,
           changes: res.changes,
-          toastMsg: '打贏了面子，輸掉了農田與 HP！',
+          toastMsg: '贏了面子，卻賠掉農田跟大量 HP！',
           toastEmoji: '⚔️',
-          nextLabel: '更大的時代巨浪來襲 ▶',
+          nextLabel: '更大的時代巨浪逼近 ▶',
           onNext: renderStage3B_Rebellion,
           diedEndingId: res.diedEndingId
         });
@@ -3002,15 +3392,16 @@
         const freeByRep = GameState.stats.rep >= 50;
         const res = applyStatChanges({ money: freeByRep ? 0 : -30, rep: 25, san: 18 });
         renderOutcomeCard({
-          artHtml: SceneArt.temple('和平調解成功'),
-          title: '🕊️ 和談成功！化解一場流血悲劇！',
+          artHtml: SceneArt.temple('和平調解成功！'),
+          title: '🕊️ 嘴遁大成功！化解一場流血悲劇！',
+          speaker: '🕊️ 和平大使',
           narrative: freeByRep
-            ? '你憑著超高人脈，邀集雙方長老在廟前擺下和解酒，講明「打壞水圳大家一起餓死」的道理，成功平息了這場械鬥！'
-            : '你自掏腰包請雙方頭人吃飯談判並重劃水源分配，成功化解血光之災，兩邊庄頭都稱讚你是真・和平大使！',
+            ? '你憑藉超高人脈邀集雙方長老在廟前講明「打壞水圳大家一起餓死」的道理，成功讓雙方握手言和！'
+            : '你自掏腰包請雙方頭人吃和解酒並重劃水源分配，成功化解血光之災，贏得全地方的敬重！',
           changes: res.changes,
-          toastMsg: '用嘴砲跟智慧止戰，這才是高階玩家！',
+          toastMsg: '用智慧與格局止戰，真正的主角操作！',
           toastEmoji: '🕊️',
-          nextLabel: '更大的時代巨浪來襲 ▶',
+          nextLabel: '更大的時代巨浪逼近 ▶',
           onNext: renderStage3B_Rebellion,
           diedEndingId: res.diedEndingId
         });
@@ -3021,59 +3412,69 @@
         const res = applyStatChanges(delta);
         renderOutcomeCard({
           artHtml: SceneArt.frontier('暫避鋒頭'),
-          title: '🏃 平安躲過戰火，但被同鄉碎念了好久',
-          narrative: '你帶著乾糧躲到平息才回庄，雖然被熱血的鄰居嫌不夠義氣，但摸摸自己完好無缺的手腳，覺得活著真好。',
+          title: '🏃 平安躲過戰火，但被鄰居碎念了好久',
+          narrative: '你帶著乾糧躲到風暴平息才回庄，雖然被嫌不夠義氣，但看著自己完好無缺的手腳，還是覺得活著真好。',
           changes: res.changes,
           toastMsg: '留得青山在，不怕沒柴燒！',
           toastEmoji: '🫣',
-          nextLabel: '更大的時代巨浪來襲 ▶',
+          nextLabel: '更大的時代巨浪逼近 ▶',
           onNext: renderStage3B_Rebellion,
           diedEndingId: res.diedEndingId
         });
       });
     }
 
-    /**
-     * 階段 3-2：時代大民變（鴨母王朱一貴 / 天地會林爽文）
-     */
     function renderStage3B_Rebellion() {
-      updateHUD('階段 3：大時代民變 (2/3)');
+      cleanupTransientState();
+      updateHUD('第三章：大時代民變 (2/3)');
       GameState.learnedTags.add('rebellion');
 
       const isZhu = GameState.mode === 'elementary' || GameState.flags.rebellionType === 'zhuyigui';
       const eventName = isZhu ? '鴨母王「朱一貴事件」' : '天地會「林爽文事件」';
       const storyDetail = isZhu
-        ? '清廷官吏貪汙收重稅，民怨沸騰！高雄內門的養鴨戶<strong>朱一貴</strong>（人稱「鴨母王」，傳說鴨子都會聽他排隊！）揭竿起義，短短幾天就攻下臺灣府城自稱「中興王」！全臺瞬間大震動！'
-        : '清廷官府貪腐橫行，秘密結社「天地會」首領<strong>林爽文</strong>在彰化發動清代臺灣規模最大的民變！全臺戰火四起，連乾隆皇帝都急派大將福康安渡海平亂！';
+        ? '清廷官吏貪汙收重稅，民怨沸騰！高雄內門的養鴨戶<strong>朱一貴</strong>（人稱「鴨母王」，傳說鴨子還會聽他指揮排隊！）揭竿起義，短短幾天攻下府城！全臺瞬間大震動！'
+        : '清廷官府貪腐橫行，秘密結社「天地會」首領<strong>林爽文</strong>在彰化發動清代臺灣規模最大的民變！戰火席捲全臺，乾隆皇帝急派大將福康安渡海平亂！';
 
       $('game-root').innerHTML = `
         <div class="game-panel">
-          ${SceneArt.conflict(`階段 3-2：${eventName}`)}
+          ${SceneArt.conflict(`第三章 3-2：${eventName}`)}
           <h2 class="event-title">🔥 「三年一小反，五年一大反」：${eventName}！</h2>
-          <div class="event-story">${storyDetail}<br><br>動盪的大時代來了，你必須做出關鍵抉擇！</div>
+          <div class="vn-box">
+            <div class="vn-speaker"><span>🔥 時代號角</span></div>
+            <p class="vn-text">${storyDetail}<br><br>大時代的最終分歧點來了，你要站在哪一邊？</p>
+          </div>
           <div class="choices-list">
             <button class="choice-btn" id="c-reb-join" type="button">
-              <div class="choice-title">
-                <span>🚩 加入起義軍，跟著推翻貪官汙吏！</span>
-                <span class="cost-badge risk">極高風險・小心遭清軍秋後算帳</span>
+              <span class="choice-key" style="background:#fb7185;">A</span>
+              <div class="choice-body">
+                <div class="choice-title">
+                  <span>🚩 加入起義軍，推翻貪官汙吏！</span>
+                  <span class="cost-badge risk">極高風險・小心遭清軍秋後算帳</span>
+                </div>
+                <div class="choice-hint">熱血衝一波！但歷史課本有寫這場民變最後被平定了喔……</div>
               </div>
-              <div class="choice-hint">「王侯將相寧有種乎！」但歷史上這場民變最後可是被平定了喔……</div>
             </button>
 
             <button class="choice-btn" id="c-reb-yimin" type="button">
-              <div class="choice-title">
-                <span>🛡️ 加入「義民軍」保衛自己的家園與庄頭！</span>
-                <span class="cost-badge good">體力 -20・人脈 +32・銀兩 +25</span>
+              <span class="choice-key" style="background:#34d399;">B</span>
+              <div class="choice-body">
+                <div class="choice-title">
+                  <span>🛡️ 加入「義民軍」保衛家園與鄉親！</span>
+                  <span class="cost-badge good">體力 -20・人脈 +32・銀兩 +25・理智 +10</span>
+                </div>
+                <div class="choice-hint">${GameState.origin.id === 'hakka' ? '展現客家族群保鄉衛土的經典「義民」精神！' : '守護自家田園與鄰里，獲封「褒忠」英雄！'}</div>
               </div>
-              <div class="choice-hint">${GameState.origin.id === 'hakka' ? '展現客家族群保鄉衛土的「義民」精神！' : '不分官民，先保護自家農田與鄉親不被波及！'}</div>
             </button>
 
             <button class="choice-btn" id="c-reb-popcorn" type="button">
-              <div class="choice-title">
-                <span>🍿 屯好米糧關緊大門，當個專業吃瓜群眾</span>
-                <span class="cost-badge">花費 20 銀兩買糧・安全度過</span>
+              <span class="choice-key">C</span>
+              <div class="choice-body">
+                <div class="choice-title">
+                  <span>🍿 囤好米糧關緊大門，當專業吃瓜群眾</span>
+                  <span class="cost-badge">最多花 20 銀兩買糧・平安度過</span>
+                </div>
+                <div class="choice-hint">不站隊、不出頭，默默吃瓜等亂事結束！</div>
               </div>
-              <div class="choice-hint">不站隊、不出頭，每天聽八卦等亂事結束！</div>
             </button>
           </div>
         </div>
@@ -3081,19 +3482,19 @@
 
       $('c-reb-join').addEventListener('click', () => {
         GameState.flags.joinedRebellion = true;
-        // 歷史因果：朱一貴與林爽文最終皆被清軍平定，硬核模式懲罰更重
         const hpHit = GameState.mode === 'elementary' ? -30 : -46;
         const res = applyStatChanges({ hp: hpHit, money: -20, rep: -20, san: -15 }, { deathCause: 'jail' });
         renderOutcomeCard({
           artHtml: SceneArt.conflict('清軍大軍壓境平亂！'),
-          title: '⛓️ 起義軍迅速潰敗，你差點被官兵抓去砍頭！',
+          title: '⛓️ 起義軍迅速潰敗，你差點被抓去砍頭！',
+          speaker: '⛓️ 戰場急報',
           narrative: res.diedEndingId
-            ? '清廷大軍登陸後勢如破竹，起義軍節節敗退，你逃跑不及遭到官兵圍捕，下半輩子只能在府城大牢度過……'
-            : '起義軍內部很快就因意見分歧瓦解，清軍大舉搜捕！你丟光所有戰利品、連滾帶爬逃進深山躲了半年才保住一條小命！',
+            ? '清廷大軍登陸後勢如破竹，起義軍節節敗退，你逃跑不及遭到圍捕，下半輩子只能在府城大牢度過……'
+            : '起義軍內部很快就因分裂瓦解，清軍大舉搜捕！你丟光裝備、連滾帶爬逃進深山躲了半年才保住小命！',
           changes: res.changes,
-          toastMsg: '沒讀歷史課本齁？這兩場民變最後都被平定了！',
+          toastMsg: '沒背課本齁？這兩場民變最後都被清軍平定了！',
           toastEmoji: '⛓️',
-          nextLabel: '迎接人生最後一章 ▶',
+          nextLabel: '迎接人生最終章 ▶',
           onNext: renderStage3C_FinalTurn,
           diedEndingId: res.diedEndingId
         });
@@ -3103,13 +3504,14 @@
         GameState.flags.becameYimin = true;
         const res = applyStatChanges({ hp: -20, rep: 32, money: 25, san: 10 });
         renderOutcomeCard({
-          artHtml: SceneArt.temple('忠義雙全・獲頒「褒忠」匾額'),
+          artHtml: SceneArt.temple('忠義雙全・獲賜「褒忠」匾額'),
           title: '🛡️ 守住家園！鄉親尊稱你為「義民英雄」！',
-          narrative: '你組織鄉勇巡邏守衛庄頭，成功擋下趁火打劫的亂兵！亂事平息後，鄉親集資答謝你，官府更賜下「褒忠」榮譽，你的名望直衝雲霄！',
+          speaker: '🛡️ 鄉親歡呼',
+          narrative: '你組織鄉勇巡守庄頭，成功擊退趁亂搶劫的亂兵！戰後鄉親集資答謝你，官府更賜下「褒忠」匾額，你的名望衝破天際！',
           changes: res.changes,
-          toastMsg: '保家衛國義民魂，歷史留名啦！',
+          toastMsg: '保家衛國義民魂，直接載入史冊！',
           toastEmoji: '🛡️',
-          nextLabel: '迎接人生最後一章 ▶',
+          nextLabel: '迎接人生最終章 ▶',
           onNext: renderStage3C_FinalTurn,
           diedEndingId: res.diedEndingId
         });
@@ -3119,59 +3521,69 @@
         const pay = Math.min(GameState.stats.money, 20);
         const res = applyStatChanges({ money: -pay, san: -5, hp: 5 });
         renderOutcomeCard({
-          artHtml: SceneArt.temple('安穩度過亂世'),
+          artHtml: SceneArt.temple('亂世安穩度日'),
           title: '🍿 亂世吃瓜大師，毫髮無傷！',
-          narrative: '戰火期間物價飛漲，但你早就買好滿滿一缸白米躲在家裡，等官兵平定動亂後再淡定開門，堪稱亂世生存教科書！',
+          narrative: '戰火期間糧價飆漲，但你早就買滿一缸白米躲在家裡，等官兵平定亂事才淡定開門！',
           changes: res.changes,
-          toastMsg: '吃瓜群眾永遠活到最後一集！',
+          toastMsg: '吃瓜群眾總是能安穩活到結局！',
           toastEmoji: '🍿',
-          nextLabel: '迎接人生最後一章 ▶',
+          nextLabel: '迎接人生最終章 ▶',
           onNext: renderStage3C_FinalTurn,
           diedEndingId: res.diedEndingId
         });
       });
     }
 
-    /**
-     * 階段 3-3：落地生根（從唐山祖轉向開臺祖）
-     */
     function renderStage3C_FinalTurn() {
-      updateHUD('階段 3：落地生根 (3/3)');
+      cleanupTransientState();
+      updateHUD('最終幕：落地生根 (3/3)');
       GameState.learnedTags.add('ancestor_shift');
       const isJunior = GameState.mode === 'junior';
 
       $('game-root').innerHTML = `
         <div class="game-panel">
-          ${SceneArt.temple('階段 3-3：歲月流轉・落地生根')}
-          <h2 class="event-title">🏛️ 數十年過去，你對臺灣的認同改變了⋯⋯</h2>
-          <div class="event-story">
-            ${isJunior
-              ? '隨著清廷逐漸放寬渡臺禁令，移民社會從動盪走向穩定。你的事業與生活全在臺灣，這時鄉親問你：要花錢繼續合資祭祀原鄉的<strong>「唐山祖」</strong>，還是在臺灣建立自家宗祠、落地生根成為後代祭拜的<strong>「開臺祖」</strong>？'
-              : '經歷了黑水溝巨浪、開墾農田與大時代的風雨，你已經在臺灣生活了好長一段時間，看著眼前翠綠的稻田與熱情的鄉親，你決定怎麼規劃人生的下半場？'}
+          ${SceneArt.temple('最終幕 3-3：歲月流轉・落地生根')}
+          <h2 class="event-title">🏛️ 數十年過去，你的人生迎來終章選擇！</h2>
+          <div class="vn-box">
+            <div class="vn-speaker"><span>🌅 歲月見證</span></div>
+            <p class="vn-text">
+              ${isJunior
+                ? '隨著清廷放寬渡臺禁令，移民社會從動盪走向穩定。你的事業與生活全在臺灣，這時鄉親問你：要繼續合資祭祀原鄉的<strong>「唐山祖」</strong>，還是在臺灣建宗祠、成為後代祭拜的<strong>「開臺祖」</strong>？'
+                : '熬過了黑水溝狂浪、開墾農田與時代風雨，看著眼前翠綠的稻田與熱情的臺灣鄉親，你決定怎麼譜寫人生最後一頁？'}
+            </p>
           </div>
           <div class="choices-list">
             <button class="choice-btn" id="c-final-ancestor" type="button" ${GameState.stats.money < 25 ? 'disabled' : ''}>
-              <div class="choice-title">
-                <span>🏛️ 在臺灣建宗祠、娶妻生子，立志成為「開臺祖」！</span>
-                <span class="cost-badge good">銀兩 -25・人脈 +20・理智 +20</span>
+              <span class="choice-key" style="background:#fde047;">A</span>
+              <div class="choice-body">
+                <div class="choice-title">
+                  <span>🏛️ 在臺灣建宗祠、娶妻生子，立志成為「開臺祖」！</span>
+                  <span class="cost-badge good">銀兩 -25・人脈 +20・理智 +20</span>
+                </div>
+                <div class="choice-hint">從唐山過客蛻變為臺灣主人（本土化轉型）！${GameState.stats.money < 25 ? '（銀兩不足）' : ''}</div>
               </div>
-              <div class="choice-hint">從唐山過客徹底化為臺灣主人（本土化轉型）！${GameState.stats.money < 25 ? '（銀兩不足）' : ''}</div>
             </button>
 
             <button class="choice-btn" id="c-final-biz" type="button">
-              <div class="choice-title">
-                <span>💰 把所有心力投入商行與田產，拼成全臺首富！</span>
-                <span class="cost-badge">銀兩 +35・體力 -10</span>
+              <span class="choice-key">B</span>
+              <div class="choice-body">
+                <div class="choice-title">
+                  <span>💰 全部精力投入商行與田產，衝刺全臺首富！</span>
+                  <span class="cost-badge">銀兩 +35・體力 -10</span>
+                </div>
+                <div class="choice-hint">「別跟我談感性，我只在乎倉庫裡滿出來的銀兩！」</div>
               </div>
-              <div class="choice-hint">「別跟我談感情，我只在乎倉庫裡的銀兩！」</div>
             </button>
 
             <button class="choice-btn" id="c-final-chill" type="button">
-              <div class="choice-title">
-                <span>🍵 退隱鄉間喝茶種菜，享受安穩退休人生</span>
-                <span class="cost-badge good">體力 +20・理智 +15</span>
+              <span class="choice-key" style="background:#34d399;">C</span>
+              <div class="choice-body">
+                <div class="choice-title">
+                  <span>🍵 退隱鄉間喝茶種菜，享受安穩慢活人生</span>
+                  <span class="cost-badge good">體力 +20・理智 +15</span>
+                </div>
+                <div class="choice-hint">平平安安走到終點，就是最強的生存贏家！</div>
               </div>
-              <div class="choice-hint">平平安安走到終點，就是最強的生存贏家！</div>
             </button>
           </div>
         </div>
@@ -3197,12 +3609,14 @@
     }
 
     /* ==========================================================================
-       11. 階段 4：結局判定、本地圖鑑存檔與「歷史真相解密」
+       11. 最終章：結局判定與歷史真相解密
        ========================================================================== */
     function evaluateSurvivalEnding(choseAncestor) {
       const { hp, money, rep } = GameState.stats;
+      // 修正：若玩家刻意選擇建宗祠成為開臺祖且達標，優先授予 SSR 一代開臺祖！
+      if (choseAncestor && rep >= 55 && money >= 50) return 'ssr_ancestor';
       if (GameState.flags.investedCanal && money >= 115) return 'ssr_canal';
-      if ((choseAncestor && rep >= 55 && money >= 50) || (rep >= 65 && money >= 85 && hp >= 35)) return 'ssr_ancestor';
+      if (rep >= 65 && money >= 85 && hp >= 35) return 'ssr_ancestor';
       if (GameState.flags.becameYimin && rep >= 60) return 'sr_yimin';
       if (money >= 95) return 'sr_tycoon';
       if (money < 35 || rep < 30 || (GameState.talent && GameState.talent.id === 'luohanjiao_body' && rep < 45)) return 'r_luohanjiao';
@@ -3211,20 +3625,18 @@
 
     function pickThreeHistoricalFacts() {
       const tags = Array.from(GameState.learnedTags);
-      // 補齊至少 3 條不重複重點
       const fallbackOrder = ['black_ditch', 'ban_three', 'canal_water', 'tuniugou', 'xiedou', 'rebellion', 'ancestor_shift', 'beliefs'];
       for (const t of fallbackOrder) {
         if (tags.length >= 3) break;
         if (!tags.includes(t)) tags.push(t);
       }
-      // 優先挑選最新經歷的 3 條
-      const chosen = tags.slice(-3);
-      return chosen.map(k => HISTORY_FACTS[k]).filter(Boolean);
+      return tags.slice(-3).map(k => HISTORY_FACTS[k]).filter(Boolean);
     }
 
     function renderStage4Ending(endingId) {
+      cleanupTransientState();
       GameState.stage = 4;
-      updateHUD('階段 4：人生結算完成');
+      updateHUD('結局：人生結算完成');
       const ending = ENDINGS[endingId] || ENDINGS.r_farmer;
       const isDeath = ending.rarity === 'CURSED' || endingId === 'n_youyinggong';
       const isNewUnlock = Storage.unlock(ending.id);
@@ -3245,37 +3657,36 @@
 
       $('game-root').innerHTML = `
         <div class="game-panel" style="text-align:center;">
-          <div style="font-size:0.88rem; font-weight:800; color:#93c5fd; margin-bottom:8px;">
-            ${isDeath ? '💀 生存挑戰結束・歷史留下一聲嘆息' : '🎉 恭喜存活！清代臺灣求生結算'}
-            ${isNewUnlock ? '<span style="background:#f59e0b; color:#090d16; padding:2px 8px; border-radius:999px; margin-left:6px;">NEW 圖鑑解鎖!</span>' : ''}
+          <div style="font-size:0.9rem; font-weight:900; color:#7dd3fc; margin-bottom:10px;">
+            ${isDeath ? '💀 BAD END・歷史留下一聲嘆息' : '🎉 STAGE CLEAR！清代臺灣求生破關！'}
+            ${isNewUnlock ? '<span style="background:#fde047; color:#090d1a; padding:2px 9px; border-radius:999px; margin-left:6px; border:1.5px solid #090d1a;">NEW 圖鑑解鎖!</span>' : ''}
           </div>
 
-          <div class="gacha-card rarity-${ending.rarity}" style="max-width:440px; margin:0 auto 16px;">
+          <div class="gacha-card rarity-${ending.rarity}" style="max-width:450px; margin:0 auto 16px;">
             <div class="gacha-inner" style="padding:22px 18px;">
               <span class="rarity-badge">[${ending.rarity}] ${ending.tag}</span>
               <div class="card-emoji" style="font-size:3.8rem;">${ending.emoji}</div>
-              <div class="card-name" style="font-size:1.5rem; margin-bottom:4px;">${ending.title}</div>
+              <div class="card-name" style="font-size:1.55rem; margin-bottom:4px;">${ending.title}</div>
               <div class="card-desc" style="font-size:0.95rem; color:#f1f5f9;">${ending.desc}</div>
-              <div class="card-effect" style="margin-top:12px; color:#93c5fd;">
-                最終數值：❤️ ${GameState.stats.hp} ｜ 💰 ${GameState.stats.money}兩 ｜ 🧠 ${GameState.stats.san} ｜ 🤝 ${GameState.stats.rep}
+              <div class="card-effect" style="margin-top:12px; color:#7dd3fc;">
+                最終戰績：❤️ ${GameState.stats.hp} ｜ 💰 ${GameState.stats.money}兩 ｜ 🧠 ${GameState.stats.san} ｜ 🤝 ${GameState.stats.rep}
               </div>
             </div>
           </div>
 
-          <!-- 知識小彩蛋：3 句話歷史真相解密 -->
           <div class="history-egg">
-            <h4>📚 歷史真相解密（你剛剛親身經歷的 108 課綱重點！）</h4>
+            <h4>📚 下回預告・歷史真相解密（你剛剛經歷的 108 課綱重點！）</h4>
             <ul>
               ${facts.map(f => `<li>${f}</li>`).join('')}
             </ul>
           </div>
 
           <div class="btn-row">
-            <button id="btn-replay" class="btn btn-gold" type="button">🔄 同難度再渡一次黑水溝</button>
+            <button id="btn-replay" class="btn btn-gold" type="button">🔄 同路線再渡一次黑水溝</button>
             <button id="btn-end-gallery" class="btn btn-purple" type="button">📖 查看圖鑑 (${unlockedCount}/${totalEndings})</button>
           </div>
           <button id="btn-back-home" class="btn btn-slate" type="button" style="margin-top:10px;">
-            🏠 回主畫面切換難度模式
+            🏠 回主畫面切換故事難度
           </button>
         </div>
       `;
@@ -3295,7 +3706,7 @@
     }
 
     /* ==========================================================================
-       12. 成就圖鑑 Modal 邏輯
+       12. 圖鑑系統與無障礙 Modal 控制
        ========================================================================== */
     function updateGalleryCounter() {
       const unlocked = Storage.getUnlocked();
@@ -3308,16 +3719,15 @@
     function openGalleryModal() {
       const unlocked = Storage.getUnlocked();
       updateGalleryCounter();
-      const grid = $('gallery-grid');
-      grid.innerHTML = Object.values(ENDINGS).map(end => {
+      $('gallery-grid').innerHTML = Object.values(ENDINGS).map(end => {
         const has = unlocked.includes(end.id);
         return `
           <div class="gallery-item ${has ? 'unlocked' : 'locked'}">
             <div style="display:flex; justify-content:space-between; align-items:center;">
-              <span style="font-size:1.7rem;">${has ? end.emoji : '❓'}</span>
+              <span style="font-size:1.75rem;">${has ? end.emoji : '❓'}</span>
               <span class="mini-tag ${end.rarity.toLowerCase()}">[${end.rarity}] ${end.tag}</span>
             </div>
-            <div style="font-weight:900; font-size:0.98rem; color:${has ? '#fde68a' : '#94a3b8'};">
+            <div style="font-weight:900; font-size:0.98rem; color:${has ? '#fde047' : '#94a3b8'};">
               ${has ? end.title : '尚未解鎖結局'}
             </div>
             <div style="font-size:0.8rem; color:#cbd5e1;">
@@ -3326,7 +3736,6 @@
           </div>
         `;
       }).join('');
-
       $('gallery-modal').classList.add('open');
     }
 
@@ -3334,9 +3743,6 @@
       $('gallery-modal').classList.remove('open');
     }
 
-    /* ==========================================================================
-       13. 頂部全域按鈕綁定與啟動
-       ========================================================================== */
     function initApp() {
       updateGalleryCounter();
 
@@ -3381,6 +3787,16 @@
       $('btn-home').addEventListener('click', () => {
         SoundFX.click();
         renderHome();
+      });
+
+      // 支援 Esc 鍵關閉 Modal
+      window.addEventListener('keydown', (e) => {
+        if (e.key !== 'Escape') return;
+        if ($('confirm-modal').classList.contains('open')) {
+          $('confirm-modal').classList.remove('open');
+        } else if ($('gallery-modal').classList.contains('open')) {
+          closeGalleryModal();
+        }
       });
 
       renderHome();
